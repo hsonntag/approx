@@ -18,18 +18,18 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 struct argos_args_info {
-	size_t STORED_SAMPLING_RATE,
-	       size_t	STORED_PKT_SIZE,
-	       size_t MEAS_NO_OF_PACKETS,
-	       size_t STORED_MAG_CHANNELS,
-	       size_t STORED_MAG_REF_CHANNELS,
-	       size_t STORED_ELEC_CHANNELS,
-	       size_t MAG_SENSOR_A_POSITION,
-	       size_t MAG_SENSOR_A_ORIENTATION,
-	       size_t MAG_SENSOR_B_POSITION,
-	       size_t MAG_SENSOR_B_ORIENTATION,
-	       size_t MAG_SENSOR_C_POSITION,
-	       size_t MAG_SENSOR_C_ORIENTATION,
-	       size_t MEAS_START_PACKET_NO 
+	size_t stored_sampling_rate,
+	       size_t	stored_pkt_size,
+	       size_t meas_no_of_packets,
+	       size_t stored_mag_channels,
+	       size_t stored_mag_ref_channels,
+	       size_t stored_elec_channels,
+	       size_t mag_sensor_a_position,
+	       size_t mag_sensor_a_orientation,
+	       size_t mag_sensor_b_position,
+	       size_t mag_sensor_b_orientation,
+	       size_t mag_sensor_c_position,
+	       size_t mag_sensor_c_orientation,
+	       size_t meas_start_packet_no 
 }
 int argos_read_header(struct argos_args_info * args_info, const char * filename);
