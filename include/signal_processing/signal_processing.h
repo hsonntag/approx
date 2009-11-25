@@ -14,7 +14,3 @@
 //double * x, * y;
 //size_t size;
 int signal_processing_radix2_xcorr(double * c_xy, double * x, double * y, size_t size);
-int signal_processing_QRS_fdf (const gsl_vector * x, void * data,
-		gsl_vector * f, gsl_matrix * J);
-int signal_processing_QRS_f (const gsl_vector * x, void * data, gsl_vector * f);
-int signal_processing_QRS_df (const gsl_vector * x, void * data, gsl_matrix * J);
