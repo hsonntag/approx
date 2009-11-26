@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.63])
+# AC_PREREQ([2.63])
 AC_INIT([QRS Splineapproximation], [0.1], [hermann.sonntag@tu-ilmenau.de])
 AM_INIT_AUTOMAKE(splineapprox, 0.1)
 
