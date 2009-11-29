@@ -29,21 +29,34 @@ AM_CONFIG_HEADER(config.h)
 # Checks for programs.
 AC_PROG_CC
 AC_PROG_LIBTOOL
+AC_PROG_CXX
+AC_PROG_AWK
+AC_PROG_CPP
+AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
+AC_PROG_RANLIB
 
 # Checks for libraries.
+PKG_CHECK_MODULES(GSL, gsl)
+AC_SUBST(GSL_CFLAGS)
+AC_SUBST(GSL_LIBS)
 
-AC_CHECK_LIB([gsl], [gsl_cblas_dgemm])
+# AC_CHECK_LIB([gsl], [gsl_cblas_dgemm])
 
 AC_CHECK_LIB([gslcblas], [cblas_dgemm])
 
 AC_CHECK_LIB([m], [sin])
 
 # Checks for header files.
-AC_CHECK_HEADERS([stdlib.h])
+AC_CHECK_HEADERS([stdlib.h string.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
+AC_TYPE_SIZE_T
 
 # Checks for library functions.
+AC_FUNC_MALLOC
+AC_CHECK_FUNCS([pow sqrt strtol])
 
 # Try to enforce ansi C (ISO C99) with warnings generation
 TMP_CFLAGS="$CFLAGS"
@@ -61,8 +74,10 @@ AC_MSG_RESULT([no])
 CFLAGS="$TMP_CFLAGS"
 )
 
-AC_CONFIG_FILES([Makefile])
-AC_CONFIG_FILES([lib/Makefile])
+AC_CONFIG_FILES([Makefile \
+		 lib/Makefile \
+		 lib/signal_processing.pc \
+		 approx/Makefile ])
 AC_OUTPUT
 
 

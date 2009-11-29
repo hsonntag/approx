@@ -17,23 +17,21 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+#include <math.h>
 
 //#include "config.h"
 #include "cmdline.h"
 
-#include <string.h>
-#include <math.h>
-#include <gsl/gsl_errno.h>
-#include <gsl/gsl_spline.h>
-#include <gsl/gsl_fft_real.h>
-#include <gsl/gsl_fft_halfcomplex.h>
-#include <gsl/gsl_rng.h>
-#include <gsl/gsl_randist.h>
-#include <gsl/gsl_vector.h>
-#include <gsl/gsl_blas.h>
-#include <gsl/gsl_multifit_nlin.h>
-
-#include "qrsfit.c"
+//#include <gsl/gsl_errno.h>
+//#include <gsl/gsl_spline.h>
+//#include <gsl/gsl_fft_real.h>
+//#include <gsl/gsl_fft_halfcomplex.h>
+//#include <gsl/gsl_rng.h>
+//#include <gsl/gsl_randist.h>
+//#include <gsl/gsl_vector.h>
+//#include <gsl/gsl_blas.h>
+//#include <gsl/gsl_multifit_nlin.h>
      
 #define N 128
      
@@ -51,7 +49,7 @@
 #define	ARG_REQUIRED	1
 #define	ARG_OPTIONAL	2
 
-void print_state (size_t iter, gsl_multifit_fdfsolver * s);
+//void print_state (size_t iter, gsl_multifit_fdfsolver * s);
 
 int read_signals(double ***dat, unsigned short size, unsigned short channels, unsigned int count, char *filename) {
   FILE *fp;
@@ -148,7 +146,7 @@ int main(int argc, char *argv[]) {
 
   return EXIT_SUCCESS;
 }
-
+/*
 void
 print_state (size_t iter, gsl_multifit_fdfsolver * s)
 {
@@ -159,4 +157,5 @@ print_state (size_t iter, gsl_multifit_fdfsolver * s)
 	  gsl_vector_get (s->x, 1),
 	  gsl_vector_get (s->x, 2),
 	  gsl_blas_dnrm2 (s->f));
-}
+} */
+
