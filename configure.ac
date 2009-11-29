@@ -35,13 +35,16 @@ AC_PROG_CPP
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
-AC_PROG_RANLIB
+#AC_PROG_RANLIB
 
 # Checks for libraries.
 PKG_CHECK_MODULES(GSL, gsl)
 AC_SUBST(GSL_CFLAGS)
 AC_SUBST(GSL_LIBS)
 
+PKG_CHECK_MODULES(SP, signal_processing)
+AC_SUBST(SP_CFLAGS)
+AC_SUBST(SP_LIBS)
 # AC_CHECK_LIB([gsl], [gsl_cblas_dgemm])
 
 AC_CHECK_LIB([gslcblas], [cblas_dgemm])
