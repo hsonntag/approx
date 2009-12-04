@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <math.h>
+#include <cspl.h>
 
 //#include "config.h"
 #include "cmdline.h"
@@ -51,22 +51,22 @@
 
 //void print_state (size_t iter, gsl_multifit_fdfsolver * s);
 
-int read_signals(double ***dat, unsigned short size, unsigned short channels, unsigned int count, char *filename) {
+int read_signals(double **dat, size_t size, size_t channels, size_t count, char *filename) {
   FILE *fp;
 
   /* open the file */
   fp = fopen(filename, "rb");
   if (fp == NULL) {
     perror ("The following error occurred in read_signals");
-    return(1);
+    return 1;
   }
   
   /* copy the file into memory */
   int i;
   for (i = 0; i < count; i++) {
-    if(fread(dat[i], size, channels, fp) != channels){
+    if(fread(&dat[i], size, channels, fp) != channels){
       perror ("The following error occurred in read_signals");
-      return(2);
+      return 2;
     }
   }
 

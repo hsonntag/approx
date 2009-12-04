@@ -1,4 +1,4 @@
-#include "signal_processing/signal_processing.h"
+#include "cspl/cspl.h"
 
 int signal_processing_eval_periodic_max (size_t * max_n, double * signal, size_t size, size_t period) {
 	size_t i;

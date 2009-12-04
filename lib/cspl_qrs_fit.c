@@ -1,9 +1,9 @@
-#include "signal_processing/signal_processing_QRS.h"
+#include "cspl/cspl_qrs.h"
 
 
 
 
-int signal_processing_fit (size_t n, double * t, double * y, gsl_spline * n_QRS, double * sigma) {
+int cspl_fit (size_t n, double * t, double * y, gsl_spline * n_qrs, double * sigma) {
 const gsl_multifit_fdfsolver_type * T;
 gsl_multifit_fdfsolver * s;
 int status;
@@ -11,7 +11,7 @@ unsigned int iter = 0;
 const size_t p = 3;
 
 gsl_matrix * covar = gsl_matrix_alloc (p, p);
-struct signal_processing_QRS_data d = { n, t, y, n_QRS, sigma};
+struct cspl_qrs_data d = { n, t, y, n_QRS, sigma};
 gsl_multifit_function_fdf f;
 double x_init[3] = { 2.0, 0.0, 2.0 };
 gsl_vector_view x = gsl_vector_view_array (x_init, p);
@@ -23,9 +23,9 @@ gsl_rng_env_setup();
 type = gsl_rng_default;
 r = gsl_rng_alloc (type);
 
-f.f = &signal_processing_QRS_f;
-f.df = &signal_processing_QRS_df;
-f.fdf = &signal_processing_QRS_fdf;
+f.f = &cspl_qrs_f;
+f.df = &cspl_qrs_df;
+f.fdf = &cspl_qrs_fdf;
 f.n = n;
 f.p = p;
 f.params = &d;

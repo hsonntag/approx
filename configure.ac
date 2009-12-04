@@ -42,7 +42,7 @@ PKG_CHECK_MODULES(GSL, gsl)
 AC_SUBST(GSL_CFLAGS)
 AC_SUBST(GSL_LIBS)
 
-PKG_CHECK_MODULES(SP, signal_processing)
+PKG_CHECK_MODULES(SP, cspl)
 AC_SUBST(SP_CFLAGS)
 AC_SUBST(SP_LIBS)
 # AC_CHECK_LIB([gsl], [gsl_cblas_dgemm])
@@ -79,8 +79,8 @@ CFLAGS="$TMP_CFLAGS"
 
 AC_CONFIG_FILES([Makefile \
 		 lib/Makefile \
-		 lib/signal_processing.pc \
-		 approx/Makefile ])
+		 lib/cspl.pc \
+		 qrs/Makefile ])
 AC_OUTPUT
 
 

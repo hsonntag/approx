@@ -1,8 +1,8 @@
 INCLUDES = -I $(top_srcdir)/include/
-lib_LTLIBRARIES = libsignal_processing.la
-libsignal_processing_la_includedir = $(top_srcdir)/include/signal_processing
-libsignal_processing_la_include_HEADRS = signal_processing.h
-libsignal_processing_la_SOURCES = signal_processing.c signal_processing_QRS.c signal_processing_QRS_fit.c 
+lib_LTLIBRARIES = libcspl.la
+libcspl_la_includedir = $(top_srcdir)/include/signal_processing
+libcspl_la_include_HEADRS = cspl.h
+libcspl_la_SOURCES = cspl_math.c cspl_qrs.c cspl_qrs_fit.c 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = signal_processing.pc
 

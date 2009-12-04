@@ -1,5 +1,3 @@
-#include <string.h>
-#include <math.h>
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_deriv.h>
 #include <gsl/gsl_errno.h>
@@ -11,6 +9,5 @@
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_multifit_nlin.h>
-//double * x, * y;
-//size_t size;
+
 int signal_processing_radix2_xcorr(double * c_xy, double * x, double * y, size_t size);
