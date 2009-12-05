@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <cspl.h>
+#include <cspl/cspl.h>
 
 //#include "config.h"
 #include "cmdline.h"
@@ -146,7 +146,7 @@ int main(int argc, char *argv[]) {
 
   return EXIT_SUCCESS;
 }
-/*
+
 void
 print_state (size_t iter, gsl_multifit_fdfsolver * s)
 {
@@ -157,5 +157,5 @@ print_state (size_t iter, gsl_multifit_fdfsolver * s)
 	  gsl_vector_get (s->x, 1),
 	  gsl_vector_get (s->x, 2),
 	  gsl_blas_dnrm2 (s->f));
-} */
+} 
 

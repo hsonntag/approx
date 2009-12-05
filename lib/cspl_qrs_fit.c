@@ -1,4 +1,4 @@
-#include "cspl/cspl_qrs.h"
+#include "cspl/cspl.h"
 
 
 
@@ -11,7 +11,7 @@ unsigned int iter = 0;
 const size_t p = 3;
 
 gsl_matrix * covar = gsl_matrix_alloc (p, p);
-struct cspl_qrs_data d = { n, t, y, n_QRS, sigma};
+struct cspl_qrs_data d = { n, t, y, n_qrs, sigma};
 gsl_multifit_function_fdf f;
 double x_init[3] = { 2.0, 0.0, 2.0 };
 gsl_vector_view x = gsl_vector_view_array (x_init, p);

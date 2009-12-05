@@ -4,7 +4,7 @@ libdir=@libdir@
 includedir=@includedir@
 
 Name: cspl
-Description: Signal processing library for the C programming language.
+Description: Signal processing library for the C/C++ programming language, written in C.
 Requires: gsl
 Version: @VERSION@
 Libs: -L${libdir} -lcspl

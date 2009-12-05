@@ -1,4 +1,4 @@
-#include "cspl/cspl.h"
+#include "cspl/cspl_qrs.h"
 
 int cspl_qrs_init() {
 acc = gsl_interp_accel_alloc();
@@ -14,7 +14,7 @@ int cspl_qrs_f (const gsl_vector * x, void * data,
 
 	size_t n = ((struct cspl_qrs_data *)data)->n;
 	double * y = ((struct cspl_qrs_data *)data)->y; 
-	gsl_spline * n_qrs = ((struct cspl_QRS_data *)data)->n_QRS;
+	gsl_spline * n_qrs = ((struct cspl_qrs_data *)data)->n_qrs;
 	double * t = ((struct cspl_qrs_data *)data)->t;
 	double * sigma = ((struct cspl_qrs_data *) data)->sigma;
 
@@ -45,7 +45,7 @@ int cspl_qrs_df (const gsl_vector * x, void * data,
 	double t_beat = gsl_vector_get (x, 1);
 
 	size_t n = ((struct cspl_qrs_data *)data)->n;
-	gsl_spline * n_qrs = ((struct cspl_QRS_data *)data)->n_QRS;
+	gsl_spline * n_qrs = ((struct cspl_qrs_data *)data)->n_qrs;
 	double * t = ((struct cspl_qrs_data *)data)->t;
 	double * sigma = ((struct cspl_qrs_data *) data)->sigma;
 
@@ -58,8 +58,8 @@ int cspl_qrs_df (const gsl_vector * x, void * data,
 	for (i = 0; i < n; i++)
 	{
 		double s = sigma[i];
-		double dqrs_da = gsl_spline_eval (n_QRS, t[i] - t_beat, acc);
-		double dqrs_dt_beat = -a*gsl_spline_eval_deriv (n_QRS,  t[i] - t_beat,  acc);
+		double dqrs_da = gsl_spline_eval (n_qrs, t[i] - t_beat, acc);
+		double dqrs_dt_beat = -a*gsl_spline_eval_deriv (n_qrs,  t[i] - t_beat,  acc);
 		gsl_matrix_set (J, i, 0, dqrs_da/s); 
 		gsl_matrix_set (J, i, 1, dqrs_dt_beat/s);
 		gsl_matrix_set (J, i, 2, 1/s);

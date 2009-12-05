@@ -3,7 +3,7 @@
 #include <gsl/gsl_spline.h>
 gsl_interp_accel *acc;
 
-struct signal_processing_qrs_data {
+struct cspl_qrs_data {
   size_t n;
   double * t;
   double * y;
@@ -11,10 +11,10 @@ struct signal_processing_qrs_data {
   double * sigma;
 };
 
-int signal_processing_qrs_fdf (const gsl_vector * x, void * data,
+int cspl_qrs_fdf (const gsl_vector * x, void * data,
 		gsl_vector * f, gsl_matrix * J);
-int signal_processing_qrs_f (const gsl_vector * x, void * data, gsl_vector * f);
-int signal_processing_qrs_df (const gsl_vector * x, void * data, gsl_matrix * J);
+int cspl_qrs_f (const gsl_vector * x, void * data, gsl_vector * f);
+int cspl_qrs_df (const gsl_vector * x, void * data, gsl_matrix * J);
 
 struct cspl_qrs_function_fdf_struct
 {
