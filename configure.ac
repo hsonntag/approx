@@ -3,7 +3,8 @@
 
 # AC_PREREQ([2.63])
 AC_INIT([QRS Splineapproximation], [0.1], [hermann.sonntag@tu-ilmenau.de])
-AM_INIT_AUTOMAKE(splineapprox, 0.1)
+AM_INIT_AUTOMAKE(approx, 0.1)
+LT_INIT([disable-shared])
 
 ######################################################################
 # DOXYGEN SUPPORT
@@ -23,6 +24,7 @@ DX_INIT_DOXYGEN([$PACKAGE_NAME],[doxygen.cfg], [doc])
 ######################################################################
 
 AC_CONFIG_SRCDIR([config.h.in])
+AC_CONFIG_MACRO_DIR([m4])
 #AC_CONFIG_HEADERS([config.h])
 AM_CONFIG_HEADER(config.h)
 
@@ -35,7 +37,8 @@ AC_PROG_CPP
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
-#AC_PROG_RANLIB
+##AC_PROG_RANLIB
+
 
 # Checks for libraries.
 PKG_CHECK_MODULES(GSL, gsl)

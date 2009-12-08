@@ -1,4 +1,4 @@
-
+ACLOCAL_AMFLAGS = -I m4
 
 # DOXYGEN SUPPORT
 include $(top_srcdir)/aminclude.am

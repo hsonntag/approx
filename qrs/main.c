@@ -1,4 +1,4 @@
-/*     splineapprox does a cubic spline approximation
+/*     Splineapprox does a cubic spline approximation.
  *     Copyright (C) 2009 Hermann Sonntag
   
  *     This program is free software: you can redistribute it and/or modify
@@ -23,25 +23,7 @@
 //#include "config.h"
 #include "cmdline.h"
 
-//#include <gsl/gsl_errno.h>
-//#include <gsl/gsl_spline.h>
-//#include <gsl/gsl_fft_real.h>
-//#include <gsl/gsl_fft_halfcomplex.h>
-//#include <gsl/gsl_rng.h>
-//#include <gsl/gsl_randist.h>
-//#include <gsl/gsl_vector.h>
-//#include <gsl/gsl_blas.h>
-//#include <gsl/gsl_multifit_nlin.h>
-     
-#define N 128
-     
 /* constants */
-
-#define SPLINELENGTH 128
-#define CHANNELS 8
-#define DATASIZE 2
-#define SAMPLING_TIME 0.1
-#define T_QRS 3.1415
 
 /* options */
 
@@ -51,7 +33,7 @@
 
 //void print_state (size_t iter, gsl_multifit_fdfsolver * s);
 
-int read_signals(double **dat, size_t size, size_t channels, size_t count, char *filename) {
+int read_signals(void **dat, size_t size, size_t channels, size_t count, char *filename) {
   FILE *fp;
 
   /* open the file */
@@ -83,7 +65,7 @@ int read_signals(double **dat, size_t size, size_t channels, size_t count, char 
 int main(int argc, char *argv[]) {
 
   struct gengetopt_args_info args_info;
-  char filename[64];
+  char * filename;
   unsigned int i;
      
   /*        printf( "This one is from a C program \n" ); */
@@ -92,70 +74,63 @@ int main(int argc, char *argv[]) {
   /*        printf( "For example: ./splineapprox *.* --funct-opt\n" ); */
        
   /*        /\* let's call our cmdline parser *\/ */
-  /*        if (cmdline_parser (argc, argv, &args_info) != 0) */
-  /*          exit(1) ; */
+          if (cmdline_parser (argc, argv, &args_info) != 0) 
+            exit(1) ; 
      
   /*        printf( "Here are the options you passed...\n" ); */
-     
-  /*        for ( i = 0 ; i < args_info.inputs_num ; ++i ) { */
-  /*          printf( "file: %s", args_info.inputs[i] ); */
-  /*          strcpy(filename, args_info.inputs[i]); */
-  /*        } */
 
-  /*        if ( args_info.funct_opt_given ) */
-  /*          printf("You chose --funct-opt or -F." ); */
-     
-  /*        if ( args_info.str_opt_given ) */
-  /*          printf( "You inserted %s%s%s", args_info.str_opt_arg, " for ", "--str-opt option." ); */
-     
-  /*        if ( args_info.int_opt_given ) */
-  /*          printf( "This is the integer you input: %d%s ", args_info.int_opt_arg, "." ); */
-     
-  /*        if (args_info.flag_opt_given) */
-  /*          printf( "The flag option was given! " ); */
-     
-  /*        printf( "The flag is %s%s", ( args_info.flag_opt_flag ? "on" : "off" ), ". " ); */
-     
-  /*        if (args_info.enum_opt_given) { */
-  /*          printf( "enum-opt value: %s", args_info.enum_opt_arg ); */
-  /*          printf( "enum-opt (original specified) value: %s", args_info.enum_opt_orig ); */
-  /*        } */
-     
-  /*        if (args_info.secret_given) */
-  /*          printf( "Secret option was specified: %d", args_info.secret_arg ); */
-     
-  /*        printf( "%s! ", args_info.def_opt_arg ); */
-     
-  /*        printf( "Have a nice day! :-)\n" ); */
-     
-  /*        cmdline_parser_free (&args_info); /\* release allocated memory *\/ */
+	  for ( i = 0 ; i < args_info.inputs_num ; ++i ) { 
+		  printf ( "file: %s", args_info.inputs[i] ); 
+		  filename = (char *) malloc(strnlen(args_info.inputs[i]));
+		  strcpy(filename, args_info.inputs[i]); 
+	  } 
 
+	  /*        if ( args_info.funct_opt_given ) */
+	  /*          printf("You chose --funct-opt or -F." ); */
 
-  double t[SPLINELENGTH], xs[SPLINELENGTH], y[SPLINELENGTH], c_xy[SPLINELENGTH], n_QRS[SPLINELENGTH] = {0}; 
-  unsigned int m_corr[SPLINELENGTH] = {0}; 
+	  /*        if ( args_info.str_opt_given ) */
+	  /*          printf( "You inserted %s%s%s", args_info.str_opt_arg, " for ", "--str-opt option." ); */
+size_t splinelength;
+	          if ( args_info.int_opt_given ) 
+			  splinelength = args_info.int_opt_arg;
+	  /*          printf( "This is the integer you input: %d%s ", args_info.int_opt_arg, "." ); */
 
-  for (i = 0; i < SPLINELENGTH; i++) {
-    t[i] = i * SAMPLING_TIME;
-    xs[i] = sin(t[i]);
-    if (t[i] < T_QRS)
-      y[i] = xs[i];
-    else
-      y[i] = 0;
-  }
- 
+	  /*        if (args_info.flag_opt_given) */
+	  /*          printf( "The flag option was given! " ); */
 
-  return EXIT_SUCCESS;
+	  /*        printf( "The flag is %s%s", ( args_info.flag_opt_flag ? "on" : "off" ), ". " ); */
+
+	  /*        if (args_info.enum_opt_given) { */
+	  /*          printf( "enum-opt value: %s", args_info.enum_opt_arg ); */
+	  /*          printf( "enum-opt (original specified) value: %s", args_info.enum_opt_orig ); */
+	  /*        } */
+
+	  /*        if (args_info.secret_given) */
+	  /*          printf( "Secret option was specified: %d", args_info.secret_arg ); */
+
+	  /*        printf( "%s! ", args_info.def_opt_arg ); */
+
+	          cmdline_parser_free (&args_info);
+
+	  double t[splinelength], x[splinelength], y[splinelength], c_xy[splinelength], n_QRS[splinelength]; 
+	  unsigned int m_corr[splinelength]; 
+	  char dat[206][901];
+	  read_signals(dat, 1, 206, 901, filename);
+	  for (i = 0; i < 901; i++) {
+		  printf("x = %d\n", dat[0][i]);
+	  }
+	  return EXIT_SUCCESS;
 }
 
-void
+	void
 print_state (size_t iter, gsl_multifit_fdfsolver * s)
 {
-  printf ("iter: %3u x = % 15.8f % 15.8f % 15.8f "
-	  "|f(x)| = %g\n",
-	  iter,
-	  gsl_vector_get (s->x, 0),
-	  gsl_vector_get (s->x, 1),
-	  gsl_vector_get (s->x, 2),
-	  gsl_blas_dnrm2 (s->f));
+	printf ("iter: %3u x = % 15.8f % 15.8f % 15.8f "
+			"|f(x)| = %g\n",
+			iter,
+			gsl_vector_get (s->x, 0),
+			gsl_vector_get (s->x, 1),
+			gsl_vector_get (s->x, 2),
+			gsl_blas_dnrm2 (s->f));
 } 
 
