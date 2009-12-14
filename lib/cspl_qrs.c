@@ -1,16 +1,16 @@
 #include "cspl/cspl_qrs.h"
 
 int cspl_qrs_init() {
-acc = gsl_interp_accel_alloc();
-return GSL_SUCCESS;
-}
-int cspl_qrs_free() {
-  gsl_interp_accel_free(acc);
-  return GSL_SUCCESS;
+	acc = gsl_interp_accel_alloc();
+	return GSL_SUCCESS;
 }
 
-int cspl_qrs_f (const gsl_vector * x, void * data, 
-		gsl_vector * f) {
+int cspl_qrs_free() {
+	gsl_interp_accel_free(acc);
+	return GSL_SUCCESS;
+}
+
+int cspl_qrs_f (const gsl_vector * x, void * data, gsl_vector * f) {
 
 	size_t n = ((struct cspl_qrs_data *)data)->n;
 	double * y = ((struct cspl_qrs_data *)data)->y; 
@@ -19,7 +19,7 @@ int cspl_qrs_f (const gsl_vector * x, void * data,
 	double * sigma = ((struct cspl_qrs_data *) data)->sigma;
 
 
-//	gsl_spline_init(spline, t, n_qrs, n);
+	//	gsl_spline_init(spline, t, n_qrs, n);
 
 	double a = gsl_vector_get (x, 0);
 	double t_beat = gsl_vector_get (x, 1);
@@ -51,7 +51,7 @@ int cspl_qrs_df (const gsl_vector * x, void * data,
 
 	//gsl_spline * spline = gsl_spline_alloc(gsl_interp_cspline, n);
 
-//	gsl_spline_init(spline, t, n_qrs, n);
+	//	gsl_spline_init(spline, t, n_qrs, n);
 
 	size_t i;
 
@@ -75,3 +75,9 @@ int cspl_qrs_fdf (const gsl_vector * x, void *data,
 
 	return GSL_SUCCESS;
 }
+
+cspl_qrs_function_fdf cspl_qrs_fnc = {
+	.f = cspl_qrs_f,
+	.df = cspl_qrs_df,
+	.fdf = cspl_qrs_fdf,
+};

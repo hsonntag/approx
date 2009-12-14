@@ -1,9 +1,8 @@
-#include "cspl/cspl.h"
+#include "cspl/cspl_qrs.h"
+#include "cspl/cspl_qrs_fit.h"
 
 
-extern int print_state (unsigned int iter, char * s); 
-
-int cspl_fit (size_t n, double * t, double * y, gsl_spline * n_qrs, double * sigma) {
+int cspl_qrs_fit (size_t n, double * t, double * y, gsl_spline * n_qrs, double * sigma) {
 	const gsl_multifit_fdfsolver_type * T;
 	gsl_multifit_fdfsolver * s;
 	int status;
