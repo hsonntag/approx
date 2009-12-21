@@ -28,7 +28,7 @@
 __BEGIN_DECLS
 
 int cspl_radix2_xcorr(double * c_xy, double * x, double * y, size_t size);
-int cspl_eval_periodic_max (size_t * max_n, double * signal, size_t size, size_t period);
+int cspl_eval_periodic_max (size_t * max_n, double * signal, size_t size, double level);
 int cspl_norm_average (double * templ, double * signal, size_t * n, size_t size, int count);
 
 __END_DECLS

@@ -4,7 +4,7 @@
 # AC_PREREQ([2.63])
 AC_INIT([QRS Splineapproximation], [0.1], [hermann.sonntag@tu-ilmenau.de])
 AM_INIT_AUTOMAKE(approx, 0.1)
-LT_INIT([disable-shared])
+#LT_INIT([disable-shared])
 
 ######################################################################
 # DOXYGEN SUPPORT
@@ -50,19 +50,22 @@ AC_SUBST(SP_CFLAGS)
 AC_SUBST(SP_LIBS)
 # AC_CHECK_LIB([gsl], [gsl_cblas_dgemm])
 
-AC_CHECK_LIB([gslcblas], [cblas_dgemm])
+#AC_CHECK_LIB([gslcblas], [cblas_dgemm])
 
 AC_CHECK_LIB([m], [sin])
 
 # Checks for header files.
+AC_HEADER_STDC
 AC_CHECK_HEADERS([stdlib.h string.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
 AC_TYPE_SIZE_T
 
 # Checks for library functions.
 AC_FUNC_MALLOC
-AC_CHECK_FUNCS([pow sqrt strtol])
+#AC_FUNC_STRNLEN
+AC_CHECK_FUNCS([pow sqrt strtol strnlen])
 
 # Try to enforce ansi C (ISO C99) with warnings generation
 TMP_CFLAGS="$CFLAGS"

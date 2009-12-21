@@ -1,24 +1,47 @@
 #include "cspl/cspl.h"
 
-int cspl_eval_periodic_max (size_t * max_n, double * signal, size_t size, size_t period) {
+int cspl_eval_periodic_max (size_t * max_n, double * signal, size_t size, double level) {
 	size_t i;
 	size_t n;
-	double max;
+	int in_local_max = 0;
+	double global_max = DBL_MIN;
+	double local_max = DBL_MIN;
 	max_n[0] = 0;
 
-	for (i = 0; i < size; i++) {
-		max = 0;
-		for (n = max_n[i]; (n < (max_n[i] + period/2)) && (n < size); n++) {
-			if (signal[n] > max) {
-			printf("i=%d, signal[%d] = %f\n", i, n, signal[n]);
-				max = signal[n];
+	for (i = 0; i < size - 1; i++) {
+		for (n = max_n[i]; n < size; n++) {
+			if ( signal[n] > global_max) 
+				global_max = signal[n];
+			if ( signal[n] > local_max) {
+				local_max = signal[n];
 				max_n[i] = n;
 			}
+
+			if ( signal[n] > level * global_max )
+				in_local_max = 1;
+			else if (in_local_max) {
+				in_local_max = 0;
+				local_max = DBL_MIN;
+				max_n[i + 1] = n;
+				break;
+			}
 		}
-		if((n == size) || (i == (size - 2)))
+		if(n == size)
 			break;
-		max_n[i + 1] = max_n[i] + period/2;
 	}
+	/*
+	   for (n = max_n[i]; (n < (max_n[i] + period/2)) && (n < size); n++) {
+	   if (signal[n] > max) {
+	   printf("i=%d, signal[%d] = %f\n", i, n, signal[n]);
+	   max = signal[n];
+	   max_n[i] = n;
+	   }
+	   }
+	   if((n == size) || (i == (size - 2)))
+	   break;
+	   max_n[i + 1] = max_n[i] + period/2;
+	   }
+	   */
 return i + 1;
 }
 
@@ -41,17 +64,17 @@ int cspl_radix2_xcorr (double * c_xy, double * x, double * y, size_t size) {
 	}
 	z = gsl_fft_halfcomplex_radix2_inverse(c_xy, 1, size);
 	double tmp;
-/*	for (i = 1; i < size/2; i++) {
+	/*	for (i = 1; i < size/2; i++) {
 		tmp = c_xy[i];
 		c_xy[i] = c_xy[size - i];
 		c_xy[size - i] = tmp;
-	}
-*/	return z;
+		}
+		*/	return z;
 }
 
 int cspl_norm_average (double * templ, double * signal, size_t * n, size_t size, int count) {
-	double max = -10000000.0;
-	double min =  10000000.0;
+	double max = DBL_MIN;
+	double min = DBL_MAX;
 	size_t i, m;
 	for (i = 0; i < count; i++) {
 		if (i == size - 2)

@@ -77,7 +77,7 @@ int main(int argc, char *argv[]) {
 	/*        printf( "Here are the options you passed...\n" ); */
 
 	for ( i = 0 ; i < args_info.inputs_num ; ++i ) { 
-		filename = (char *) malloc(strnlen(args_info.inputs[i]));
+		filename = (char *) malloc(strlen(args_info.inputs[i]));
 		strcpy(filename, args_info.inputs[i]); 
 	} 
 
@@ -113,20 +113,20 @@ int main(int argc, char *argv[]) {
 	read_signals(_dat, 4, 206, splinelength, filename);
 	double qrs_tmpl[splinelength];
 	for (i = 0; i < splinelength; i++) {
-			x[i] = _dat[15][i];
-			if (i < 100)
-				qrs_tmpl[i] =_dat[15][i];
-			else
-				qrs_tmpl[i] = qrs_tmpl[99];
+		x[i] = _dat[15][i];
+		if (i < 100)
+			qrs_tmpl[i] =_dat[15][i];
+		else
+			qrs_tmpl[i] = qrs_tmpl[99];
 	}
 	cspl_radix2_xcorr (c_xy, x, qrs_tmpl, splinelength);        
 	for (i = 0; i < splinelength; i++) {
-//		printf("%d %f\n", i, c_xy[i]);
+		printf("%d %f\n", i, c_xy[i]);
 	}
-	int a =	cspl_eval_periodic_max (m_corr, c_xy, splinelength, 512); 
+	int a =	cspl_eval_periodic_max (m_corr, c_xy, splinelength, 0.9999); 
 	//	printf("a=%d\n", a);
-	for (i = 0; i < a + 2; i++) {
-        //	printf("%d %d\n",i, m_corr[i]);
+	for (i = 0; i < a; i++) {
+		printf("%d %d\n",i, m_corr[i]);
 	}
 	for (i = 0; i < splinelength; i++)
 		qrs_tmpl[i] = 0.0;
@@ -134,6 +134,9 @@ int main(int argc, char *argv[]) {
 	//	for (i = 0; i < splinelength; i++) {
 	//		printf("%f\n", qrs_tmpl[i]);
 	//	}
+	//	cspl_qrs_init();
+	//	gsl_spline * spline = gsl_spline_alloc(gsl_interp_cspline, splinelength);
+	//	gsl_spline_init(spline, t, qrs_tmpl, splinelength);
 
 	return EXIT_SUCCESS;
 }
