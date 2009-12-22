@@ -1,0 +1,7 @@
+\select@language {ngerman}
+\contentsline {section}{\numberline {0.1}Allgemeines zum Betrieb}{4}
+\contentsline {section}{\numberline {0.2}Eingliederung}{4}
+\contentsline {section}{\numberline {0.3}Aufgabenstellung}{4}
+\contentsline {section}{\numberline {0.4}Probleml\IeC {\"o}sung}{4}
+\contentsline {section}{\numberline {0.5}Endergebnis}{4}
+\contentsline {section}{\numberline {0.6}Res\IeC {\"u}me}{4}

@@ -121,19 +121,20 @@ int main(int argc, char *argv[]) {
 	}
 	cspl_radix2_xcorr (c_xy, x, qrs_tmpl, splinelength);        
 	for (i = 0; i < splinelength; i++) {
-		printf("%d %f\n", i, c_xy[i]);
+	//	printf("%d %f\n", i, c_xy[i]);
 	}
 	int a =	cspl_eval_periodic_max (m_corr, c_xy, splinelength, 0.9999); 
 	//	printf("a=%d\n", a);
 	for (i = 0; i < a; i++) {
-		printf("%d %d\n",i, m_corr[i]);
+	//	printf("%d %d\n",i, m_corr[i]);
 	}
 	for (i = 0; i < splinelength; i++)
 		qrs_tmpl[i] = 0.0;
-	cspl_norm_average (qrs_tmpl, x, m_corr, 512, a);
-	//	for (i = 0; i < splinelength; i++) {
-	//		printf("%f\n", qrs_tmpl[i]);
-	//	}
+
+cspl_norm_average (qrs_tmpl, x, m_corr, splinelength, a);
+		for (i = 0; i < splinelength; i++) {
+			printf("%d %f\n", i, qrs_tmpl[i]);
+		}
 	//	cspl_qrs_init();
 	//	gsl_spline * spline = gsl_spline_alloc(gsl_interp_cspline, splinelength);
 	//	gsl_spline_init(spline, t, qrs_tmpl, splinelength);
