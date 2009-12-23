@@ -2,7 +2,7 @@
 #include "cspl/cspl_qrs_fit.h"
 
 
-int cspl_qrs_fit (size_t n, double * t, double * y, gsl_spline * n_qrs, double * sigma) {
+int cspl_qrs_fit (double * t, double * y, gsl_spline * n_qrs, double * sigma, size_t n) {
 	const gsl_multifit_fdfsolver_type * T;
 	gsl_multifit_fdfsolver * s;
 	int status;

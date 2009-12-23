@@ -75,14 +75,14 @@ int cspl_radix2_xcorr (double * c_xy, double * x, double * y, size_t size) {
 int cspl_norm_average (double * templ, double * signal, size_t * n, size_t size, int count) {
 	double max = DBL_MIN;
 	double min = DBL_MAX;
-	unsigned int intervall = UINT_MAX;
+	int interval = INT_MAX;
 	size_t i, m;
 	for (i = 0; i < count; i++) {
 		if (i == size - 2)
 			break;
 
-		if (n[i + 1] - n[i] < intervall)
-			intervall = n[i + 1] - n[i];
+		if (n[i + 1] - n[i] < interval)
+			interval = n[i + 1] - n[i];
 
 		for (m = n[i]; m < n[i + 1]; m++) {
 			templ[m - n[i]] += signal[m];
@@ -90,7 +90,7 @@ int cspl_norm_average (double * templ, double * signal, size_t * n, size_t size,
 	}
 
 	for (i = 0; i < size; i++) {
-		if (i < intervall) {
+		if (i < interval) {
 			if (templ[i] > max)
 				max = templ[i];
 			else if (templ[i] < min)
@@ -99,9 +99,9 @@ int cspl_norm_average (double * templ, double * signal, size_t * n, size_t size,
 		else 
 			templ[i] = 0.0; 
 	}
-	for (i = 0; i < intervall; i++) {
+	for (i = 0; i < interval; i++) {
 		templ[i] -= min;
 		templ[i] /= (max - min);
 	}
-	return GSL_SUCCESS;
+	return interval;
 }

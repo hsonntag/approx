@@ -109,11 +109,13 @@ int main(int argc, char *argv[]) {
 	cmdline_parser_free (&args_info);
 	double t[splinelength], x[splinelength], y[splinelength], c_xy[splinelength], n_qrs[splinelength]; 
 	unsigned int m_corr[splinelength]; 
+	int interval;
 	int _dat[206][splinelength];
 	read_signals(_dat, 4, 206, splinelength, filename);
 	double qrs_tmpl[splinelength];
 	for (i = 0; i < splinelength; i++) {
 		x[i] = _dat[15][i];
+		t[i] = 2.0 * i;
 		if (i < 100)
 			qrs_tmpl[i] =_dat[15][i];
 		else
@@ -131,14 +133,15 @@ int main(int argc, char *argv[]) {
 	for (i = 0; i < splinelength; i++)
 		qrs_tmpl[i] = 0.0;
 
-cspl_norm_average (qrs_tmpl, x, m_corr, splinelength, a);
+interval = cspl_norm_average (qrs_tmpl, x, m_corr, splinelength, a);
 		for (i = 0; i < splinelength; i++) {
 			printf("%d %f\n", i, qrs_tmpl[i]);
 		}
-	//	cspl_qrs_init();
-	//	gsl_spline * spline = gsl_spline_alloc(gsl_interp_cspline, splinelength);
-	//	gsl_spline_init(spline, t, qrs_tmpl, splinelength);
-
+		cspl_qrs_init();
+		gsl_spline * spline = gsl_spline_alloc(gsl_interp_cspline, interval);
+		gsl_spline_init(spline, t, qrs_tmpl, interval);
+		double sigma[interval];
+cspl_qrs_fit(t, x, spline, sigma, interval);
 	return EXIT_SUCCESS;
 }
 
