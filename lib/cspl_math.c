@@ -1,6 +1,6 @@
 #include "cspl/cspl.h"
 
-int cspl_eval_periodic_max (size_t * max_n, double * signal, size_t size, double level) {
+int cspl_eval_periodic_max (unsigned int * max_n, double * signal, size_t size, double level) {
 	size_t i;
 	size_t n;
 	int in_local_max = 0;
@@ -72,10 +72,10 @@ int cspl_radix2_xcorr (double * c_xy, double * x, double * y, size_t size) {
 		*/	return z;
 }
 
-int cspl_norm_average (double * templ, double * signal, size_t * n, size_t size, int count) {
+int cspl_norm_average (double * templ, double * signal, unsigned int * n, size_t size, int count) {
 	double max = DBL_MIN;
 	double min = DBL_MAX;
-	int interval = INT_MAX;
+unsigned int interval = UINT_MAX;
 	size_t i, m;
 	for (i = 0; i < count; i++) {
 		if (i == size - 2)

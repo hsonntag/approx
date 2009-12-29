@@ -17,7 +17,7 @@
 
 __BEGIN_DECLS
 
-gsl_interp_accel *acc;
+gsl_interp_accel * acc;
 
 struct cspl_qrs_data {
 	size_t n;
@@ -26,6 +26,10 @@ struct cspl_qrs_data {
 	gsl_spline * n_qrs;
 	double * sigma;
 };
+
+int cspl_qrs_init();
+
+int cspl_qrs_free();
 
 int cspl_qrs_fdf (const gsl_vector * x, void * data, gsl_vector * f, gsl_matrix * J);
 int cspl_qrs_f (const gsl_vector * x, void * data, gsl_vector * f);
