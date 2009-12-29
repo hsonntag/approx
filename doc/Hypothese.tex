@@ -1,0 +1,68 @@
+\documentclass[a4paper,12pt]{scrartcl}
+
+\usepackage[latin1]{inputenc}
+\usepackage{ngerman, ae, graphicx, url}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+%opening
+\title{Splineapproximation des QRS-Komplex bei fetalen Magnetokardiogrammen}
+\author{Hermann Sonntag}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+
+
+\end{abstract}
+
+\section{Hypothese}
+\subsection{Definitionen}
+\begin{itemize}
+\item[$H_0$] die Nullhypothese
+\item[$H_1$] die alternative Hypothese
+\item[$S_{Meas}\left(t\right)$] das gemessenes Signal
+\item[$N_{QRS}\left(t\right)$] normiertes Signal des QRS-Komplex
+\item[$A$] ein Amplitudenfaktor f"ur die Skalierung des normierten Signals
+\item[$n\left(t\right)$] Rauschanteil
+\item[$S_v\left(t\right)$] das variable Spitze-Spitze Verh"altnis des Signals
+\item[$S_0 + S_1 \cdot t$] linearer Signalanteil
+\item[$R\left(t\right)$] das restliche Rauschen, welches f"ur statistische Tests relevant ist.
+\end{itemize}
+\subsection{Gleichungen}
+\begin{eqnarray}
+H_0 : S_{Meas}\left(t\right) & = & A \cdot N_{QRS}\left(t\right) + n\left(t\right) \\
+H_1: S_{Meas}\left(t\right) & = & A \cdot N_{QRS}\left(t\right) + S_v\left(t\right) + n\left(t\right) \\
+n\left(t\right) & = & S_0 + S_1 \cdot t + R\left(t\right)
+\end{eqnarray}
+\subsection{Methoden}
+$
+S_{QRS}\left(t\right) = A \cdot N_{QRS}\left(t - t_{beat}\right) + S_0 + S_1 \cdot \left(t - t_{beat}\right) \\
+S_{QRS}\left(t\right) = S_{QRS}\left(t, A, S_0, S_1, t_{beat}, N_{QRS}\left(t\right)\right) \\
+S_{QRS}\left(t, L\right) = A \cdot N_{QRS}\left(L \cdot t - t_{beat}\right) + S_0 + S_1 \cdot \left(t - t_{beat}\right) \\
+\Psi_{xy}\left(\tau\right) = \lim \limits_{T \to \infty} {\frac{1}{2T} \int \limits_{-T}^{T} {x\left(t\right) \cdot y\left(t+\tau\right) \, \mathrm dt}} \\
+\text{Wenn } x, y \colon\, \mathbb{Z} \to \mathbb{R} \text{ und } m \in \mathbb{Z} \text{ dann}\\
+\Psi_{xy}\left(m\right) = \lim \limits_{N \to \infty} {\frac{1}{2N + 1}\sum \limits_{i = -N}^{N} { x\left(i\right) \cdot y\left(i + m\right)}} \\
+\text{Sei } x(i) := 0 , \forall i \in \mathbb{Z} \setminus [0, N) \text{ und sei} \\
+y(i) := 0 , \forall i \in \mathbb{Z} \setminus [0, T_{QRS} \cdot f_s) \text{ und } m \in \mathbb{N}\cup\{0\} \text{ dann}\\
+\Psi_{xy}\left(m\right) = \frac{1}{N}\sum \limits_{i = 0}^{N-1} { x\left(i\right) \cdot y\left(i + m\right)} \\
+\vec{t} = \left ( \begin{array}{c} 0 \\ \Delta t \\ \vdots \\ (N-1) \cdot \Delta t \end{array} \right ) = \left ( \begin{array}{c} t_1 \\ \vdots \\ t_n \end{array} \right )\\
+\vec{t_{corr}} = \left ( \begin{array}{c} t_{corr_1} \\ \vdots \\ t_{corr_n} \end{array} \right ) \\
+\vec{t_0} = \vec{t_{beat}} - \vec{t_{corr}} \\
+\vec{m_0} = f_s \cdot \vec{t_0} \\
+\vec{m_{beat}} = f_s \cdot \vec{t_{beat}} \\
+\vec{m_{corr}} = f_s \cdot \vec{t_{corr}} \\
+t_{corr_{0}} := - \frac{1}{2} T_{QRS} \\
+\Psi_{xy}\left(t_{corr_{i+1}}\right) := \max_{\tau}\left[\Psi_{xy}\left(\tau\right)\right], \forall \tau \in \left[t_{corr_{i}} + \frac{1}{2} T_{QRS}, t_{corr_{i}} + \frac{3}{2} T_{QRS}\right), \forall i \in \mathbb{N}\cup\{0\} \\
+\tilde{\Psi_{xy}}\left(m_{corr_{i+1}}\right) := \max_{m}\left[\sum \limits_{i = 0}^{N-1} { x\left(i\right) \cdot y\left(i + m\right)}\right], \\
+\forall m \in \left[m_{corr_{i}} + \frac{1}{2} M_{QRS}, m_{corr_{i}} + \frac{3}{2} M_{QRS}\right), \forall i \in \mathbb{N}\cup\{0\} \\
+N_{QRS}\left(t - t_{corr_i}\right) = \frac{1}{M}\sum \limits_{i=1}^{M} {y\left(t\right)}, \forall t \in [t_{corr_i}, t_{corr_i} + T_{QRS}) \\
+J_{S_{QRS}} = \begin{pmatrix} \frac{\partial S_{QRS_1}}{\partial A} & \frac{\partial S_{QRS_1}}{\partial t_{beat}} & \ldots & \frac{\partial S_{QRS_1}}{\partial x_p} \\ \vdots & \vdots & \ddots & \vdots & \\ \frac{\partial S_{QRS_m}}{\partial A} & \frac{\partial S_{QRS_m}}{\partial t_{beat}} & \ldots & \frac{\partial S_{QRS_m}}{\partial x_p} \end{pmatrix} \\
+\Sigma = \begin{bmatrix} \mathrm{E}[(X_1 - \mu_1)(X_1 - \mu_1)] & \mathrm{E}[(X_1 - \mu_1)(X_2 - \mu_2)] & \cdots & \mathrm{E}[(X_1 - \mu_1)(X_n - \mu_n)] \\ \\ \mathrm{E}[(X_2 - \mu_2)(X_1 - \mu_1)] & \mathrm{E}[(X_2 - \mu_2)(X_2 - \mu_2)] & \cdots & \mathrm{E}[(X_2 - \mu_2)(X_n - \mu_n)] \\ \\ \vdots & \vdots & \ddots & \vdots \\ \\ \mathrm{E}[(X_n - \mu_n)(X_1 - \mu_1)] & \mathrm{E}[(X_n - \mu_n)(X_2 - \mu_2)] & \cdots & \mathrm{E}[(X_n - \mu_n)(X_n - \mu_n)] \end{bmatrix}\\ 
+\chi^2 = \sum \limits_{i = 0}^{N-1} { f_i^2 } \\
+\frac{\chi^2}{d_f} = \frac{\chi^2}{N-p} 
+$
+\end{document}
