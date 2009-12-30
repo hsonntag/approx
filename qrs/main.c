@@ -114,21 +114,25 @@ int main(int argc, char *argv[]) {
 	read_signals(_dat, 4, 206, splinelength, filename);
 	double qrs_tmpl[splinelength];
 	for (i = 0; i < splinelength; i++) {
-		x[i] = _dat[15][i];
+		x[i] = (double) _dat[15][i];
 		t[i] = 2.0 * i;
 		if (i < 100)
 			qrs_tmpl[i] =_dat[15][i];
 		else
 			qrs_tmpl[i] = qrs_tmpl[99];
 	}
+
+	cspl_norm (x, splinelength);
+	cspl_norm (qrs_tmpl, splinelength);
 	cspl_radix2_xcorr (c_xy, x, qrs_tmpl, splinelength);        
 	for (i = 0; i < splinelength; i++) {
-	//	printf("%d %f\n", i, c_xy[i]);
+		printf("%d %f\n", i, c_xy[i]);
 	}
-	int a =	cspl_eval_periodic_max (m_corr, c_xy, splinelength, 0.9999); 
-	//	printf("a=%d\n", a);
+	cspl_norm (c_xy, splinelength);
+	int a =	cspl_eval_periodic_max (m_corr, c_xy, splinelength, 0.95); 
+		printf("a=%d\n", a);
 	for (i = 0; i < a; i++) {
-	//	printf("%d %d\n",i, m_corr[i]);
+		printf("%d %d\n",i, m_corr[i]);
 	}
 	for (i = 0; i < splinelength; i++)
 		qrs_tmpl[i] = 0.0;
@@ -142,6 +146,7 @@ interval = cspl_norm_average (qrs_tmpl, x, m_corr, splinelength, a);
 		gsl_spline_init(spline, t, qrs_tmpl, interval);
 		double sigma[interval];
 cspl_qrs_fit(t, x, spline, sigma, interval);
+//cspl_qrs_fit_at(t, x, spline, sigma, interval, m_corr[1]);
 	return EXIT_SUCCESS;
 }
 

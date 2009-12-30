@@ -27,6 +27,7 @@ __BEGIN_DECLS
 
 //extern int print_state (unsigned int iter, char * s);
 int cspl_qrs_fit (double * t, double * y, gsl_spline * n_qrs, double * sigma, size_t n);
+int cspl_qrs_fit_at (double * t, double * y, gsl_spline * n_qrs, double * sigma, size_t n, int count);
 
 __END_DECLS
 

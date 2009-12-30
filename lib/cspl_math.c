@@ -63,19 +63,36 @@ int cspl_radix2_xcorr (double * c_xy, double * x, double * y, size_t size) {
 		c_xy[size - i] = _x[size - i]*_y[i] -_x[i]*_y[size-i];
 	}
 	z = gsl_fft_halfcomplex_radix2_inverse(c_xy, 1, size);
-	double tmp;
-	/*	for (i = 1; i < size/2; i++) {
+/*	double tmp;
+		for (i = 1; i < size/2; i++) {
 		tmp = c_xy[i];
 		c_xy[i] = c_xy[size - i];
 		c_xy[size - i] = tmp;
 		}
-		*/	return z;
+*/		return z;
+}
+
+int cspl_norm (double * signal, size_t size) {
+	double max = DBL_MIN;
+	double min = DBL_MAX;
+	size_t i;
+	for (i = 0; i < size; i++) {
+		if (signal[i] > max)
+			max = signal[i];
+		else if (signal[i] < min)
+			min = signal[i];
+	}
+	for (i = 0; i < size; i++) {
+		signal[i] -= min;
+		signal[i] /= (max - min);
+	}
+	return GSL_SUCCESS;
 }
 
 int cspl_norm_average (double * templ, double * signal, unsigned int * n, size_t size, int count) {
 	double max = DBL_MIN;
 	double min = DBL_MAX;
-unsigned int interval = UINT_MAX;
+	unsigned int interval = UINT_MAX;
 	size_t i, m;
 	for (i = 0; i < count; i++) {
 		if (i == size - 2)

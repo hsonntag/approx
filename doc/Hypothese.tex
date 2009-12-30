@@ -43,13 +43,26 @@ $
 S_{QRS}\left(t\right) = A \cdot N_{QRS}\left(t - t_{beat}\right) + S_0 + S_1 \cdot \left(t - t_{beat}\right) \\
 S_{QRS}\left(t\right) = S_{QRS}\left(t, A, S_0, S_1, t_{beat}, N_{QRS}\left(t\right)\right) \\
 S_{QRS}\left(t, L\right) = A \cdot N_{QRS}\left(L \cdot t - t_{beat}\right) + S_0 + S_1 \cdot \left(t - t_{beat}\right) \\
+$
+Um die Positionen der QRS-Komplexe zu detektieren wird die bei dieser Arbeit die Kreuzkorrelation des Originalsignals mit einem gemittelten und normierten QRS-Komplex verwendet. Auch f"ur die Mittelung der QRS-Komplexe eines Kanals wird die Kreuzkorrelation verwendet um die Anfangspositionen der einzelnen Komplexe zu approximieren.
+Die allgemeine Kreuzkorrelation ist definiert als:\\
+$
 \Psi_{xy}\left(\tau\right) = \lim \limits_{T \to \infty} {\frac{1}{2T} \int \limits_{-T}^{T} {x\left(t\right) \cdot y\left(t+\tau\right) \, \mathrm dt}} \\
-\text{Wenn } x, y \colon\, \mathbb{Z} \to \mathbb{R} \text{ und } m \in \mathbb{Z} \text{ dann}\\
+$
+Da bei dieser Arbeit nur diskrete Signale von endlicher L"ange $N$ verarbeitet werden, kann folgende Vereinfachung vorgenommen werden.
+$
+\text{Wenn } x, y \colon\, \mathbb{Z} \to \mathbb{R} \text{ und } m \in \mathbb{Z} \text{ dann gilt:}\\
 \Psi_{xy}\left(m\right) = \lim \limits_{N \to \infty} {\frac{1}{2N + 1}\sum \limits_{i = -N}^{N} { x\left(i\right) \cdot y\left(i + m\right)}} \\
 \text{Sei } x(i) := 0 , \forall i \in \mathbb{Z} \setminus [0, N) \text{ und sei} \\
 y(i) := 0 , \forall i \in \mathbb{Z} \setminus [0, T_{QRS} \cdot f_s) \text{ und } m \in \mathbb{N}\cup\{0\} \text{ dann}\\
 \Psi_{xy}\left(m\right) = \frac{1}{N}\sum \limits_{i = 0}^{N-1} { x\left(i\right) \cdot y\left(i + m\right)} \\
+$
+Der Zeitvektor, der die Zeitwerte f"ur die Signalwerte enth"alt ist wie folgt definiert:\\
+$
 \vec{t} = \left ( \begin{array}{c} 0 \\ \Delta t \\ \vdots \\ (N-1) \cdot \Delta t \end{array} \right ) = \left ( \begin{array}{c} t_1 \\ \vdots \\ t_n \end{array} \right )\\
+$
+Der Vektor der Zeitpunkte der Maxima der Kreuzkorrelation eines normierten und auf die Kanall"ange verl"angerten QRS-Komplexes mit einem Kanal ist:
+$
 \vec{t_{corr}} = \left ( \begin{array}{c} t_{corr_1} \\ \vdots \\ t_{corr_n} \end{array} \right ) \\
 \vec{t_0} = \vec{t_{beat}} - \vec{t_{corr}} \\
 \vec{m_0} = f_s \cdot \vec{t_0} \\
