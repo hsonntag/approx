@@ -61,7 +61,7 @@ Der Zeitvektor, der die Zeitwerte f"ur die Signalwerte enth"alt ist wie folgt de
 $
 \vec{t} = \left ( \begin{array}{c} 0 \\ \Delta t \\ \vdots \\ (N-1) \cdot \Delta t \end{array} \right ) = \left ( \begin{array}{c} t_1 \\ \vdots \\ t_n \end{array} \right )\\
 $
-Der Vektor der Zeitpunkte der Maxima der Kreuzkorrelation eines normierten und auf die Kanall"ange verl"angerten QRS-Komplexes mit einem Kanal ist:
+Der Vektor der Zeitpunkte der Maxima der Kreuzkorrelation eines normierten und auf die Kanall"ange verl"angerten QRS-Komplexes mit einem Kanal ist:\\
 $
 \vec{t_{corr}} = \left ( \begin{array}{c} t_{corr_1} \\ \vdots \\ t_{corr_n} \end{array} \right ) \\
 \vec{t_0} = \vec{t_{beat}} - \vec{t_{corr}} \\
@@ -72,9 +72,22 @@ t_{corr_{0}} := - \frac{1}{2} T_{QRS} \\
 \Psi_{xy}\left(t_{corr_{i+1}}\right) := \max_{\tau}\left[\Psi_{xy}\left(\tau\right)\right], \forall \tau \in \left[t_{corr_{i}} + \frac{1}{2} T_{QRS}, t_{corr_{i}} + \frac{3}{2} T_{QRS}\right), \forall i \in \mathbb{N}\cup\{0\} \\
 \tilde{\Psi_{xy}}\left(m_{corr_{i+1}}\right) := \max_{m}\left[\sum \limits_{i = 0}^{N-1} { x\left(i\right) \cdot y\left(i + m\right)}\right], \\
 \forall m \in \left[m_{corr_{i}} + \frac{1}{2} M_{QRS}, m_{corr_{i}} + \frac{3}{2} M_{QRS}\right), \forall i \in \mathbb{N}\cup\{0\} \\
-N_{QRS}\left(t - t_{corr_i}\right) = \frac{1}{M}\sum \limits_{i=1}^{M} {y\left(t\right)}, \forall t \in [t_{corr_i}, t_{corr_i} + T_{QRS}) \\
+$
+F"ur die bessere Auswertung der Kreuzkorrelation wird diese vom Offset befreit und normiert:\\
+$
+N_{\vec{f}} = \frac{\vec{f} - \vec{f_{min}}}{f_{max} - f_{min}}\\
+N_{QRS}\left(t - t_{corr_i}\right) = \frac{1}{M}\sum \limits_{i=1}^{M} {N_y\left(t\right)}, \forall t \in [t_{corr_i}, t_{corr_i} + T_{QRS}) \\
+$
+Der normierte und offsetfreie QRS-Komplex wird wie in der Hypothese formuliert mit dem Originalsignal gleichgesetzt. Zur numerischen L"osung dieser Gleichung wird der Levenbergh-Marquard-Algorithmus verwendet, wof"ur die folgende Jacobi-Matrix berechnet werden muss:\\
+$
 J_{S_{QRS}} = \begin{pmatrix} \frac{\partial S_{QRS_1}}{\partial A} & \frac{\partial S_{QRS_1}}{\partial t_{beat}} & \ldots & \frac{\partial S_{QRS_1}}{\partial x_p} \\ \vdots & \vdots & \ddots & \vdots & \\ \frac{\partial S_{QRS_m}}{\partial A} & \frac{\partial S_{QRS_m}}{\partial t_{beat}} & \ldots & \frac{\partial S_{QRS_m}}{\partial x_p} \end{pmatrix} \\
+$
+Die Kovarianzmatrix wird verwendet um die G"ute der Sch"atzung zu bestimmen, sie ist wie folgt definiert:\\
+$
 \Sigma = \begin{bmatrix} \mathrm{E}[(X_1 - \mu_1)(X_1 - \mu_1)] & \mathrm{E}[(X_1 - \mu_1)(X_2 - \mu_2)] & \cdots & \mathrm{E}[(X_1 - \mu_1)(X_n - \mu_n)] \\ \\ \mathrm{E}[(X_2 - \mu_2)(X_1 - \mu_1)] & \mathrm{E}[(X_2 - \mu_2)(X_2 - \mu_2)] & \cdots & \mathrm{E}[(X_2 - \mu_2)(X_n - \mu_n)] \\ \\ \vdots & \vdots & \ddots & \vdots \\ \\ \mathrm{E}[(X_n - \mu_n)(X_1 - \mu_1)] & \mathrm{E}[(X_n - \mu_n)(X_2 - \mu_2)] & \cdots & \mathrm{E}[(X_n - \mu_n)(X_n - \mu_n)] \end{bmatrix}\\ 
+$
+Als Test f"ur die Richtigkeit der Gleichungsl"osung wird der Chi-quadrat-Test wie folgt verwendet:\\
+$
 \chi^2 = \sum \limits_{i = 0}^{N-1} { f_i^2 } \\
 \frac{\chi^2}{d_f} = \frac{\chi^2}{N-p} 
 $

@@ -11,7 +11,7 @@ int cspl_qrs_fit_at (double * t, double * y, gsl_spline * n_qrs, double * sigma,
 	gsl_matrix * covar = gsl_matrix_alloc (p, p);
 	struct cspl_qrs_data d = { n, t, y + pos, n_qrs, sigma};
 	gsl_multifit_function_fdf f;
-	double x_init[3] = { 2.0, 0.0, 2.0 };
+	double x_init[3] = { 1.0, 0.0, 0.0 };
 	gsl_vector_view x = gsl_vector_view_array (x_init, p);
 	const gsl_rng_type * type;
 	gsl_rng * r;

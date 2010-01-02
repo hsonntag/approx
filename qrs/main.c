@@ -145,8 +145,9 @@ interval = cspl_norm_average (qrs_tmpl, x, m_corr, splinelength, a);
 		gsl_spline * spline = gsl_spline_alloc(gsl_interp_cspline, interval);
 		gsl_spline_init(spline, t, qrs_tmpl, interval);
 		double sigma[interval];
-cspl_qrs_fit(t, x, spline, sigma, interval);
-//cspl_qrs_fit_at(t, x, spline, sigma, interval, m_corr[1]);
+//cspl_qrs_fit(t, x, spline, sigma, interval);
+for (i = 0; i < a; i++)
+cspl_qrs_fit_at(t, x, spline, sigma, interval, m_corr[i]);
 	return EXIT_SUCCESS;
 }
 
