@@ -7,6 +7,15 @@ int cspl_qrs_fit_at (double * t, double * y, gsl_spline * n_qrs, double * sigma,
 	int status;
 	unsigned int iter = 0;
 	const size_t p = 3;
+	/* This is the data to be fitted */
+	size_t i;
+	for (i = 0; i < n; i++)
+	{
+		/*  double t = i; */
+		/*       y[i] =   */
+		sigma[i] = 1.0;
+		/*  printf ("data: %u %g %g\n", i, y[i], sigma[i]); */
+	};
 
 	gsl_matrix * covar = gsl_matrix_alloc (p, p);
 	struct cspl_qrs_data d = { n, t, y + pos, n_qrs, sigma};
@@ -28,15 +37,6 @@ int cspl_qrs_fit_at (double * t, double * y, gsl_spline * n_qrs, double * sigma,
 	f.p = p;
 	f.params = &d;
 
-	/* This is the data to be fitted */
-	size_t i;
-	for (i = 0; i < n; i++)
-	{
-		/*  double t = i; */
-		/*       y[i] =   */
-		sigma[i] = 0.1;
-		/*  printf ("data: %u %g %g\n", i, y[i], sigma[i]); */
-	};
 
 	T = gsl_multifit_fdfsolver_lmsder;
 	s = gsl_multifit_fdfsolver_alloc (T, n, p);
@@ -92,6 +92,15 @@ int cspl_qrs_fit (double * t, double * y, gsl_spline * n_qrs, double * sigma, si
 	int status;
 	unsigned int iter = 0;
 	const size_t p = 3;
+	/* This is the data to be fitted */
+	size_t i;
+	for (i = 0; i < n; i++)
+	{
+		/*  double t = i; */
+		/*       y[i] =   */
+		sigma[i] = 1.0;
+		/*  printf ("data: %u %g %g\n", i, y[i], sigma[i]); */
+	};
 
 	gsl_matrix * covar = gsl_matrix_alloc (p, p);
 	struct cspl_qrs_data d = { n, t, y, n_qrs, sigma};
@@ -113,15 +122,6 @@ int cspl_qrs_fit (double * t, double * y, gsl_spline * n_qrs, double * sigma, si
 	f.p = p;
 	f.params = &d;
 
-	/* This is the data to be fitted */
-	size_t i;
-	for (i = 0; i < n; i++)
-	{
-		/*  double t = i; */
-		/*       y[i] =   */
-		sigma[i] = 0.1;
-		/*  printf ("data: %u %g %g\n", i, y[i], sigma[i]); */
-	};
 
 	T = gsl_multifit_fdfsolver_lmsder;
 	s = gsl_multifit_fdfsolver_alloc (T, n, p);

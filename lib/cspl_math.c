@@ -1,5 +1,102 @@
 #include "cspl/cspl.h"
 
+int cspl_root_mean_square (double * rms, double * x, double *y, size_t length, size_t size) {
+	size_t i, j;
+	for (i = 0; i < size; i++) {
+		rms[i] = 0;
+		for (j = i; j < i + length; j++) {
+			rms[i] += pow(x[j - i] - y[j] - (x[0] - y[i]), 2);	
+		}
+		rms[i] /= length;
+	}
+}
+
+int cspl_eval_periodic_min2 (unsigned int * min_n, double * signal, size_t size, size_t length, double min) {
+	size_t i;
+	size_t n = 0;
+	double local_min = DBL_MAX;
+	min_n[0] = 0;
+	for (i = 0; i < size - 1; i++) {
+		while (signal[min_n[i]] > min) {
+			for (n = min_n[i]; n < (min_n[i] + length) && (n < size); n++) {
+				if (signal[n] < min) { 
+					if (signal[n] < local_min) {
+						local_min = signal[n];
+						min_n[i] = n;
+						min_n[i + 1] = n + length;
+					}
+				}
+				else if (signal[min_n[i]] > min && n == min_n[i] + length - 1)
+					min_n[i] = n;
+			}
+		}
+					if (signal[n] < min) {
+						min_n[i] = n;
+						min_n[i + 1] = n + length;
+					}
+		local_min = DBL_MAX;
+		if(n == size)
+			break;
+	}
+	/*
+	   for (n = max_n[i]; (n < (max_n[i] + period/2)) && (n < size); n++) {
+	   if (signal[n] > max) {
+	   printf("i=%d, signal[%d] = %f\n", i, n, signal[n]);
+	   max = signal[n];
+	   max_n[i] = n;
+	   }
+	   }
+	   if((n == size) || (i == (size - 2)))
+	   break;
+	   max_n[i + 1] = max_n[i] + period/2;
+	   }
+	   */
+return i + 1;
+}
+int cspl_eval_periodic_min (unsigned int * min_n, double * signal, size_t size, double level) {
+	size_t i;
+	size_t n;
+	int in_local_min = 0;
+	double global_min = DBL_MAX;
+	double local_min = DBL_MAX;
+	min_n[0] = 0;
+
+	for (i = 0; i < size - 1; i++) {
+		for (n = min_n[i]; n < size; n++) {
+			if ( signal[n] < global_min) 
+				global_min = signal[n];
+			if ( signal[n] < local_min) {
+				local_min = signal[n];
+				min_n[i] = n;
+			}
+
+			if ( signal[n] < global_min/level )
+				in_local_min = 1;
+			else if (in_local_min) {
+				in_local_min = 0;
+				local_min = DBL_MAX;
+				min_n[i + 1] = n;
+				break;
+			}
+		}
+		if(n == size)
+			break;
+	}
+	/*
+	   for (n = max_n[i]; (n < (max_n[i] + period/2)) && (n < size); n++) {
+	   if (signal[n] > max) {
+	   printf("i=%d, signal[%d] = %f\n", i, n, signal[n]);
+	   max = signal[n];
+	   max_n[i] = n;
+	   }
+	   }
+	   if((n == size) || (i == (size - 2)))
+	   break;
+	   max_n[i + 1] = max_n[i] + period/2;
+	   }
+	   */
+return i + 1;
+}
 int cspl_eval_periodic_max (unsigned int * max_n, double * signal, size_t size, double level) {
 	size_t i;
 	size_t n;
@@ -63,13 +160,13 @@ int cspl_radix2_xcorr (double * c_xy, double * x, double * y, size_t size) {
 		c_xy[size - i] = _x[size - i]*_y[i] -_x[i]*_y[size-i];
 	}
 	z = gsl_fft_halfcomplex_radix2_inverse(c_xy, 1, size);
-/*	double tmp;
+	/*	double tmp;
 		for (i = 1; i < size/2; i++) {
 		tmp = c_xy[i];
 		c_xy[i] = c_xy[size - i];
 		c_xy[size - i] = tmp;
 		}
-*/		return z;
+		*/		return z;
 }
 
 int cspl_norm (double * signal, size_t size) {
@@ -101,11 +198,12 @@ int cspl_norm_average (double * templ, double * signal, unsigned int * n, size_t
 		if (n[i + 1] - n[i] < interval)
 			interval = n[i + 1] - n[i];
 
-		for (m = n[i]; m < n[i + 1]; m++) {
+	}
+	for (i = 0; i < count; i++) {
+		for (m = n[i]; m < n[i] + interval; m++) {
 			templ[m - n[i]] += signal[m];
 		}
 	}
-
 	for (i = 0; i < size; i++) {
 		if (i < interval) {
 			if (templ[i] > max)

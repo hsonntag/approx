@@ -107,29 +107,31 @@ int main(int argc, char *argv[]) {
 	/*        printf( "%s! ", args_info.def_opt_arg ); */
 
 	cmdline_parser_free (&args_info);
-	double t[splinelength], x[splinelength], y[splinelength], c_xy[splinelength], n_qrs[splinelength]; 
+	double t[splinelength], x[splinelength], c_xy[splinelength]; 
 	unsigned int m_corr[splinelength]; 
 	int interval;
-	int _dat[206][splinelength];
-	read_signals(_dat, 4, 206, splinelength, filename);
+	int _dat[1][splinelength];
+	read_signals(_dat, 4, 1, splinelength, filename);
 	double qrs_tmpl[splinelength];
 	for (i = 0; i < splinelength; i++) {
-		x[i] = (double) _dat[15][i];
+		x[i] = (double) _dat[0][i];
 		t[i] = 2.0 * i;
 		if (i < 100)
-			qrs_tmpl[i] =_dat[15][i];
+			qrs_tmpl[i] =_dat[0][i];
 		else
 			qrs_tmpl[i] = qrs_tmpl[99];
 	}
 
-	cspl_norm (x, splinelength);
+//	cspl_norm (x, splinelength);
 	cspl_norm (qrs_tmpl, splinelength);
-	cspl_radix2_xcorr (c_xy, x, qrs_tmpl, splinelength);        
+//	cspl_radix2_xcorr (c_xy, x, qrs_tmpl, splinelength);        
+//	cspl_norm (c_xy, splinelength);
+	cspl_root_mean_square (c_xy, qrs_tmpl, x, 100, splinelength);
+	cspl_norm (c_xy, splinelength);
 	for (i = 0; i < splinelength; i++) {
 		printf("%d %f\n", i, c_xy[i]);
 	}
-	cspl_norm (c_xy, splinelength);
-	int a =	cspl_eval_periodic_max (m_corr, c_xy, splinelength, 0.95); 
+	int a =	cspl_eval_periodic_min2 (m_corr, c_xy, splinelength, 200, 0.09); 
 		printf("a=%d\n", a);
 	for (i = 0; i < a; i++) {
 		printf("%d %d\n",i, m_corr[i]);
@@ -137,7 +139,7 @@ int main(int argc, char *argv[]) {
 	for (i = 0; i < splinelength; i++)
 		qrs_tmpl[i] = 0.0;
 
-interval = cspl_norm_average (qrs_tmpl, x, m_corr, splinelength, a);
+interval = cspl_norm_average (qrs_tmpl, x, m_corr, splinelength, a - 1);
 		for (i = 0; i < splinelength; i++) {
 			printf("%d %f\n", i, qrs_tmpl[i]);
 		}
