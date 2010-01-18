@@ -18,9 +18,10 @@
 
 \section{Allgemeines zum Betrieb}
 Was macht die Firma/Einrichtung? Wie groß? Branche?\\
-Die Firma entwickelt Elektronik für die Medizintechnik und stellt Medizintechnikprodukte her.
+Die Firma Corscience entwickelt Elektronik für die Medizintechnik und stellt Medizintechnikprodukte her.
 Der Schwerpunkt liegt bei Geräten für die Herzmedizin.
 Welche Aufgabe hat "`meine"' Abteilung/Gruppe? Wie groß? Leitungsstruktur?\\
+Das Praktikum mache ich in der Entwicklungsabteilung.
 Welche Rolle hat mein Betreuer dort?
 Mein Betreuer ist der Experte für Linux und embedded Linux in diesem Unternehmen.
 Wie/wo/durch wen habe ich die Praktikumsstelle gefunden? Habe ich dort schon vorher gearbeitet?\\
@@ -33,18 +34,47 @@ Ich habe eine 40 Stunden Woche, es gibt eine Kernarbeitszeit von 9Uhr bis 16Uhr,
 wann man die restliche Zeit arbeitet ist einem freigestellt.
 \section{Eingliederung}
 \section{Aufgabenstellung}
+Meine Aufgabenstellung ist es auf einem embedded System eine WLAN-Funktionalität zu integrieren.
+Eine wichtige Rolle spielt dabei embedded Linux als Betriebssystem unter dem das WLAN-Modul laufen soll.
+Die WLAN-Funktionalität ist später für die Telemedizin von Bedeutung.
 \subsection{Tätigkeitsumfeld}
 An welchem Projekt oder welchen Aufgaben habe ich mitgewirkt?\\
+Neben meinem Hauptthema hab ich an einem Projekt mitgewirkt, welches sich mit HD-Videoübertragung über WLAN-Standard N in OP-Sälen beschäftigt.
 Wozu sind die da?\\
-Wer hat daran noch gearbeitet?\\
-Wie und wie eng habe ich mit denen zusammengearbeitet?\\
+Bei diesem Projekt geht es darum wie HD-Videoaufnahmen von einer Kamera in einer OP-Lampe zu Bildschirmen im OP-Saal übertragen werden können.
 
+Wer hat daran noch gearbeitet?\\
+Das Projekt wird von einem Projektleiter betreut und es arbeiten einige weitere Mitarbeiter an der Vorbereitung und Umsetzung.
+Wie und wie eng habe ich mit denen zusammengearbeitet?\\
+Für die Vorbereitung des Projektes mussten Datenratenmessungen durchgeführt werden, dabei arbeitete ich mit einem Mitarbeiter zusammen.
+Meine Hauptaufgabe war dabei die Linuxseite der Datenratenmessung aufzubauen.
 \subsection{Aufgabe und Ziele}
 Was sollte ich aus Sicht der Einrichtung tun?\\
+Der erste Schritt für die Umsetzung meiner Aufgabenstellung war die Recherche nach geeigneten WLAN-Modulen auf dem Markt.
+Dabei ging es vor allem um folgende Punkte:\\
+\begin{itemize}
+ \item Gibt es einen Linuxtreiber für die verwendeten Chipsätze der Hardware und befindet der sich im mainline kerneltree?
+ \item Welche WLAN-Standards unterstützt die Hardware?
+ \item 
+\end{itemize}
+
 Was sollte ich im Verlauf des Praktikums erreichen (fremde (Arbeits)Ziele)?\\
+Das Ziel war es eine Hardware zu finden welche über eine verfügbare Schnittstelle des Atmel Boards AT91SAM9263-EK (bevorzugt SDIO oder SPI) mit diesem kommuniziert, dieses anzuschließen und unter embedded Linux verfügbar zu machen.
+
 Was wollte ich im Verlauf des Praktikums erreichen (eigene (Lern)Ziele)?\\
+Meine Ziele für dieses Praktikum waren:
+\begin{itemize}
+ \item Einblicke in den Linux-Kernel zu bekommen, das heißt Einblicke in den Aufbau in Konfigurationsmöglichkeiten und Anpassbarkeit des Kernels.
+ \item Erlernen von Linux-Treiberentwicklung mit dem Schwerpunkt auf Netzwerktreiber.
+
+\end{itemize}
 
 \section{Problemlösung}
+Bei der Recherche zu verfügbaren WLAN-Modulen entstand folgende Tabelle.
+\begin{center}
+\includegraphics[width=20.999cm,height=3.378cm]{tabelle-img1.png}
+\end{center}
+
 \subsection{Tätigkeiten und Arbeitsergebnisse}
 [[Dies hier sollte meist der längste und ausführlichste Abschnitt sein. Fügen Sie ggf.
 Unterabschnitte ein.]]\\
