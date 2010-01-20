@@ -115,19 +115,19 @@ int main(int argc, char *argv[]) {
 	double qrs_tmpl[splinelength];
 	for (i = 0; i < splinelength; i++) {
 		x[i] = (double) _dat[0][i];
-		t[i] = 2.0 * i;
+		t[i] = 1.0 * i;
 		if (i < 100)
 			qrs_tmpl[i] =_dat[0][i];
 		else
 			qrs_tmpl[i] = qrs_tmpl[99];
 	}
 
-//	cspl_norm (x, splinelength);
+	cspl_norm (x, splinelength);
 	cspl_norm (qrs_tmpl, splinelength);
 //	cspl_radix2_xcorr (c_xy, x, qrs_tmpl, splinelength);        
 //	cspl_norm (c_xy, splinelength);
 	cspl_root_mean_square (c_xy, qrs_tmpl, x, 100, splinelength);
-	cspl_norm (c_xy, splinelength);
+	cspl_norm (c_xy, splinelength - 100);
 	for (i = 0; i < splinelength; i++) {
 		printf("%d %f\n", i, c_xy[i]);
 	}
@@ -139,9 +139,9 @@ int main(int argc, char *argv[]) {
 	for (i = 0; i < splinelength; i++)
 		qrs_tmpl[i] = 0.0;
 
-interval = cspl_norm_average (qrs_tmpl, x, m_corr, splinelength, a - 1);
+interval = cspl_norm_average (qrs_tmpl, x, m_corr, splinelength, a);
 		for (i = 0; i < splinelength; i++) {
-			printf("%d %f\n", i, qrs_tmpl[i]);
+			printf("%d %f\n", i, x[i]);
 		}
 		cspl_qrs_init();
 		gsl_spline * spline = gsl_spline_alloc(gsl_interp_cspline, interval);
@@ -163,4 +163,5 @@ print_state (size_t iter, gsl_multifit_fdfsolver * s)
 			gsl_vector_get (s->x, 1),
 			gsl_vector_get (s->x, 2),
 			gsl_blas_dnrm2 (s->f));
+
 } 
