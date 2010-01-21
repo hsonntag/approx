@@ -7,6 +7,7 @@ int cspl_root_mean_square (double * rms, double * x, double *y, size_t length, s
 		for (j = i; j < i + length; j++) {
 			rms[i] += pow(x[j - i] - y[j] - (x[0] - y[i]), 2);	
 		}
+		if (!length)
 		rms[i] /= length;
 	}
 }
@@ -149,6 +150,7 @@ int cspl_norm (double * signal, size_t size) {
 	}
 	for (i = 0; i < size; i++) {
 		signal[i] -= min;
+		if (!(max - min))
 		signal[i] /= (max - min);
 	}
 	return GSL_SUCCESS;
@@ -181,6 +183,7 @@ int cspl_norm_average (double * templ, double * signal, unsigned int * n, size_t
 	}
 	for (i = 0; i < interval; i++) {
 		templ[i] -= min;
+		if (!(max - min))
 		templ[i] /= (max - min);
 	}
 	return interval;
