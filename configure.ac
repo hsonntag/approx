@@ -3,8 +3,8 @@
 
 # AC_PREREQ([2.63])
 AC_INIT([QRS Splineapproximation], [0.1], [hermann.sonntag@tu-ilmenau.de])
+LT_INIT([disable-shared])
 AM_INIT_AUTOMAKE(approx, 0.1)
-#LT_INIT([disable-shared])
 
 ######################################################################
 # DOXYGEN SUPPORT
@@ -37,19 +37,17 @@ AC_PROG_CPP
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
-##AC_PROG_RANLIB
-
 
 # Checks for libraries.
 PKG_CHECK_MODULES(GSL, gsl)
 AC_SUBST(GSL_CFLAGS)
 AC_SUBST(GSL_LIBS)
 
-PKG_CHECK_MODULES(SP, cspl)
-AC_SUBST(SP_CFLAGS)
-AC_SUBST(SP_LIBS)
-# AC_CHECK_LIB([gsl], [gsl_cblas_dgemm])
+#PKG_CHECK_MODULES(SP, cspl)
+#AC_SUBST(SP_CFLAGS)
+#AC_SUBST(SP_LIBS)
 
+#AC_CHECK_LIB([gsl], [gsl_cblas_dgemm])
 #AC_CHECK_LIB([gslcblas], [cblas_dgemm])
 
 AC_CHECK_LIB([m], [sin])

@@ -127,7 +127,7 @@ int main(int argc, char *argv[]) {
 //	cspl_radix2_xcorr (c_xy, x, qrs_tmpl, splinelength);        
 //	cspl_norm (c_xy, splinelength);
 	cspl_root_mean_square (c_xy, qrs_tmpl, x, 100, splinelength);
-	cspl_norm (c_xy, splinelength - 100);
+	cspl_norm (c_xy, splinelength);
 	for (i = 0; i < splinelength; i++) {
 		printf("%d %f\n", i, c_xy[i]);
 	}
