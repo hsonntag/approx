@@ -62,7 +62,7 @@ int read_signals(void * dat, size_t size, size_t channels, size_t count, char *f
 int main(int argc, char *argv[]) {
 
 	struct gengetopt_args_info args_info;
-	char * filename;
+	char * filename = NULL;
 	unsigned int i;
 
 	/*        printf( "This one is from a C program \n" ); */
@@ -86,7 +86,7 @@ int main(int argc, char *argv[]) {
 
 	/*        if ( args_info.str_opt_given ) */
 	/*          printf( "You inserted %s%s%s", args_info.str_opt_arg, " for ", "--str-opt option." ); */
-	size_t splinelength;
+	size_t splinelength = 0;
 	if ( args_info.int_opt_given ) 
 		splinelength = args_info.int_opt_arg;
 	/*          printf( "This is the integer you input: %d%s ", args_info.int_opt_arg, "." ); */
@@ -127,7 +127,7 @@ int main(int argc, char *argv[]) {
 //	cspl_radix2_xcorr (c_xy, x, qrs_tmpl, splinelength);        
 //	cspl_norm (c_xy, splinelength);
 	cspl_root_mean_square (c_xy, qrs_tmpl, x, 100, splinelength);
-	cspl_norm (c_xy, splinelength);
+	cspl_norm (c_xy, splinelength - 100);
 	for (i = 0; i < splinelength; i++) {
 		printf("%d %f\n", i, c_xy[i]);
 	}
