@@ -7,9 +7,11 @@ int cspl_root_mean_square (double * rms, double * x, double *y, size_t length, s
 		for (j = i; j < i + length; j++) {
 			rms[i] += pow(x[j - i] - y[j] - (x[0] - y[i]), 2);	
 		}
-		if (!length)
+		if (length == 0)
+			return GSL_EZERODIV;
 		rms[i] /= length;
 	}
+	return GSL_SUCCESS;
 }
 
 int cspl_eval_periodic_min2 (unsigned int * min_n, double * signal, size_t size, size_t length, double min) {
@@ -41,6 +43,7 @@ int cspl_eval_periodic_min2 (unsigned int * min_n, double * signal, size_t size,
 	}
 return i;
 }
+
 int cspl_eval_periodic_min (unsigned int * min_n, double * signal, size_t size, double level) {
 	size_t i;
 	size_t n;
@@ -114,7 +117,7 @@ int cspl_eval_periodic_max (unsigned int * max_n, double * signal, size_t size, 
 	   max_n[i + 1] = max_n[i] + period/2;
 	   }
 	   */
-return i + 1;
+return i;
 }
 
 int cspl_radix2_xcorr (double * c_xy, double * x, double * y, size_t size) {
@@ -150,7 +153,8 @@ int cspl_norm (double * signal, size_t size) {
 	}
 	for (i = 0; i < size; i++) {
 		signal[i] -= min;
-		if (!(max - min))
+		if (max - min == 0)
+			return GSL_EZERODIV;
 		signal[i] /= (max - min);
 	}
 	return GSL_SUCCESS;
@@ -161,6 +165,8 @@ int cspl_norm_average (double * templ, double * signal, unsigned int * n, size_t
 	double min = DBL_MAX;
 	unsigned int interval = UINT_MAX;
 	size_t i, m;
+	if (count == 0)
+		return GSL_FAILURE;
 	for (i = 0; i < count; i++) {
 		if (n[i + 1] - n[i] < interval)
 			interval = n[i + 1] - n[i];
@@ -183,7 +189,8 @@ int cspl_norm_average (double * templ, double * signal, unsigned int * n, size_t
 	}
 	for (i = 0; i < interval; i++) {
 		templ[i] -= min;
-		if (!(max - min))
+		if (max - min == 0)
+			return GSL_FAILURE;
 		templ[i] /= (max - min);
 	}
 	return interval;
