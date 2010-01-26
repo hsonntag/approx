@@ -32,6 +32,7 @@ int cspl_qrs_f (const gsl_vector * x, void * data, gsl_vector * f) {
 		/* Model yi = a * n_qrs(t[i] - t_beat) + s_0 */
 
 		double y_i = a * gsl_spline_eval(n_qrs, t[i] - t_beat, acc) + s_0;
+		printf("f(%d) = %f * N_QRS(%f - %f) + %f = %f\n", i, a, t[i], t_beat, s_0, y_i);
 		gsl_vector_set (f, i, (y_i - y[i])/sigma[i]);
 	}
 	return GSL_SUCCESS;

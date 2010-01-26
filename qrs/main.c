@@ -65,46 +65,19 @@ int main(int argc, char *argv[]) {
 	char * filename = NULL;
 	unsigned int i;
 
-	/*        printf( "This one is from a C program \n" ); */
-	/*        printf( "Try to launch me with some options\n" ); */
-	/*        printf( "(type splineapprox --help for the complete list)\n" ); */
-	/*        printf( "For example: ./splineapprox *.* --funct-opt\n" ); */
 
-	/*        /\* let's call our cmdline parser *\/ */
+	/* let's call our cmdline parser */
 	if (cmdline_parser (argc, argv, &args_info) != 0) 
 		exit(1) ; 
-
-	/*        printf( "Here are the options you passed...\n" ); */
 
 	for ( i = 0 ; i < args_info.inputs_num ; ++i ) { 
 		filename = (char *) malloc(strlen(args_info.inputs[i]));
 		strcpy(filename, args_info.inputs[i]); 
 	} 
 
-	/*        if ( args_info.funct_opt_given ) */
-	/*          printf("You chose --funct-opt or -F." ); */
-
-	/*        if ( args_info.str_opt_given ) */
-	/*          printf( "You inserted %s%s%s", args_info.str_opt_arg, " for ", "--str-opt option." ); */
 	size_t splinelength = 0;
 	if ( args_info.int_opt_given ) 
 		splinelength = args_info.int_opt_arg;
-	/*          printf( "This is the integer you input: %d%s ", args_info.int_opt_arg, "." ); */
-
-	/*        if (args_info.flag_opt_given) */
-	/*          printf( "The flag option was given! " ); */
-
-	/*        printf( "The flag is %s%s", ( args_info.flag_opt_flag ? "on" : "off" ), ". " ); */
-
-	/*        if (args_info.enum_opt_given) { */
-	/*          printf( "enum-opt value: %s", args_info.enum_opt_arg ); */
-	/*          printf( "enum-opt (original specified) value: %s", args_info.enum_opt_orig ); */
-	/*        } */
-
-	/*        if (args_info.secret_given) */
-	/*          printf( "Secret option was specified: %d", args_info.secret_arg ); */
-
-	/*        printf( "%s! ", args_info.def_opt_arg ); */
 
 	cmdline_parser_free (&args_info);
 	double t[splinelength], x[splinelength], c_xy[splinelength]; 
@@ -122,26 +95,26 @@ int main(int argc, char *argv[]) {
 			qrs_tmpl[i] = qrs_tmpl[99];
 	}
 
-	cspl_norm (x, splinelength);
+//	cspl_norm (x, splinelength);
 	cspl_norm (qrs_tmpl, splinelength);
 //	cspl_radix2_xcorr (c_xy, x, qrs_tmpl, splinelength);        
 //	cspl_norm (c_xy, splinelength);
 	cspl_root_mean_square (c_xy, qrs_tmpl, x, 100, splinelength);
 	cspl_norm (c_xy, splinelength - 100);
 	for (i = 0; i < splinelength; i++) {
-		printf("%d %f\n", i, c_xy[i]);
+//		printf("%d %f\n", i, c_xy[i]);
 	}
 	int a =	cspl_eval_periodic_min2 (m_corr, c_xy, splinelength, 200, 0.09); 
-		printf("a=%d\n", a);
+//		printf("a=%d\n", a);
 	for (i = 0; i < a; i++) {
-		printf("%d %d\n",i, m_corr[i]);
+//		printf("%d %d\n",i, m_corr[i]);
 	}
 	for (i = 0; i < splinelength; i++)
 		qrs_tmpl[i] = 0.0;
 
 interval = cspl_norm_average (qrs_tmpl, x, m_corr, splinelength, a);
 		for (i = 0; i < splinelength; i++) {
-			printf("%d %f\n", i, x[i]);
+//			printf("%d %f\n", i, x[i]);
 		}
 		cspl_qrs_init();
 		gsl_spline * spline = gsl_spline_alloc(gsl_interp_cspline, interval);
@@ -150,6 +123,8 @@ interval = cspl_norm_average (qrs_tmpl, x, m_corr, splinelength, a);
 //cspl_qrs_fit(t, x, spline, sigma, interval);
 for (i = 0; i < a; i++)
 cspl_qrs_fit_at(t, x, spline, sigma, interval, m_corr[i]);
+
+cspl_qrs_free();
 	return EXIT_SUCCESS;
 }
 
