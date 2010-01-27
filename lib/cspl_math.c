@@ -1,3 +1,21 @@
+/*   cspl_math.c                                                           *
+ ***************************************************************************
+ *   Copyright (C) 2009, 2010 Hermann Sonntag                              *
+ *   hermann.sonntag@tu-ilmenau.de                                         *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
+ ***************************************************************************/
 #include "cspl/cspl.h"
 
 int cspl_root_mean_square (double * rms, double * x, double *y, size_t length, size_t size) {
@@ -144,15 +162,20 @@ int cspl_radix2_xcorr (double * c_xy, double * x, double * y, size_t size) {
 int cspl_norm (double * signal, size_t size) {
 	double max = DBL_MIN;
 	double min = DBL_MAX;
+	double mean = 0;
 	size_t i;
 	for (i = 0; i < size; i++) {
+		mean += signal[i];
 		if (signal[i] > max)
 			max = signal[i];
 		else if (signal[i] < min)
 			min = signal[i];
 	}
+	if (size == 0)
+		return GSL_EZERODIV;
+	mean /= size;
 	for (i = 0; i < size; i++) {
-		signal[i] -= min;
+		signal[i] -= mean;
 		if (max - min == 0)
 			return GSL_EZERODIV;
 		signal[i] /= (max - min);

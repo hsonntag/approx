@@ -1,6 +1,7 @@
-/***************************************************************************
- *   Copyright (C) 2009 by Hermann Sonntag   *
- *   hermann.sonntag@tu-ilmenau.de   *
+/*  argos/argos_read_header.h                                              *
+ ***************************************************************************
+ *   Copyright (C) 2009, 2010 Hermann Sonntag                              *
+ *   hermann.sonntag@tu-ilmenau.de                                         *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -13,13 +14,12 @@
  *   GNU General Public License for more details.                          *
  *                                                                         *
  *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
+
 struct argos_args_info {
 	size_t stored_sampling_rate,
-	       size_t	stored_pkt_size,
+	       size_t stored_pkt_size,
 	       size_t meas_no_of_packets,
 	       size_t stored_mag_channels,
 	       size_t stored_mag_ref_channels,
@@ -32,4 +32,6 @@ struct argos_args_info {
 	       size_t mag_sensor_c_orientation,
 	       size_t meas_start_packet_no 
 }
+
 int argos_read_header(struct argos_args_info * args_info, const char * filename);
+

@@ -1,20 +1,22 @@
-/*     Splineapprox does a cubic spline approximation.
- *     Copyright (C) 2009 Hermann Sonntag
-
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
-
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
-
- *     You should have received a copy of the GNU General Public License
- *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
+/*   qrs/main.c                                                            *
+ *   this does a cubic spline approximation.                               *
+ ***************************************************************************
+ *   Copyright (C) 2009, 2010 Hermann Sonntag                              *
+ *   hermann.sonntag@tu-ilmenau.de                                         *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
+ ***************************************************************************/
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -126,30 +128,46 @@ int main(int argc, char *argv[]) {
 	cspl_norm (qrs_tmpl, splinelength);
 //	cspl_radix2_xcorr (c_xy, x, qrs_tmpl, splinelength);        
 //	cspl_norm (c_xy, splinelength);
-	cspl_root_mean_square (c_xy, qrs_tmpl, x, 100, splinelength);
-	cspl_norm (c_xy, splinelength - 100);
-	for (i = 0; i < splinelength; i++) {
-		printf("%d %f\n", i, c_xy[i]);
+	int a = 0;
+	if (args_info.enum_opt_given) {
+		if (strcmp (args_info.enum_opt_arg, cmdline_parser_enum_opt_values[0]) == 0)
+		{
+			cspl_radix2_xcorr (c_xy, qrs_tmpl, x, splinelength);
+			cspl_norm (c_xy, splinelength - 100);
+			for (i = 0; i < splinelength; i++) {
+				printf("%d %f\n", i, c_xy[i]);
+			}
+			a = cspl_eval_periodic_max (m_corr, c_xy, splinelength, 0.8); 
+		}
 	}
-	int a =	cspl_eval_periodic_min2 (m_corr, c_xy, splinelength, 200, 0.09); 
-		printf("a=%d\n", a);
+	else
+	{
+		cspl_root_mean_square (c_xy, qrs_tmpl, x, 100, splinelength);
+		cspl_norm (c_xy, splinelength - 100);
+		for (i = 0; i < splinelength; i++) {
+			printf("%d %f\n", i, c_xy[i]);
+		}
+		a = cspl_eval_periodic_min2 (m_corr, c_xy, splinelength, 200, 0.09); 
+	}
+
+	printf("a=%d\n", a);
 	for (i = 0; i < a; i++) {
 		printf("%d %d\n",i, m_corr[i]);
 	}
 	for (i = 0; i < splinelength; i++)
 		qrs_tmpl[i] = 0.0;
 
-interval = cspl_norm_average (qrs_tmpl, x, m_corr, splinelength, a);
-		for (i = 0; i < splinelength; i++) {
-			printf("%d %f\n", i, x[i]);
-		}
-		cspl_qrs_init();
-		gsl_spline * spline = gsl_spline_alloc(gsl_interp_cspline, interval);
-		gsl_spline_init(spline, t, qrs_tmpl, interval);
-		double sigma[interval];
-//cspl_qrs_fit(t, x, spline, sigma, interval);
-for (i = 0; i < a; i++)
-cspl_qrs_fit_at(t, x, spline, sigma, interval, m_corr[i]);
+	interval = cspl_norm_average (qrs_tmpl, x, m_corr, splinelength, a);
+	for (i = 0; i < splinelength; i++) {
+		printf("%d %f\n", i, x[i]);
+	}
+	cspl_qrs_init();
+	gsl_spline * spline = gsl_spline_alloc(gsl_interp_cspline, interval);
+	gsl_spline_init(spline, t, qrs_tmpl, interval);
+	double sigma[interval];
+	//cspl_qrs_fit(t, x, spline, sigma, interval);
+	for (i = 0; i < a; i++)
+		cspl_qrs_fit_at(t, x, spline, sigma, interval, m_corr[i]);
 	return EXIT_SUCCESS;
 }
 
