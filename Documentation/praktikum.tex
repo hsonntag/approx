@@ -23,7 +23,7 @@ Der Schwerpunkt liegt bei Geräten für die Herzmedizin.
 Welche Aufgabe hat "`meine"' Abteilung/Gruppe? Wie groß? Leitungsstruktur?\\
 Das Praktikum mache ich in der Entwicklungsabteilung.
 Welche Rolle hat mein Betreuer dort?
-Mein Betreuer ist der Experte für Linux und embedded Linux in diesem Unternehmen.
+Mein Betreuer ist der Experte für Betriebssysteme mit dem Schwerpunkt auf embedded Linux in diesem Unternehmen.
 Wie/wo/durch wen habe ich die Praktikumsstelle gefunden? Habe ich dort schon vorher gearbeitet?\\
 Die Praktikumsstelle fand ich durch Empfehlung eines Kommilitonen.
 Erfahrungen dabei oder Lehren daraus?\\
@@ -31,17 +31,24 @@ Wie viel Bezahlung habe ich bekommen?\\
 Ich bekam 300 Euro pro Monat und 200 Euro für jeden Monat am Ende des Praktikums als Bonus für das Erreichen des Praktikumszieles.
 Was für Arbeitszeiten hatte ich?\\
 Ich habe eine 40 Stunden Woche, es gibt eine Kernarbeitszeit von 9Uhr bis 16Uhr, in dieser Zeit soll man im Unternehmen sein,
-wann man die restliche Zeit arbeitet ist einem freigestellt.
+wann man die restliche Zeit arbeitet ist einem weitgehend freigestellt.
 \section{Eingliederung}
+Mein Arbeitsplatz befindet sich in einem freien Bereich im Unternehmen in der Entwicklungabteilung,
+der extra für Praktikanten und Auszubildende eingerichtet wurde.
+Ich habe einen von vier Computerarbeitsplätzen, in diesem Bereich arbeiten noch zwei Auszubildende und ein Praktikant/Master-Student.
+Neben den Schreibtischen befindet sich ein Lötbereich mit mehreren Lötstationen und ein Arbeitsplatz für andere Elektronikarbeiten.
 \section{Aufgabenstellung}
 Meine Aufgabenstellung ist es auf einem embedded System eine WLAN-Funktionalität zu integrieren.
 Eine wichtige Rolle spielt dabei embedded Linux als Betriebssystem unter dem das WLAN-Modul laufen soll.
-Die WLAN-Funktionalität ist später für die Telemedizin von Bedeutung.
+Die WLAN-Funktionalität ist später zum Beispiel für die Telemedizin von Bedeutung.
 \subsection{Tätigkeitsumfeld}
 An welchem Projekt oder welchen Aufgaben habe ich mitgewirkt?\\
-Neben meinem Hauptthema hab ich an einem Projekt mitgewirkt, welches sich mit HD-Videoübertragung über WLAN-Standard N in OP-Sälen beschäftigt.
-Wozu sind die da?\\
-Bei diesem Projekt geht es darum wie HD-Videoaufnahmen von einer Kamera in einer OP-Lampe zu Bildschirmen im OP-Saal übertragen werden können.
+Neben meinem Hauptthema hab ich an einem Projekt mitgewirkt, welches sich mit HD-Videoübertragung über WLAN-Standard N beschäftigt.
+Da dieses Projekt auch WLAN als Schwerpunkt hat, konnte ich hier gut in die Thematik einsteigen. Wozu sind die da?\\
+Das Hauptproblem liegt hier bei den hohen Datenraten, die erreicht werden müssen um das Videosignal ohne große Verzögerung übertrage zu können. Daher mussten viele Messungen des Durchsatzes gemacht werden.
+Bei diesem Projekt geht es darum wie HD-Videoaufnahmen von einer Kamera
+über WLAN N zu einem Anzeigegerät zu übertragen. Hauptaugenmerkt waren
+die besonderen Umweltbedingungen bezüglich EM Abschirmung usw. ...
 
 Wer hat daran noch gearbeitet?\\
 Das Projekt wird von einem Projektleiter betreut und es arbeiten einige weitere Mitarbeiter an der Vorbereitung und Umsetzung.
@@ -50,12 +57,15 @@ Für die Vorbereitung des Projektes mussten Datenratenmessungen durchgeführt we
 Meine Hauptaufgabe war dabei die Linuxseite der Datenratenmessung aufzubauen.
 \subsection{Aufgabe und Ziele}
 Was sollte ich aus Sicht der Einrichtung tun?\\
+Die erste Aufgabe bei meinem Hauptthema war die Einarbeitung in die Problematik. Ich bekam ein Atmel Board AT91SAM9263-EK welches ich einrichten musste
+um darauf einen Linux Kernel über die Netzwerkschnittstelle booten zu können. Um auf dem Board arbeiten zu können musste ich auch ein Filesystem mit den 
+notwendigen Programmen erstellen und dieses ebenfalls über den Netzwerkadapter einbinden. Die schwierigste Aufgabe war jetzt den Linux Kernel so zu konfigurieren dass er die Hardware also vorallem die WLAN-Module und gewünschte Methoden richtig unterstützt.
 Der erste Schritt für die Umsetzung meiner Aufgabenstellung war die Recherche nach geeigneten WLAN-Modulen auf dem Markt.
 Dabei ging es vor allem um folgende Punkte:\\
 \begin{itemize}
  \item Gibt es einen Linuxtreiber für die verwendeten Chipsätze der Hardware und befindet der sich im mainline kerneltree?
- \item Welche WLAN-Standards unterstützt die Hardware?
- \item 
+ \item Welche WLAN-Standards unterstützt die Hardware (IEEE 802.11 a/b/g/n)?
+ \item Welche Schnittstellen werden unterstützt/benötigt (SDIO/SPI oder PCI ...)
 \end{itemize}
 
 Was sollte ich im Verlauf des Praktikums erreichen (fremde (Arbeits)Ziele)?\\
@@ -72,7 +82,7 @@ Meine Ziele für dieses Praktikum waren:
 \section{Problemlösung}
 Bei der Recherche zu verfügbaren WLAN-Modulen entstand folgende Tabelle.
 \begin{center}
-\includegraphics[width=20.999cm,height=3.378cm]{tabelle-img1.png}
+\includegraphics[angle=90, width=4cm,height=25cm]{tabelle-img1.png}
 \end{center}
 
 \subsection{Tätigkeiten und Arbeitsergebnisse}
