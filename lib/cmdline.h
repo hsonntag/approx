@@ -42,55 +42,18 @@ extern "C" {
 struct gengetopt_args_info
 {
   const char *help_help; /**< @brief Print help and exit help description.  */
-  const char *full_help_help; /**< @brief Print help, including hidden options, and exit help description.  */
   const char *version_help; /**< @brief Print version and exit help description.  */
-  char * str_opt_arg;	/**< @brief A string option.  */
-  char * str_opt_orig;	/**< @brief A string option original value given at command line.  */
-  const char *str_opt_help; /**< @brief A string option help description.  */
   int int_opt_arg;	/**< @brief A int option.  */
   char * int_opt_orig;	/**< @brief A int option original value given at command line.  */
   const char *int_opt_help; /**< @brief A int option help description.  */
-  short short_opt_arg;	/**< @brief A short option.  */
-  char * short_opt_orig;	/**< @brief A short option original value given at command line.  */
-  const char *short_opt_help; /**< @brief A short option help description.  */
-  long long_opt_arg;	/**< @brief A long option.  */
-  char * long_opt_orig;	/**< @brief A long option original value given at command line.  */
-  const char *long_opt_help; /**< @brief A long option help description.  */
-  float float_opt_arg;	/**< @brief A float option.  */
-  char * float_opt_orig;	/**< @brief A float option original value given at command line.  */
-  const char *float_opt_help; /**< @brief A float option help description.  */
-  double double_opt_arg;	/**< @brief A double option.  */
-  char * double_opt_orig;	/**< @brief A double option original value given at command line.  */
-  const char *double_opt_help; /**< @brief A double option help description.  */
-  long double long_double_opt_arg;	/**< @brief A long double option.  */
-  char * long_double_opt_orig;	/**< @brief A long double option original value given at command line.  */
-  const char *long_double_opt_help; /**< @brief A long double option help description.  */
-  #ifdef HAVE_LONG_LONG
-  long long int long_long_opt_arg;	/**< @brief A long long option.  */
-  #else
-  long long_long_opt_arg;	/**< @brief A long long option.  */
-  #endif
-  char * long_long_opt_orig;	/**< @brief A long long option original value given at command line.  */
-  const char *long_long_opt_help; /**< @brief A long long option help description.  */
-  const char *func_opt_help; /**< @brief A function option help description.  */
-  const char *hidden_opt_help; /**< @brief A hidden option help description.  */
-  int flag_opt_flag;	/**< @brief A flag option (default=off).  */
-  const char *flag_opt_help; /**< @brief A flag option help description.  */
+  char * enum_opt_arg;	/**< @brief A string option with list of values (default='rms').  */
+  char * enum_opt_orig;	/**< @brief A string option with list of values original value given at command line.  */
+  const char *enum_opt_help; /**< @brief A string option with list of values help description.  */
   
   unsigned int help_given ;	/**< @brief Whether help was given.  */
-  unsigned int full_help_given ;	/**< @brief Whether full-help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
-  unsigned int str_opt_given ;	/**< @brief Whether str-opt was given.  */
   unsigned int int_opt_given ;	/**< @brief Whether int-opt was given.  */
-  unsigned int short_opt_given ;	/**< @brief Whether short-opt was given.  */
-  unsigned int long_opt_given ;	/**< @brief Whether long-opt was given.  */
-  unsigned int float_opt_given ;	/**< @brief Whether float-opt was given.  */
-  unsigned int double_opt_given ;	/**< @brief Whether double-opt was given.  */
-  unsigned int long_double_opt_given ;	/**< @brief Whether long-double-opt was given.  */
-  unsigned int long_long_opt_given ;	/**< @brief Whether long-long-opt was given.  */
-  unsigned int func_opt_given ;	/**< @brief Whether func-opt was given.  */
-  unsigned int hidden_opt_given ;	/**< @brief Whether hidden-opt was given.  */
-  unsigned int flag_opt_given ;	/**< @brief Whether flag-opt was given.  */
+  unsigned int enum_opt_given ;	/**< @brief Whether enum-opt was given.  */
 
   char **inputs ; /**< @brief unamed options (options without names) */
   unsigned inputs_num ; /**< @brief unamed options number */
@@ -112,8 +75,6 @@ extern const char *gengetopt_args_info_purpose;
 extern const char *gengetopt_args_info_usage;
 /** @brief all the lines making the help output */
 extern const char *gengetopt_args_info_help[];
-/** @brief all the lines making the full help output (including hidden options) */
-extern const char *gengetopt_args_info_full_help[];
 
 /**
  * The command line parser
@@ -176,10 +137,6 @@ int cmdline_parser_file_save(const char *filename,
  */
 void cmdline_parser_print_help(void);
 /**
- * Print the full help (including hidden options)
- */
-void cmdline_parser_print_full_help(void);
-/**
  * Print the version
  */
 void cmdline_parser_print_version(void);
@@ -220,6 +177,8 @@ void cmdline_parser_free (struct gengetopt_args_info *args_info);
  */
 int cmdline_parser_required (struct gengetopt_args_info *args_info,
   const char *prog_name);
+
+extern const char *cmdline_parser_enum_opt_values[];  /**< @brief Possible values for enum-opt. */
 
 
 #ifdef __cplusplus

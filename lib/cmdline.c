@@ -31,56 +31,17 @@ const char *gengetopt_args_info_usage = "Usage: " CMDLINE_PARSER_PACKAGE " [OPTI
 
 const char *gengetopt_args_info_description = "";
 
-const char *gengetopt_args_info_full_help[] = {
-  "  -h, --help                    Print help and exit",
-  "      --full-help               Print help, including hidden options, and exit",
-  "  -V, --version                 Print version and exit",
-  "  -s, --str-opt=STRING          A string option",
-  "  -i, --int-opt=INT             A int option",
-  "  -S, --short-opt=SHORT         A short option",
-  "  -l, --long-opt=LONG           A long option",
-  "  -f, --float-opt=FLOAT         A float option",
-  "  -d, --double-opt=DOUBLE       A double option",
-  "  -L, --long-double-opt=LONGDOUBLE\n                                A long double option",
-  "  -y, --long-long-opt=LONGLONG  A long long option",
-  "  -F, --func-opt                A function option",
-  "  -N, --hidden-opt              A hidden option",
-  "  -x, --flag-opt                A flag option  (default=off)",
+const char *gengetopt_args_info_help[] = {
+  "  -h, --help             Print help and exit",
+  "  -V, --version          Print version and exit",
+  "  -i, --int-opt=INT      A int option",
+  "      --enum-opt=STRING  A string option with list of values  (possible \n                           values=\"xcorr\", \"rms\" default=`rms')",
     0
 };
 
-static void
-init_help_array(void)
-{
-  gengetopt_args_info_help[0] = gengetopt_args_info_full_help[0];
-  gengetopt_args_info_help[1] = gengetopt_args_info_full_help[1];
-  gengetopt_args_info_help[2] = gengetopt_args_info_full_help[2];
-  gengetopt_args_info_help[3] = gengetopt_args_info_full_help[3];
-  gengetopt_args_info_help[4] = gengetopt_args_info_full_help[4];
-  gengetopt_args_info_help[5] = gengetopt_args_info_full_help[5];
-  gengetopt_args_info_help[6] = gengetopt_args_info_full_help[6];
-  gengetopt_args_info_help[7] = gengetopt_args_info_full_help[7];
-  gengetopt_args_info_help[8] = gengetopt_args_info_full_help[8];
-  gengetopt_args_info_help[9] = gengetopt_args_info_full_help[9];
-  gengetopt_args_info_help[10] = gengetopt_args_info_full_help[10];
-  gengetopt_args_info_help[11] = gengetopt_args_info_full_help[11];
-  gengetopt_args_info_help[12] = gengetopt_args_info_full_help[13];
-  gengetopt_args_info_help[13] = 0; 
-  
-}
-
-const char *gengetopt_args_info_help[14];
-
 typedef enum {ARG_NO
-  , ARG_FLAG
   , ARG_STRING
   , ARG_INT
-  , ARG_SHORT
-  , ARG_LONG
-  , ARG_FLOAT
-  , ARG_DOUBLE
-  , ARG_LONGDOUBLE
-  , ARG_LONGLONG
 } cmdline_parser_arg_type;
 
 static
@@ -95,6 +56,8 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
 static int
 cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *prog_name, const char *additional_error);
 
+const char *cmdline_parser_enum_opt_values[] = {"xcorr", "rms", 0}; /*< Possible values for enum-opt. */
+
 static char *
 gengetopt_strdup (const char *s);
 
@@ -102,35 +65,18 @@ static
 void clear_given (struct gengetopt_args_info *args_info)
 {
   args_info->help_given = 0 ;
-  args_info->full_help_given = 0 ;
   args_info->version_given = 0 ;
-  args_info->str_opt_given = 0 ;
   args_info->int_opt_given = 0 ;
-  args_info->short_opt_given = 0 ;
-  args_info->long_opt_given = 0 ;
-  args_info->float_opt_given = 0 ;
-  args_info->double_opt_given = 0 ;
-  args_info->long_double_opt_given = 0 ;
-  args_info->long_long_opt_given = 0 ;
-  args_info->func_opt_given = 0 ;
-  args_info->hidden_opt_given = 0 ;
-  args_info->flag_opt_given = 0 ;
+  args_info->enum_opt_given = 0 ;
 }
 
 static
 void clear_args (struct gengetopt_args_info *args_info)
 {
   FIX_UNUSED (args_info);
-  args_info->str_opt_arg = NULL;
-  args_info->str_opt_orig = NULL;
   args_info->int_opt_orig = NULL;
-  args_info->short_opt_orig = NULL;
-  args_info->long_opt_orig = NULL;
-  args_info->float_opt_orig = NULL;
-  args_info->double_opt_orig = NULL;
-  args_info->long_double_opt_orig = NULL;
-  args_info->long_long_opt_orig = NULL;
-  args_info->flag_opt_flag = 0;
+  args_info->enum_opt_arg = gengetopt_strdup ("rms");
+  args_info->enum_opt_orig = NULL;
   
 }
 
@@ -138,21 +84,11 @@ static
 void init_args_info(struct gengetopt_args_info *args_info)
 {
 
-  init_help_array(); 
-  args_info->help_help = gengetopt_args_info_full_help[0] ;
-  args_info->full_help_help = gengetopt_args_info_full_help[1] ;
-  args_info->version_help = gengetopt_args_info_full_help[2] ;
-  args_info->str_opt_help = gengetopt_args_info_full_help[3] ;
-  args_info->int_opt_help = gengetopt_args_info_full_help[4] ;
-  args_info->short_opt_help = gengetopt_args_info_full_help[5] ;
-  args_info->long_opt_help = gengetopt_args_info_full_help[6] ;
-  args_info->float_opt_help = gengetopt_args_info_full_help[7] ;
-  args_info->double_opt_help = gengetopt_args_info_full_help[8] ;
-  args_info->long_double_opt_help = gengetopt_args_info_full_help[9] ;
-  args_info->long_long_opt_help = gengetopt_args_info_full_help[10] ;
-  args_info->func_opt_help = gengetopt_args_info_full_help[11] ;
-  args_info->hidden_opt_help = gengetopt_args_info_full_help[12] ;
-  args_info->flag_opt_help = gengetopt_args_info_full_help[13] ;
+
+  args_info->help_help = gengetopt_args_info_help[0] ;
+  args_info->version_help = gengetopt_args_info_help[1] ;
+  args_info->int_opt_help = gengetopt_args_info_help[2] ;
+  args_info->enum_opt_help = gengetopt_args_info_help[3] ;
   
 }
 
@@ -186,15 +122,6 @@ cmdline_parser_print_help (void)
   print_help_common();
   while (gengetopt_args_info_help[i])
     printf("%s\n", gengetopt_args_info_help[i++]);
-}
-
-void
-cmdline_parser_print_full_help (void)
-{
-  int i = 0;
-  print_help_common();
-  while (gengetopt_args_info_full_help[i])
-    printf("%s\n", gengetopt_args_info_full_help[i++]);
 }
 
 void
@@ -245,15 +172,9 @@ static void
 cmdline_parser_release (struct gengetopt_args_info *args_info)
 {
   unsigned int i;
-  free_string_field (&(args_info->str_opt_arg));
-  free_string_field (&(args_info->str_opt_orig));
   free_string_field (&(args_info->int_opt_orig));
-  free_string_field (&(args_info->short_opt_orig));
-  free_string_field (&(args_info->long_opt_orig));
-  free_string_field (&(args_info->float_opt_orig));
-  free_string_field (&(args_info->double_opt_orig));
-  free_string_field (&(args_info->long_double_opt_orig));
-  free_string_field (&(args_info->long_long_opt_orig));
+  free_string_field (&(args_info->enum_opt_arg));
+  free_string_field (&(args_info->enum_opt_orig));
   
   
   for (i = 0; i < args_info->inputs_num; ++i)
@@ -265,13 +186,54 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   clear_given (args_info);
 }
 
+/**
+ * @param val the value to check
+ * @param values the possible values
+ * @return the index of the matched value:
+ * -1 if no value matched,
+ * -2 if more than one value has matched
+ */
+static int
+check_possible_values(const char *val, const char *values[])
+{
+  int i, found, last;
+  size_t len;
+
+  if (!val)   /* otherwise strlen() crashes below */
+    return -1; /* -1 means no argument for the option */
+
+  found = last = 0;
+
+  for (i = 0, len = strlen(val); values[i]; ++i)
+    {
+      if (strncmp(val, values[i], len) == 0)
+        {
+          ++found;
+          last = i;
+          if (strlen(values[i]) == len)
+            return i; /* exact macth no need to check more */
+        }
+    }
+
+  if (found == 1) /* one match: OK */
+    return last;
+
+  return (found ? -2 : -1); /* return many values or none matched */
+}
+
 
 static void
 write_into_file(FILE *outfile, const char *opt, const char *arg, const char *values[])
 {
-  FIX_UNUSED (values);
+  int found = -1;
   if (arg) {
-    fprintf(outfile, "%s=\"%s\"\n", opt, arg);
+    if (values) {
+      found = check_possible_values(arg, values);      
+    }
+    if (found >= 0)
+      fprintf(outfile, "%s=\"%s\" # %s\n", opt, arg, values[found]);
+    else
+      fprintf(outfile, "%s=\"%s\"\n", opt, arg);
   } else {
     fprintf(outfile, "%s\n", opt);
   }
@@ -291,32 +253,12 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
 
   if (args_info->help_given)
     write_into_file(outfile, "help", 0, 0 );
-  if (args_info->full_help_given)
-    write_into_file(outfile, "full-help", 0, 0 );
   if (args_info->version_given)
     write_into_file(outfile, "version", 0, 0 );
-  if (args_info->str_opt_given)
-    write_into_file(outfile, "str-opt", args_info->str_opt_orig, 0);
   if (args_info->int_opt_given)
     write_into_file(outfile, "int-opt", args_info->int_opt_orig, 0);
-  if (args_info->short_opt_given)
-    write_into_file(outfile, "short-opt", args_info->short_opt_orig, 0);
-  if (args_info->long_opt_given)
-    write_into_file(outfile, "long-opt", args_info->long_opt_orig, 0);
-  if (args_info->float_opt_given)
-    write_into_file(outfile, "float-opt", args_info->float_opt_orig, 0);
-  if (args_info->double_opt_given)
-    write_into_file(outfile, "double-opt", args_info->double_opt_orig, 0);
-  if (args_info->long_double_opt_given)
-    write_into_file(outfile, "long-double-opt", args_info->long_double_opt_orig, 0);
-  if (args_info->long_long_opt_given)
-    write_into_file(outfile, "long-long-opt", args_info->long_long_opt_orig, 0);
-  if (args_info->func_opt_given)
-    write_into_file(outfile, "func-opt", 0, 0 );
-  if (args_info->hidden_opt_given)
-    write_into_file(outfile, "hidden-opt", 0, 0 );
-  if (args_info->flag_opt_given)
-    write_into_file(outfile, "flag-opt", 0, 0 );
+  if (args_info->enum_opt_given)
+    write_into_file(outfile, "enum-opt", args_info->enum_opt_orig, cmdline_parser_enum_opt_values);
   
 
   i = EXIT_SUCCESS;
@@ -499,7 +441,18 @@ int update_arg(void *field, char **orig_field,
       return 1; /* failure */
     }
 
-  FIX_UNUSED (default_value);
+  if (possible_values && (found = check_possible_values((value ? value : default_value), possible_values)) < 0)
+    {
+      if (short_opt != '-')
+        fprintf (stderr, "%s: %s argument, \"%s\", for option `--%s' (`-%c')%s\n", 
+          package_name, (found == -2) ? "ambiguous" : "invalid", value, long_opt, short_opt,
+          (additional_error ? additional_error : ""));
+      else
+        fprintf (stderr, "%s: %s argument, \"%s\", for option `--%s'%s\n", 
+          package_name, (found == -2) ? "ambiguous" : "invalid", value, long_opt,
+          (additional_error ? additional_error : ""));
+      return 1; /* failure */
+    }
     
   if (field_given && *field_given && ! override)
     return 0;
@@ -511,33 +464,8 @@ int update_arg(void *field, char **orig_field,
     val = possible_values[found];
 
   switch(arg_type) {
-  case ARG_FLAG:
-    *((int *)field) = !*((int *)field);
-    break;
   case ARG_INT:
     if (val) *((int *)field) = strtol (val, &stop_char, 0);
-    break;
-  case ARG_SHORT:
-    if (val) *((short *)field) = (short)strtol (val, &stop_char, 0);
-    break;
-  case ARG_LONG:
-    if (val) *((long *)field) = (long)strtol (val, &stop_char, 0);
-    break;
-  case ARG_FLOAT:
-    if (val) *((float *)field) = (float)strtod (val, &stop_char);
-    break;
-  case ARG_DOUBLE:
-    if (val) *((double *)field) = strtod (val, &stop_char);
-    break;
-  case ARG_LONGDOUBLE:
-    if (val) *((long double *)field) = (long double)strtod (val, &stop_char);
-    break;
-  case ARG_LONGLONG:
-#ifdef HAVE_LONG_LONG
-    if (val) *((long long int*)field) = (long long int) strtol (val, &stop_char, 0);
-#else
-    if (val) *((long *)field) = (long)strtol (val, &stop_char, 0);
-#endif
     break;
   case ARG_STRING:
     if (val) {
@@ -554,12 +482,6 @@ int update_arg(void *field, char **orig_field,
   /* check numeric conversion */
   switch(arg_type) {
   case ARG_INT:
-  case ARG_SHORT:
-  case ARG_LONG:
-  case ARG_FLOAT:
-  case ARG_DOUBLE:
-  case ARG_LONGDOUBLE:
-  case ARG_LONGLONG:
     if (val && !(stop_char && *stop_char == '\0')) {
       fprintf(stderr, "%s: invalid numeric value: %s\n", package_name, val);
       return 1; /* failure */
@@ -572,7 +494,6 @@ int update_arg(void *field, char **orig_field,
   /* store the original value */
   switch(arg_type) {
   case ARG_NO:
-  case ARG_FLAG:
     break;
   default:
     if (value && orig_field) {
@@ -628,23 +549,13 @@ cmdline_parser_internal (
 
       static struct option long_options[] = {
         { "help",	0, NULL, 'h' },
-        { "full-help",	0, NULL, 0 },
         { "version",	0, NULL, 'V' },
-        { "str-opt",	1, NULL, 's' },
         { "int-opt",	1, NULL, 'i' },
-        { "short-opt",	1, NULL, 'S' },
-        { "long-opt",	1, NULL, 'l' },
-        { "float-opt",	1, NULL, 'f' },
-        { "double-opt",	1, NULL, 'd' },
-        { "long-double-opt",	1, NULL, 'L' },
-        { "long-long-opt",	1, NULL, 'y' },
-        { "func-opt",	0, NULL, 'F' },
-        { "hidden-opt",	0, NULL, 'N' },
-        { "flag-opt",	0, NULL, 'x' },
+        { "enum-opt",	1, NULL, 0 },
         { 0,  0, 0, 0 }
       };
 
-      c = getopt_long (argc, argv, "hVs:i:S:l:f:d:L:y:FNx", long_options, &option_index);
+      c = getopt_long (argc, argv, "hVi:", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -660,18 +571,6 @@ cmdline_parser_internal (
           cmdline_parser_free (&local_args_info);
           exit (EXIT_SUCCESS);
 
-        case 's':	/* A string option.  */
-        
-        
-          if (update_arg( (void *)&(args_info->str_opt_arg), 
-               &(args_info->str_opt_orig), &(args_info->str_opt_given),
-              &(local_args_info.str_opt_given), optarg, 0, 0, ARG_STRING,
-              check_ambiguity, override, 0, 0,
-              "str-opt", 's',
-              additional_error))
-            goto failure;
-        
-          break;
         case 'i':	/* A int option.  */
         
         
@@ -684,120 +583,24 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 'S':	/* A short option.  */
-        
-        
-          if (update_arg( (void *)&(args_info->short_opt_arg), 
-               &(args_info->short_opt_orig), &(args_info->short_opt_given),
-              &(local_args_info.short_opt_given), optarg, 0, 0, ARG_SHORT,
-              check_ambiguity, override, 0, 0,
-              "short-opt", 'S',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 'l':	/* A long option.  */
-        
-        
-          if (update_arg( (void *)&(args_info->long_opt_arg), 
-               &(args_info->long_opt_orig), &(args_info->long_opt_given),
-              &(local_args_info.long_opt_given), optarg, 0, 0, ARG_LONG,
-              check_ambiguity, override, 0, 0,
-              "long-opt", 'l',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 'f':	/* A float option.  */
-        
-        
-          if (update_arg( (void *)&(args_info->float_opt_arg), 
-               &(args_info->float_opt_orig), &(args_info->float_opt_given),
-              &(local_args_info.float_opt_given), optarg, 0, 0, ARG_FLOAT,
-              check_ambiguity, override, 0, 0,
-              "float-opt", 'f',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 'd':	/* A double option.  */
-        
-        
-          if (update_arg( (void *)&(args_info->double_opt_arg), 
-               &(args_info->double_opt_orig), &(args_info->double_opt_given),
-              &(local_args_info.double_opt_given), optarg, 0, 0, ARG_DOUBLE,
-              check_ambiguity, override, 0, 0,
-              "double-opt", 'd',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 'L':	/* A long double option.  */
-        
-        
-          if (update_arg( (void *)&(args_info->long_double_opt_arg), 
-               &(args_info->long_double_opt_orig), &(args_info->long_double_opt_given),
-              &(local_args_info.long_double_opt_given), optarg, 0, 0, ARG_LONGDOUBLE,
-              check_ambiguity, override, 0, 0,
-              "long-double-opt", 'L',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 'y':	/* A long long option.  */
-        
-        
-          if (update_arg( (void *)&(args_info->long_long_opt_arg), 
-               &(args_info->long_long_opt_orig), &(args_info->long_long_opt_given),
-              &(local_args_info.long_long_opt_given), optarg, 0, 0, ARG_LONGLONG,
-              check_ambiguity, override, 0, 0,
-              "long-long-opt", 'y',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 'F':	/* A function option.  */
-        
-        
-          if (update_arg( 0 , 
-               0 , &(args_info->func_opt_given),
-              &(local_args_info.func_opt_given), optarg, 0, 0, ARG_NO,
-              check_ambiguity, override, 0, 0,
-              "func-opt", 'F',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 'N':	/* A hidden option.  */
-        
-        
-          if (update_arg( 0 , 
-               0 , &(args_info->hidden_opt_given),
-              &(local_args_info.hidden_opt_given), optarg, 0, 0, ARG_NO,
-              check_ambiguity, override, 0, 0,
-              "hidden-opt", 'N',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 'x':	/* A flag option.  */
-        
-        
-          if (update_arg((void *)&(args_info->flag_opt_flag), 0, &(args_info->flag_opt_given),
-              &(local_args_info.flag_opt_given), optarg, 0, 0, ARG_FLAG,
-              check_ambiguity, override, 1, 0, "flag-opt", 'x',
-              additional_error))
-            goto failure;
-        
-          break;
 
         case 0:	/* Long option with no short option */
-          if (strcmp (long_options[option_index].name, "full-help") == 0) {
-            cmdline_parser_print_full_help ();
-            cmdline_parser_free (&local_args_info);
-            exit (EXIT_SUCCESS);
+          /* A string option with list of values.  */
+          if (strcmp (long_options[option_index].name, "enum-opt") == 0)
+          {
+          
+          
+            if (update_arg( (void *)&(args_info->enum_opt_arg), 
+                 &(args_info->enum_opt_orig), &(args_info->enum_opt_given),
+                &(local_args_info.enum_opt_given), optarg, cmdline_parser_enum_opt_values, "rms", ARG_STRING,
+                check_ambiguity, override, 0, 0,
+                "enum-opt", '-',
+                additional_error))
+              goto failure;
+          
           }
-
+          
+          break;
         case '?':	/* Invalid option.  */
           /* `getopt_long' already printed an error message.  */
           goto failure;
