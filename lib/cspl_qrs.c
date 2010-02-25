@@ -42,15 +42,15 @@ int cspl_qrs_f (const gsl_vector * x, void * data, gsl_vector * f) {
     double a = gsl_vector_get (x, 0);
     double t_beat = gsl_vector_get (x, 1);
     double s_0 = gsl_vector_get (x, 2);
+    double s_1 = gsl_vector_get (x, 3);
 
     size_t i;
 
     for (i = 0; i < n; i++)
     {
-        /* Model yi = a * n_qrs(t[i] - t_beat) + s_0*t[i] */
+        /* Model yi = a * n_qrs(t[i] - t_beat) + s_0*t[i] + s_1 */
 
-        double y_i = a*gsl_spline_eval(n_qrs, t[i] - t_beat, acc) + s_0*t[i];
-        //printf("f(%d) = %f*N_QRS(%f - %f) + %f*t = %f\n", i, a, t[i], t_beat, s_0, y_i);
+        double y_i = a*gsl_spline_eval(n_qrs, t[i] - t_beat, acc) + s_0*t[i] + s_1;
         gsl_vector_set (f, i, (y_i - y[i])/sigma[i]);
     }
     return GSL_SUCCESS;
@@ -78,6 +78,7 @@ int cspl_qrs_df (const gsl_vector * x, void * data,
         gsl_matrix_set (J, i, 0, dqrs_da/s);
         gsl_matrix_set (J, i, 1, dqrs_dt_beat/s);
         gsl_matrix_set (J, i, 2, t[i]/s);
+        gsl_matrix_set (J, i, 3, 1/s);
     }
     return GSL_SUCCESS;
 }

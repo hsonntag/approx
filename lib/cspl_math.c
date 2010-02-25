@@ -190,9 +190,10 @@ int cspl_norm (double * signal, size_t size) {
     return GSL_SUCCESS;
 }
 
-int cspl_norm_average (double * templ, double * signal, unsigned int * n, size_t size, int count) {
-    double max = DBL_MIN;
-    double min = DBL_MAX;
+int cspl_average (double * templ, double * signal, unsigned int * n, size_t size, int count) {
+    /*double max = DBL_MIN;
+      double min = DBL_MAX;
+      */
     unsigned int interval = UINT_MAX;
     size_t i, m;
     if (count == 0)
@@ -200,28 +201,36 @@ int cspl_norm_average (double * templ, double * signal, unsigned int * n, size_t
     for (i = 0; i < count; i++) {
         if (n[i + 1] - n[i] < interval)
             interval = n[i + 1] - n[i];
-
     }
     for (i = 0; i < count; i++) {
         for (m = n[i]; m < n[i] + interval; m++) {
             templ[m - n[i]] += signal[m];
         }
     }
-    for (i = 0; i < size; i++) {
-        if (i < interval) {
-            if (templ[i] > max)
-                max = templ[i];
-            else if (templ[i] < min)
-                min = templ[i];
-        }
-        else
-            templ[i] = 0.0;
-    }
-    for (i = 0; i < interval; i++) {
-        templ[i] -= min;
-        if (max - min == 0)
-            return GSL_FAILURE;
-        templ[i] /= (max - min);
-    }
+    /*for (i = 0; i < size; i++) {
+      if (i < interval) {
+      if (templ[i] > max)
+      max = templ[i];
+      else if (templ[i] < min)
+      min = templ[i];
+      }
+      else
+      templ[i] = 0.0;
+      }
+      for (i = 0; i < interval; i++) {
+      templ[i] -= min;
+      if (max - min == 0)
+      return GSL_FAILURE;
+      templ[i] /= (max - min);
+      }
+      */
+    /*for (i = 0; i < size; i++) {
+      if (i < interval) {
+      templ[i] /= count;
+      }
+      else
+      templ[i] = 0.0;
+      }
+      */
     return interval;
 }

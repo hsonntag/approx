@@ -44,8 +44,8 @@
 __BEGIN_DECLS
 
 extern void print_state (size_t iter, gsl_multifit_fdfsolver * s);
-int cspl_qrs_fit (double * t, double * y, gsl_spline * n_qrs, double * sigma, size_t n);
-int cspl_qrs_fit_at (void * data);
+//int cspl_qrs_fit (double * t, double * y, gsl_spline * n_qrs, double * sigma, size_t n);
+int cspl_qrs_fit (void * data);
 
 __END_DECLS
 

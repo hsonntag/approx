@@ -19,8 +19,7 @@
 #include "cspl/cspl_qrs.h"
 #include "cspl/cspl_qrs_fit.h"
 
-int cspl_qrs_fit_at (void * params) {
-    const gsl_multifit_fdfsolver_type * T;
+int cspl_qrs_fit (void * params) {
     int status;
     unsigned int iter = 0;
     struct cspl_qrs_data * data = (struct cspl_qrs_data *) params;
@@ -48,31 +47,30 @@ int cspl_qrs_fit_at (void * params) {
     f.params = data;
 
 
-    T = gsl_multifit_fdfsolver_lmsder;
-    data->s = gsl_multifit_fdfsolver_alloc (T, data->n, data->p);
     gsl_multifit_fdfsolver_set (data->s, &f, &data->x.vector);
 
-    print_state (iter, data->s);
+    //print_state (iter, data->s);
 
     do
     {
         iter++;
         status = gsl_multifit_fdfsolver_iterate (data->s);
-
-        //printf ("status = %s\n", gsl_strerror (status));
+#ifdef DEBUG
+        printf ("status = %s\n", gsl_strerror (status));
 
         print_state (iter, data->s);
-
+#endif
         if (status)
             break;
 
         status = gsl_multifit_test_delta (data->s->dx, data->s->x,
-                1e-4, 1e-4);
+                1e-12, 1e-12);
     }
     while (status == GSL_CONTINUE && iter < 500);
 
     gsl_multifit_covar (data->s->J, 0.0, data->covar);
 
+#ifdef DEBUG
 #define FIT(i) gsl_vector_get(data->s->x, i)
 #define ERR(i) sqrt(gsl_matrix_get(data->covar,i,i))
 
@@ -80,29 +78,26 @@ int cspl_qrs_fit_at (void * params) {
         double chi = gsl_blas_dnrm2(data->s->f);
         double dof = data->n - data->p;
         double c = GSL_MAX_DBL(1, chi / sqrt(dof)); 
+        printf("chisq/dof = %g\n",  pow(chi, 2.0) / dof); 
 
-        //printf("chisq/dof = %g\n",  pow(chi, 2.0) / dof); 
-
-        //printf ("a      = %.5f +/- %.5f\n", FIT(0), c*ERR(0)); 
-        //printf ("t_beat = %.5f +/- %.5f\n", FIT(1), c*ERR(1)); 
-        //printf ("S_0      = %.5f +/- %.5f\n", FIT(2), c*ERR(2)); 
+        printf ("A        = %.5f +/- %.5f\n", FIT(0), c*ERR(0)); 
+        printf ("t_beat   = %.5f +/- %.5f\n", FIT(1), c*ERR(1)); 
+        printf ("S_0      = %.5f +/- %.5f\n", FIT(2), c*ERR(2)); 
+        printf ("S_1      = %.5f +/- %.5f\n", FIT(3), c*ERR(3)); 
     }
 
-    //printf ("status = %s\n", gsl_strerror (status));
-
-    //gsl_multifit_fdfsolver_free (s);
-    //gsl_matrix_free (covar);
+    printf ("status = %s\n", gsl_strerror (status));
+#endif
     gsl_rng_free (r);
     return GSL_SUCCESS;
 }
 
-int cspl_qrs_fit (double * t, double * y, gsl_spline * n_qrs, double * sigma, size_t n) {
+/*int cspl_qrs_fit (double * t, double * y, gsl_spline * n_qrs, double * sigma, size_t n) {
     const gsl_multifit_fdfsolver_type * T;
     gsl_multifit_fdfsolver * s;
     int status;
     unsigned int iter = 0;
     const size_t p = 3;
-    /* This is the data to be fitted */
     size_t i;
     for (i = 0; i < n; i++)
     {
@@ -177,4 +172,4 @@ int cspl_qrs_fit (double * t, double * y, gsl_spline * n_qrs, double * sigma, si
     gsl_rng_free (r);
     return GSL_SUCCESS;
 }
-
+*/
