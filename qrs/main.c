@@ -149,34 +149,62 @@ int main(int argc, char *argv[]) {
     gsl_matrix * covar = gsl_matrix_alloc (p, p);
     double x_init[4] = { 1.0, 0.0, 0.0, 0.0 };
     gsl_vector_view vec = gsl_vector_view_array (x_init, p);
-    for (i = 0; i < 2; i++) {
-        printf ("#m=2,S=0\n");
+    double params[p][a];
+    for (i = 0; i < a; i++) {
         struct cspl_qrs_data data = {interval, t, x + m_corr[i], spline, sigma, p, s, covar, vec};
         cspl_qrs_fit (&data);
-size_t j;
-        for (j = 0; j < interval; j++) {
-            double y_j = gsl_vector_get(s->x, 0)*gsl_spline_eval(spline, t[j] - gsl_vector_get(s->x, 1), acc) + gsl_vector_get(s->x, 2)*t[j] + gsl_vector_get(s->x, 3);
-            printf ("%.5f %.5f\n", t[j + m_corr[i]], y_j);
-        }
-        printf ("#m=3,S=0\n");
-        for (j = m_corr[i]; j < m_corr[i] + interval; j++) {
-            printf ("%.5f %.5f\n", t[j], x[j]);
-        }
+        //size_t j;
+        params[0][i] = gsl_vector_get(s->x, 0);
+        params[1][i] = gsl_vector_get(s->x, 1);
+        params[2][i] = gsl_vector_get(s->x, 2);
+        params[3][i] = gsl_vector_get(s->x, 3);
+
+        /*printf ("#m=0,S=0\n");
+          for (j = 0; j < interval; j++) {
+          double y_j = gsl_vector_get(s->x, 0)*gsl_spline_eval(spline, t[j] - gsl_vector_get(s->x, 1), acc) + gsl_vector_get(s->x, 2)*t[j] + gsl_vector_get(s->x, 3);
+          printf ("%.5f %.5f\n", t[j + m_corr[i]], y_j);
+          }
+          printf ("#m=3,S=0\n");
+          for (j = m_corr[i]; j < m_corr[i] + interval; j++) {
+          printf ("%.5f %.5f\n", t[j], x[j]);
+          }
+          */
+    }
+    cspl_real_fft (params[0], a);
+    cspl_real_fft (params[1], a);
+    cspl_real_fft (params[2], a);
+    cspl_real_fft (params[3], a);
+    printf ("#m=0,S=0\n");
+    for (i = 0; i < a; i++) {
+        printf("%.5f %.5f\n", t[m_corr[i]], params[0][i]);
+    }
+    printf ("#m=1,S=0\n");
+    for (i = 0; i < a; i++) {
+        printf("%.5f %.5f\n", t[m_corr[i]], params[1][i]);
+    }
+    printf ("#m=2,S=0\n");
+    for (i = 0; i < a; i++) {
+        printf("%.5f %.5f\n", t[m_corr[i]], params[2][i]);
+    }
+    printf ("#m=3,S=0\n");
+    for (i = 0; i < a; i++) {
+        printf("%.5f %.5f\n", t[m_corr[i]], params[3][i]);
     }
     gsl_multifit_fdfsolver_free (s);
     gsl_matrix_free (covar);
-    cspl_qrs_free();
+    cspl_qrs_free ();
     return EXIT_SUCCESS;
 }
 
 void print_state (size_t iter, gsl_multifit_fdfsolver * s)
 {
-    printf ("iter: %3u x = % 15.8f % 15.8f % 15.8f "
-      "|f(x)| = %g\n",
-      iter,
-      gsl_vector_get (s->x, 0),
-      gsl_vector_get (s->x, 1),
-      gsl_vector_get (s->x, 2),
-      gsl_blas_dnrm2 (s->f));
+    printf ("iter: %3u x = % 15.8f % 15.8f % 15.8f % 15.8f"
+            "|f(x)| = %g\n",
+            iter,
+            gsl_vector_get (s->x, 0),
+            gsl_vector_get (s->x, 1),
+            gsl_vector_get (s->x, 2),
+            gsl_vector_get (s->x, 3),
+            gsl_blas_dnrm2 (s->f));
 }
 

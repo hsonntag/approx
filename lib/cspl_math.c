@@ -18,18 +18,43 @@
  ***************************************************************************/
 #include "cspl/cspl.h"
 
+int cspl_real_fft (double * data, size_t size)
+{
+    size_t i;
+    double compl[2*size];
+
+    gsl_fft_real_wavetable * real;
+    gsl_fft_real_workspace * work;
+
+    work = gsl_fft_real_workspace_alloc (size);
+    real = gsl_fft_real_wavetable_alloc (size);
+
+    gsl_fft_real_transform (data, 1, size, real, work);
+
+    gsl_fft_halfcomplex_unpack (data, compl, 1, size);
+
+for (i = 0; i < size; i++) {
+//data[i] = gsl_complex_abs (compl[2*i]);
+data[i] = pow (compl[2*i], 2) + pow (compl[2*i + 1], 2);
+}
+    gsl_fft_real_wavetable_free (real);
+
+    gsl_fft_real_workspace_free (work);
+    return 0;
+}
+
 int cspl_root_mean_square (double * rms, double * x, double *y, size_t length, size_t size) {
     size_t i, j;
     for (i = 0; i < size; i++) {
         rms[i] = 0;
         if (i < size - length)
-        for (j = i; j < i + length; j++) {
-            rms[i] += pow(x[j - i] - y[j] - (x[0] - y[i]), 2);
-        }
+            for (j = i; j < i + length; j++) {
+                rms[i] += pow(x[j - i] - y[j] - (x[0] - y[i]), 2);
+            }
         else
-        for (j = 0; j < length; j++) {
-            rms[i] += pow(x[j] - y[j] - (x[0] - y[0]), 2);
-        }
+            for (j = 0; j < length; j++) {
+                rms[i] += pow(x[j] - y[j] - (x[0] - y[0]), 2);
+            }
 
         if (length == 0)
             return GSL_EZERODIV;
