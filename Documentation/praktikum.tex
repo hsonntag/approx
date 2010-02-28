@@ -4,6 +4,8 @@
 \usepackage[utf8]{inputenc}
 \usepackage[ngerman]{babel}
 \usepackage[pdftex]{graphicx}
+\usepackage{eso-pic}
+\usepackage[pdftex]{pdfpages}
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 
 
@@ -76,14 +78,48 @@ Meine Ziele für dieses Praktikum waren:
 \begin{itemize}
  \item Einblicke in den Linux-Kernel zu bekommen, das heißt Einblicke in den Aufbau in Konfigurationsmöglichkeiten und Anpassbarkeit des Kernels.
  \item Erlernen von Linux-Treiberentwicklung mit dem Schwerpunkt auf Netzwerktreiber.
-
 \end{itemize}
-
+\begin{center}
+\includegraphics[angle=90, width=480px,height=690px]{board3.jpg}
+\end{center}
+\begin{center}
+\includegraphics[angle=90, width=480px,height=690px]{board2.jpg}
+\end{center}
+\begin{center}
+\includegraphics[angle=90, width=480px,height=690px]{adapter1.jpg}
+\end{center}
+\begin{center}
+\includegraphics[angle=90, width=480px,height=690px]{adapter2.jpg}
+\end{center}
+\begin{center}
+\includegraphics[angle=90, width=480px,height=690px]{adapter3.jpg}
+\end{center}
+\begin{center}
+\includegraphics[angle=90, width=480px,height=690px]{alle.jpg}
+\end{center}
+\begin{center}
+\includegraphics[angle=90, width=480px,height=690px]{atheros.jpg}
+\end{center}
+\begin{center}
+\includegraphics[angle=90, width=480px,height=690px]{ralink.jpg}
+\end{center}
+\begin{center}
+\includegraphics[angle=0, height=240px,width=345px]{router.jpg}
+\end{center}
+\begin{center}
+\includegraphics[angle=0, height=240px,width=345px]{router_back.jpg}
+\end{center}
+\begin{center}
+\includegraphics[angle=90, width=480px,height=690px]{ecg.jpg}
+\end{center}
+\begin{center}
+\includegraphics[angle=90, width=480px,height=690px]{oxy.jpg}
+\end{center}
 \section{Problemlösung}
 Bei der Recherche zu verfügbaren WLAN-Modulen entstand folgende Tabelle.
-\begin{center}
-\includegraphics[angle=90, width=4cm,height=25cm]{tabelle-img1.png}
-\end{center}
+%\begin{center}
+%\includegraphics[angle=90, width=4cm,height=25cm]{tabelle-img1.png}
+%\end{center}
 
 \subsection{Tätigkeiten und Arbeitsergebnisse}
 [[Dies hier sollte meist der längste und ausführlichste Abschnitt sein. Fügen Sie ggf.
@@ -93,8 +129,10 @@ Welche Schwierigkeiten habe ich dabei überwunden?\\
 Welche nicht?\\
 
 \section{Endergebnis}
-Was ist insgesamt herausgekommen?
+Was ist insgesamt herausgekommen?\\
+Das ausgewählte WLAN-Modul wurde über die SDIO-Schnittstelle mit einem selbstgelöteten Adapter an das Atmel-Board angeschlossen und mit einem Linux (mainline kernel) in Betrieb genommen.\\
 Wie vergleicht sich das mit den Zielen? Ist es insgesamt ein Erfolgserlebnis oder nicht?\\
+Insgesamt wurde damit das Praktikumsziel erreicht, leider fehlte die Zeit für weitere Benchmarks.\\
 Wenn nicht, woran hat es gehapert?\\
 \section{Resüme}
 \section{Einsichten und Fazit}
@@ -126,5 +164,8 @@ Was hat mir das Praktikum gebracht, das ich im Studium nicht oder weniger bekomm
 Was bringt mir das Studium, das ich im Praktikum nicht oder kaum bekommen kann?\\
 Was will ich deshalb künftig an meinem Studierverhalten verändern?\\
 Welche Tipps gebe ich anderen, die ein Praktikum suchen, worauf sie achten sollten?\\
+
+\appendix
+\includepdf[pages={1,2}]{WiBearenglv08.pdf}
 
 \end{document}          
