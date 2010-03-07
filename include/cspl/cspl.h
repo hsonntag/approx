@@ -49,6 +49,7 @@ int cspl_real_fft (double * data, size_t size);
 int cspl_root_mean_square (double * rms, double * x, double * y, size_t length, size_t size);
 int cspl_norm (double * signal, size_t size);
 int cspl_eval_periodic_min2 (unsigned int * min_n, double * signal, size_t size, size_t length, double min); 
+int cspl_eval_periodic_max2 (unsigned int * max_n, double * signal, size_t size, size_t length, double max); 
 int cspl_radix2_xcorr(double * c_xy, double * x, double * y, size_t size);
 int cspl_eval_periodic_max (unsigned int * max_n, double * signal, size_t size, double level);
 int cspl_average (double * templ, double * signal, unsigned int * n, size_t size, int count);

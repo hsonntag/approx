@@ -4,6 +4,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[ngerman]{babel}
 \usepackage[pdftex]{graphicx}
+\usepackage{graphicx}
 \usepackage{eso-pic}
 \usepackage[pdftex]{pdfpages}
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
@@ -19,21 +20,30 @@
 \end{abstract}
 
 \section{Allgemeines zum Betrieb}
-Was macht die Firma/Einrichtung? Wie groß? Branche?\\
+%Was macht die Firma/Einrichtung? Wie groß? Branche?\\
 Die Firma Corscience entwickelt Elektronik für die Medizintechnik und stellt Medizintechnikprodukte her.
 Der Schwerpunkt liegt bei Geräten für die Herzmedizin.
-Welche Aufgabe hat "`meine"' Abteilung/Gruppe? Wie groß? Leitungsstruktur?\\
+%Welche Aufgabe hat "`meine"' Abteilung/Gruppe? Wie groß? Leitungsstruktur?\\
 Das Praktikum mache ich in der Entwicklungsabteilung, hier geht es um die Entwicklung neuer Technologien für verschiedene Projekte und um die Verbesserung bestehender Konzepte und Produkte.
-Welche Rolle hat mein Betreuer dort?
+
+%Welche Rolle hat mein Betreuer dort?
 Mein Betreuer ist der Experte für Betriebssysteme mit dem Schwerpunkt auf embedded Linux in diesem Unternehmen.
-Wie/wo/durch wen habe ich die Praktikumsstelle gefunden? Habe ich dort schon vorher gearbeitet?\\
+
+%Wie/wo/durch wen habe ich die Praktikumsstelle gefunden? Habe ich dort schon vorher gearbeitet?\\
 Die Praktikumsstelle fand ich durch Empfehlung eines Kommilitonen.
-Erfahrungen dabei oder Lehren daraus?\\
-Ich habe während des Praktikums viel über den Umgang mit und Aufbau von Linux kennengelernt, des weiteren habe ich vor allem Erfahrungen im Bereich der C++ Programmierung erworben und viele neue Tools kennengelernt. Ich habe Einblicke in die Treiberentwicklung für den Linux-Kernel und somit in die Kernelspaceprogrammierung gewonnen. Eine der wichtigsten Erfahrungen war auch das Inbetriebnehmen des Atmel-Boards mit einem selbst konfigurierten Betriebssystem (mit Linux-Kernel). Da das Hauptthema im Bereich WLAN lag habe ich dort auch sehr viel, für mich neues, dazugelernt. Beim Anschließen der Hardware habe ich Löterfahrungen gesammelt da der Stecker des Moduls sehr klein war und viele PINs hatte.
-Wie viel Bezahlung habe ich bekommen?\\
-Ich bekam 300 Euro pro Monat und 200 Euro für jeden Monat am Ende des Praktikums als Bonus für das Erreichen des Praktikumszieles.
-Was für Arbeitszeiten hatte ich?\\
+
+%Wie viel Bezahlung habe ich bekommen?\\
+%Ich bekam 300 Euro pro Monat und 200 Euro für jeden Monat am Ende des Praktikums als Bonus für das Erreichen des Praktikumszieles.
+Ein Praktikum wird bei Corscience wird mit 300 € pro Monat
+vergütet. Des Weiteren wird in der Regel eine Erfolgsprämie von 200 €
+pro geleistetem Monat vereinbart, welche zum Ende des Praktikums
+ausgezahlt wird.
+%Was für Arbeitszeiten hatte ich?\\
 Ich hatte eine 40 Stunden Woche, es gibt bei Corscience eine Kernarbeitszeit von 9Uhr bis 16Uhr, in dieser Zeit soll man im Unternehmen sein, am Freitag geht die Kernarbeitszeit nur bis 15Uhr, wann man die restliche Zeit arbeitet ist einem weitgehend freigestellt.
+
+%Erfahrungen dabei oder Lehren daraus?\\
+Ich habe während des Praktikums viel über den Umgang mit und Aufbau von Linux kennengelernt, des weiteren habe ich vor allem Erfahrungen im Bereich der C++ Programmierung erworben und viele neue Tools kennengelernt. Ich habe Einblicke in die Treiberentwicklung für den Linux-Kernel und somit in die Kernelspaceprogrammierung gewonnen. Eine der wichtigsten Erfahrungen war auch das Inbetriebnehmen des Atmel-Boards mit einem selbst konfigurierten Betriebssystem (mit Linux-Kernel). Da das Hauptthema im Bereich WLAN lag habe ich dort auch sehr viel, für mich neues, dazugelernt. Beim Anschließen der Hardware habe ich Löterfahrungen gesammelt da der Stecker des Moduls sehr klein war und viele PINs hatte.
+
 \section{Eingliederung}
 Mein Arbeitsplatz befindet sich in einem freien Bereich im Unternehmen in der Entwicklungabteilung,
 der extra für Praktikanten und Auszubildende eingerichtet wurde.
@@ -44,7 +54,7 @@ Meine Aufgabenstellung ist es auf einem embedded System eine WLAN-Funktionalitä
 Eine wichtige Rolle spielt dabei embedded Linux als Betriebssystem unter dem das WLAN-Modul laufen soll.
 Die WLAN-Funktionalität ist später zum Beispiel für die Telemedizin von Bedeutung.
 \subsection{Tätigkeitsumfeld}
-An welchem Projekt oder welchen Aufgaben habe ich mitgewirkt?\\
+%An welchem Projekt oder welchen Aufgaben habe ich mitgewirkt?\\
 Neben meinem Hauptthema hab ich an einem Projekt mitgewirkt, welches sich mit HD-Videoübertragung über WLAN-Standard N beschäftigt.
 Da dieses Projekt auch WLAN als Schwerpunkt hat, konnte ich hier gut in die Thematik einsteigen. Wozu sind die da?\\
 Das Hauptproblem liegt hier bei den hohen Datenraten, die erreicht werden müssen um das Videosignal ohne große Verzögerung übertrage zu können. Daher mussten viele Messungen des Durchsatzes gemacht werden.
@@ -52,118 +62,162 @@ Bei diesem Projekt geht es darum wie HD-Videoaufnahmen von einer Kamera
 über WLAN N zu einem Anzeigegerät zu übertragen. Hauptaugenmerkt waren
 die besonderen Umweltbedingungen bezüglich EM Abschirmung usw. ...
 
-Wer hat daran noch gearbeitet?\\
+%Wer hat daran noch gearbeitet?\\
 Das Projekt wird von einem Projektleiter betreut und es arbeiten einige weitere Mitarbeiter an der Vorbereitung und Umsetzung.
-Wie und wie eng habe ich mit denen zusammengearbeitet?\\
+
+%Wie und wie eng habe ich mit denen zusammengearbeitet?\\
 Für die Vorbereitung des Projektes mussten Datenratenmessungen durchgeführt werden, dabei arbeitete ich mit einem Mitarbeiter zusammen.
 Meine Hauptaufgabe war dabei die Linuxseite der Datenratenmessung aufzubauen.
 \subsection{Aufgabe und Ziele}
-Was sollte ich aus Sicht der Einrichtung tun?\\
-Die erste Aufgabe bei meinem Hauptthema war die Einarbeitung in die Problematik. Ich bekam ein Atmel Board AT91SAM9263-EK welches ich einrichten musste
-um darauf einen Linux Kernel über die Netzwerkschnittstelle booten zu können. Um auf dem Board arbeiten zu können musste ich auch ein Filesystem mit den 
-notwendigen Programmen erstellen und dieses ebenfalls über den Netzwerkadapter einbinden. Die schwierigste Aufgabe war jetzt den Linux Kernel so zu konfigurieren dass er die Hardware also vorallem die WLAN-Module und gewünschte Methoden richtig unterstützt.
+%Was sollte ich aus Sicht der Einrichtung tun?\\
+Die erste Aufgabe bei meinem Hauptthema war die Einarbeitung in die Problematik.
+Ich bekam ein Atmel Board AT91SAM9263-EK welches ich einrichten musste um darauf einen Linux Kernel über die Netzwerkschnittstelle booten zu können.
+Um auf dem Board arbeiten zu können musste ich auch ein Filesystem mit den notwendigen Programmen erstellen und dieses ebenfalls über den Netzwerkadapter einbinden.
+Die schwierigste Aufgabe war jetzt den Linux Kernel so zu konfigurieren dass er die Hardware also vorallem die WLAN-Module und gewünschte Methoden richtig unterstützt.
 Der erste Schritt für die Umsetzung meiner Aufgabenstellung war die Recherche nach geeigneten WLAN-Modulen auf dem Markt.
 Dabei ging es vor allem um folgende Punkte:\\
 \begin{itemize}
  \item Gibt es einen Linuxtreiber für die verwendeten Chipsätze der Hardware und befindet der sich im mainline kerneltree?
  \item Welche WLAN-Standards unterstützt die Hardware (IEEE 802.11 a/b/g/n)?
+ \item Welche Frequenzbänder werden unterstützt (2.4/5GHz)
  \item Welche Schnittstellen werden unterstützt/benötigt (SDIO/SPI oder PCI ...)
+ \item Preis
+ \item Zertifikate
+ \item Verfügbarkeit
+ \item Langzeitverfügbarkeit
+ \item Wie wird das Modul angebracht (Handhabung)
 \end{itemize}
 
-Was sollte ich im Verlauf des Praktikums erreichen (fremde (Arbeits)Ziele)?\\
+%Was sollte ich im Verlauf des Praktikums erreichen (fremde (Arbeits)Ziele)?\\
 Das Ziel war es eine Hardware zu finden welche über eine verfügbare Schnittstelle des Atmel Boards AT91SAM9263-EK (bevorzugt SDIO oder SPI) mit diesem kommuniziert, dieses anzuschließen und unter embedded Linux verfügbar zu machen.
 
-Was wollte ich im Verlauf des Praktikums erreichen (eigene (Lern)Ziele)?\\
+%Was wollte ich im Verlauf des Praktikums erreichen (eigene (Lern)Ziele)?\\
 Meine Ziele für dieses Praktikum waren:
 \begin{itemize}
  \item Einblicke in den Linux-Kernel zu bekommen, das heißt Einblicke in den Aufbau in Konfigurationsmöglichkeiten und Anpassbarkeit des Kernels.
  \item Erlernen von Linux-Treiberentwicklung mit dem Schwerpunkt auf Netzwerktreiber.
 \end{itemize}
-\begin{center}
-\includegraphics[angle=90, width=480px,height=690px]{board3.jpg}
-\end{center}
-\begin{center}
-\includegraphics[angle=90, width=480px,height=690px]{board2.jpg}
-\end{center}
-\begin{center}
-\includegraphics[angle=90, width=480px,height=690px]{adapter1.jpg}
-\end{center}
-\begin{center}
-\includegraphics[angle=90, width=480px,height=690px]{adapter2.jpg}
-\end{center}
-\begin{center}
-\includegraphics[angle=90, width=480px,height=690px]{adapter3.jpg}
-\end{center}
-\begin{center}
-\includegraphics[angle=90, width=480px,height=690px]{alle.jpg}
-\end{center}
-\begin{center}
-\includegraphics[angle=90, width=480px,height=690px]{atheros.jpg}
-\end{center}
-\begin{center}
-\includegraphics[angle=90, width=480px,height=690px]{ralink.jpg}
-\end{center}
-\begin{center}
-\includegraphics[angle=0, height=240px,width=345px]{router.jpg}
-\end{center}
-\begin{center}
-\includegraphics[angle=0, height=240px,width=345px]{router_back.jpg}
-\end{center}
-\begin{center}
-\includegraphics[angle=90, width=480px,height=690px]{ecg.jpg}
-\end{center}
-\begin{center}
-\includegraphics[angle=90, width=480px,height=690px]{oxy.jpg}
-\end{center}
+\begin{figure}[h] %  figure placement: here, top, bottom, or page
+    \centering
+    \includegraphics[angle=90, width=480px,height=690px]{board3.jpg}
+    \caption{Atmel-Board ohne WLAN-Modul}
+\end{figure}
+\begin{figure}[h] %  figure placement: here, top, bottom, or page
+    \centering
+    \includegraphics[angle=90, width=480px,height=690px]{board2.jpg}
+    \caption{Atmel-Board mit WLAN-Modul}
+\end{figure}
+\begin{figure}[h] %  figure placement: here, top, bottom, or page
+    \centering
+    \includegraphics[angle=90, width=480px,height=690px]{adapter1.jpg}
+    \caption{Adapter von SDIO zu Stecker für das WLAN-Modul}
+\end{figure}
+\begin{figure}[h] %  figure placement: here, top, bottom, or page
+    \centering
+    \includegraphics[angle=90, width=480px,height=690px]{adapter2.jpg}
+    \caption{Adapter mit Dummy-SD-Karte (damit die Kartenschnittstelle aktiviert wird)}
+\end{figure}
+\begin{figure}[h] %  figure placement: here, top, bottom, or page
+    \centering
+    \includegraphics[angle=90, width=480px,height=690px]{adapter3.jpg}
+    \caption{Adapteranbringung}
+\end{figure}
+\begin{figure}[h] %  figure placement: here, top, bottom, or page
+    \centering
+    \includegraphics[angle=90, width=480px,height=690px]{alle.jpg}
+    \caption{verwendete WLAN-Karten}
+\end{figure}
+\begin{figure}[h] %  figure placement: here, top, bottom, or page
+    \centering
+    \includegraphics[angle=90, width=480px,height=690px]{atheros.jpg}
+    \caption{Atheros-Stick}
+\end{figure}
+\begin{figure}[h] %  figure placement: here, top, bottom, or page
+    \centering
+    \includegraphics[angle=90, width=480px,height=690px]{ralink.jpg}
+    \caption{Ralink-Stick}
+\end{figure}
+\begin{figure}[h] %  figure placement: here, top, bottom, or page
+    \centering
+    \includegraphics[angle=0, height=240px,width=345px]{router.jpg}
+    \caption{Router}
+\end{figure}
+\begin{figure}[h] %  figure placement: here, top, bottom, or page
+    \centering
+    \includegraphics[angle=0, height=240px,width=345px]{router_back.jpg}
+    \caption{Router-Rückseite mit Credentials}
+\end{figure}
+\begin{figure}[h] %  figure placement: here, top, bottom, or page
+    \centering
+    \includegraphics[angle=90, width=480px,height=690px]{ecg.jpg}
+    \caption{verwendeter EKG-Verstärker mit serieller Schnittstelle}
+\end{figure}
+%\begin{center}
+%\includegraphics[angle=90, width=480px,height=690px]{oxy.jpg}
+%\end{center}
 \section{Problemlösung}
 Bei der Recherche zu verfügbaren WLAN-Modulen entstand folgende Tabelle.
-%\begin{center}
-%\includegraphics[angle=90, width=4cm,height=25cm]{tabelle-img1.png}
-%\end{center}
+\begin{center}
+    \includegraphics[angle=90, width=17.1cm,height=25cm]{tabelle.png}
+\end{center}
 
 \subsection{Tätigkeiten und Arbeitsergebnisse}
-[[Dies hier sollte meist der längste und ausführlichste Abschnitt sein. Fügen Sie ggf.
-Unterabschnitte ein.]]\\
-Was habe ich konkret getan?\\
-Welche Schwierigkeiten habe ich dabei überwunden?\\
-Welche nicht?\\
+%[[Dies hier sollte meist der längste und ausführlichste Abschnitt sein. Fügen Sie ggf.
+%Unterabschnitte ein.]]\\
+%Was habe ich konkret getan?\\
+Für die Recherche habe ich zuerst auf der Linux-Wireless Homepage Informationen über vorhandene Treiber, Geräte und Anbieter gesucht. Auf dieser Seite gab es sehr viele Informationen zu den Treibern aber wenig zur eigentlichen Hardware, problematisch war auch dass es hier keine direkten Ergebnisse für die geforderte SDIO/SPI-Schnittstelle gab. Über Chipsätze und Links zu anderen Seiten kam ich dann auch zu Modulen mit der geforderten Schnittstelle. Auch die Seiten der einzelnen Chip- bzw. Modulhersteller wie Ralink, Atheros, Marvell und Ähnliche hatten Informationen über Module für die gewünschte Schnittstelle. Das Problem bestand nun darin herauszufinden ob Treiber für Linux vorhanden sind, weiterentwickelt werden, unter einer geeigneten open source Lizenz stehen, für eine aktuelle Kernelversion zur Verfügung stehen und bestenfalls im Mainline-Kernel integriert sind. Es entstand nun eine Tabelle mit verschiedenen WLAN-Modulen die die Anforderungen mehr oder weniger erfüllten. Die Bewertung dieser Module nach der Bewertungstabelle ergab nun, dass das WiBear-Modul das geeigneteste Modul ist.
+Es gibt nur wenige Treiber im Mainline-Kernel, die WLAN über die SDIO-Schnittstelle unterstützen und der libertas-Treiber für Marvell Chipsätze tut dies zum Beispiel über das Kernelmodul libertas\_sdio. Das war ein wichtiger Grund für mich, dass WiBear-Modul mit Marvell Chipsatz zu bevorzugen. Weitere Gründe gehen aus der Bewertungstabelle hervor. Zusätzlich unterstützt das WiBear-Modul Bluetooth, was für die Bewertung keine Rolle spielte jedoch ein willkommener Zusatz war. Da das ausgewählte Modul von seinen Zertifizierungen und seiner Spezifikation auch für die Medizintechnik geeignet ist bin ich mit der Auswahl sehr zufrieden.
+%Welche Schwierigkeiten habe ich dabei überwunden?\\
+%Welche nicht?\\
 
 \section{Endergebnis}
-Was ist insgesamt herausgekommen?\\
+%Was ist insgesamt herausgekommen?\\
 Das ausgewählte WLAN-Modul wurde über die SDIO-Schnittstelle mit einem selbstgelöteten Adapter an das Atmel-Board angeschlossen und mit einem Linux (mainline kernel) in Betrieb genommen.\\
-Wie vergleicht sich das mit den Zielen? Ist es insgesamt ein Erfolgserlebnis oder nicht?\\
+
+%Wie vergleicht sich das mit den Zielen? Ist es insgesamt ein Erfolgserlebnis oder nicht?\\
 Insgesamt wurde damit das Praktikumsziel erreicht, leider fehlte die Zeit für weitere Benchmarks.\\
-Wenn nicht, woran hat es gehapert?\\
+
+%Wenn nicht, woran hat es gehapert?\\
 \section{Resüme}
+Da das ausgewählte Modul alle geforderten Spezifikationen erfüllte und auf dem Board, welches ich zur Verfügung hatte, funktionierte, sehe ich das Praktikumsergebnis als Erfolg. Ich habe mit dem Modul viele Tests mit verschiedenen Treibern und Treiberbibliotheken gemacht, dabei verschiedene Kernels verwendet und gepatched (Treiber gepatched), und dadurch Sicherheit im Umgang mit der Thematik gewonnen.
 \section{Einsichten und Fazit}
-Dieser Abschnitt beschreibt, welche wichtigsten Einsichten (Aha-Erlebnisse) ich aus dem
-Praktikum mitgenommen habe.
+%Dieser Abschnitt beschreibt, welche wichtigsten Einsichten (Aha-Erlebnisse) ich aus dem
+%Praktikum mitgenommen habe.
 
 \subsection{Technick}
-besondere Eigenschaften, Stärken, Schwächen, Fallen etc. der Technologien, mit denen
-ich gearbeitet habe: Sprachen, Bibliotheken, Plattformen, Werkzeuge, Anwendungen etc.
-(evtl. auch außerhalb der Softwarewelt)\\
-Dieser Abschnitt kann in seltenen Fällen leer sein.
-
+%besondere Eigenschaften, Stärken, Schwächen, Fallen etc. der Technologien, mit denen
+%ich gearbeitet habe: Sprachen, Bibliotheken, Plattformen, Werkzeuge, Anwendungen etc.
+%(evtl. auch außerhalb der Softwarewelt)\\
+%Dieser Abschnitt kann in seltenen Fällen leer sein.
+Für die Erstellung des Root-Filesystems für das Betriebssystem auf dem Board verwendete ich buildroot. Jeden Quellcode den ich für das Board kompilierte einschließlich der Kernel, kompilierte ich auch mit den Kompiler von buildroot. Zur Quellcodeverwaltung/Revisionsverwaltung verwendete ich svn oder git. Ich habe in den Sprachen C/C++ entwickelt und verschiedene Bibliotheken wie libnl, fltk und das control-interface von hostap verwendet. Am Ende des Praktikums habe ich mich intensiv mit WPS (WIFI Protected Setup) beschäftigt und mithilfe von hostap eine eigene Methode entwickelt um die zur Verbindung erforderlichen Daten über ein serielles Kabel im WPS-Format zu übertragen.
+%\includegraphics[angle=90,width=424px,height=527px]{Konzeptvorstellung1_wps_wire.png}
 \subsection{Methodik}
-[Einsichten über Arbeits- und Vorgehensweisen: Wenn man im Kontext X versucht Y zu
-tun, dann sollte man unbedingt A beachten/tun/vermeiden bzw. möglichst versuchen wie
-B vorzugehen/nicht vorzugehen, weil C. Mein Erlebnis in diesem Zusammenhang war D.
-(Je mehr solcher Einsichten Sie hatten, desto besser war das Praktikum.)\\
-Dieser Abschnitt kann eventuell auch leer sein.
-
+%[Einsichten über Arbeits- und Vorgehensweisen: Wenn man im Kontext X versucht Y zu
+%tun, dann sollte man unbedingt A beachten/tun/vermeiden bzw. möglichst versuchen wie
+%B vorzugehen/nicht vorzugehen, weil C. Mein Erlebnis in diesem Zusammenhang war D.
+%(Je mehr solcher Einsichten Sie hatten, desto besser war das Praktikum.)\\
+%Dieser Abschnitt kann eventuell auch leer sein.
+Zur Vorgehensweise bei der Erarbeitung oder Einarbeitung in Techniken, die einem neu sind, habe ich gelernt weniger einfach zu probieren oder zu kopieren, wie ich es vorher oft gemacht habe und statt dessen Dokumentationen und Quellcode gründlich zu analysieren um ans Ziel zu gelangen.
+Bei eigenen Projekten ist es daher auch wichtig viel Dokumentation zu erstellen um sich selbst besser im eigenen Projekt zurecht zu finden und um anderen den einfachen Zugang zu ermöglichen.
 \subsection{Sonstiges}
-Einsichten darüber, wie Firmen/Gruppen/Projekte funktionieren oder nicht funktionieren;
-wie Menschen agieren oder nicht agieren, wenn sie zusammenarbeiten oder
-zusammenarbeiten sollten; wo ich mich selbst falsch eingeschätzt habe; wo ich mich
-selbst unter- oder überschätzt habe; etc. pp.]\\
-Dieser Abschnitt kann eventuell auch leer sein.
-
+%Einsichten darüber, wie Firmen/Gruppen/Projekte funktionieren oder nicht funktionieren;
+%wie Menschen agieren oder nicht agieren, wenn sie zusammenarbeiten oder
+%zusammenarbeiten sollten; wo ich mich selbst falsch eingeschätzt habe; wo ich mich
+%selbst unter- oder überschätzt habe; etc. pp.]\\
+%Dieser Abschnitt kann eventuell auch leer sein.
+Bei der Organisation meiner Arbeiten ist mir aufgefallen, dass es mir schwer fällt den Zeitaufwand für eine Aufgabe richtig einzuschätzen und dass es wichtig ist ein gutes Zeitmanagement zu haben um Projekte gut abzuschließen.
 \subsection{Fazit}
-Was hat mir das Praktikum gebracht, das ich im Studium nicht oder weniger bekomme?\\
-Was bringt mir das Studium, das ich im Praktikum nicht oder kaum bekommen kann?\\
-Was will ich deshalb künftig an meinem Studierverhalten verändern?\\
-Welche Tipps gebe ich anderen, die ein Praktikum suchen, worauf sie achten sollten?\\
+%Was hat mir das Praktikum gebracht, das ich im Studium nicht oder weniger bekomme?\\
+Im Praktikum konnte ich sehr tief in eine Thematik einsteigen, was so im Studium bisher nicht möglich war. Außerdem habe ich vieles selbstständig erledigt und konnte eigene Entscheidungen zu meinem Thema treffen, dies fehlt im Studium.
+
+%Was bringt mir das Studium, das ich im Praktikum nicht oder kaum bekommen kann?\\
+Das Studium gibt einem im Gegensatz zum Praktikum die Sicherheit, dass es eine Lösung für das Problem gibt, die einem auch gezeigt wird wenn man sie nicht selber findet.
+
+%Was will ich deshalb künftig an meinem Studierverhalten verändern?\\
+In Zukunft werde ich Versuchen die Fragen/Aufgaben im Studium mehr auf eigenem Weg und mit selbst erarbeiteten oder gefundenen Werkzeugen zu lösen.
+
+%Welche Tipps gebe ich anderen, die ein Praktikum suchen, worauf sie achten sollten?\\
+Ich denke es ist wichtig dass das Praktikumsthema zu einem passt und dass man interessiert an der Lösung ist um Spaß und Erfolg im Praktikum zu haben.
 
 \appendix
 \includepdf[pages={1,2}]{WiBearenglv08.pdf}

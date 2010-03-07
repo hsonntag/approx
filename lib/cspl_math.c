@@ -125,6 +125,36 @@ int cspl_eval_periodic_min (unsigned int * min_n, double * signal, size_t size, 
     }
     return i;
 }
+int cspl_eval_periodic_max2 (unsigned int * max_n, double * signal, size_t size, size_t length, double max) {
+    size_t i;
+    size_t n = 0;
+    double local_max = DBL_MIN;
+    min_n[0] = n;
+    for (i = 0; i < size - length - 1; i++) {
+        while (signal[min_n[i]] > min) {
+            for (n = max_n[i]; n < (max_n[i] + length) && (n < size); n++) {
+                if (signal[n] < max) {
+                    if (signal[n] < local_min) {
+                        local_max = signal[n];
+                        max_n[i] = n;
+                        max_n[i + 1] = n + length;
+                    }
+                }
+                else if (signal[max_n[i]] > max && n == max_n[i] + length - 1) {
+                    max_n[i] = n;
+                }
+            }
+        }
+        if (signal[n] < max) {
+            max_n[i] = n;
+            max_n[i + 1] = n + length;
+        }
+        local_max = DBL_MIN;
+        if(n == size)
+            break;
+    }
+    return i;
+}
 int cspl_eval_periodic_max (unsigned int * max_n, double * signal, size_t size, double level) {
     size_t i;
     size_t n;
