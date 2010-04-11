@@ -24,19 +24,19 @@ int cspl_real_fft (double * data, size_t size)
     double compl[2*size];
 
     gsl_fft_real_wavetable * real;
-    gsl_fft_real_workspace * work;
-
-    work = gsl_fft_real_workspace_alloc (size);
     real = gsl_fft_real_wavetable_alloc (size);
+
+    gsl_fft_real_workspace * work;
+    work = gsl_fft_real_workspace_alloc (size);
 
     gsl_fft_real_transform (data, 1, size, real, work);
 
-    gsl_fft_halfcomplex_unpack (data, compl, 1, size);
+/*    gsl_fft_halfcomplex_unpack (data, compl, 1, size);
 
-for (i = 0; i < size; i++) {
-//data[i] = gsl_complex_abs (compl[2*i]);
-data[i] = pow (compl[2*i], 2) + pow (compl[2*i + 1], 2);
-}
+    for (i = 0; i < size; i++) {
+        //data[i] = gsl_complex_abs (compl[2*i]);
+        data[i] = pow (compl[2*i], 2) + pow (compl[2*i + 1], 2);
+    }*/
     gsl_fft_real_wavetable_free (real);
 
     gsl_fft_real_workspace_free (work);
@@ -129,23 +129,23 @@ int cspl_eval_periodic_max2 (unsigned int * max_n, double * signal, size_t size,
     size_t i;
     size_t n = 0;
     double local_max = DBL_MIN;
-    min_n[0] = n;
+    max_n[0] = n;
     for (i = 0; i < size - length - 1; i++) {
-        while (signal[min_n[i]] > min) {
+        while (signal[max_n[i]] < max) {
             for (n = max_n[i]; n < (max_n[i] + length) && (n < size); n++) {
-                if (signal[n] < max) {
-                    if (signal[n] < local_min) {
+                if (signal[n] > max) {
+                    if (signal[n] > local_max) {
                         local_max = signal[n];
                         max_n[i] = n;
                         max_n[i + 1] = n + length;
                     }
                 }
-                else if (signal[max_n[i]] > max && n == max_n[i] + length - 1) {
+                else if (signal[max_n[i]] < max && n == max_n[i] + length - 1) {
                     max_n[i] = n;
                 }
             }
         }
-        if (signal[n] < max) {
+        if (signal[n] > max) {
             max_n[i] = n;
             max_n[i + 1] = n + length;
         }
@@ -198,6 +198,57 @@ int cspl_eval_periodic_max (unsigned int * max_n, double * signal, size_t size, 
        }
        */
 return i;
+}
+
+int cspl_xcorr (double * c_xy, double * x, double * y, size_t length, size_t size) {
+    size_t i, j;
+    int z = 0;
+    double _x[2*length], _y[2*length], _c_xy[2*length];
+
+    gsl_fft_real_workspace * work;
+    work = gsl_fft_real_workspace_alloc (2*length);
+
+    gsl_fft_halfcomplex_wavetable * hc;
+    hc = gsl_fft_halfcomplex_wavetable_alloc (2*length);
+
+    for (i = 0; i < size; i++)
+    {
+        for (j = 0; j < 2*length; j++)
+        {
+            if (j < length)
+            {
+            _x[j] = x[j];
+            if (i < size - length)
+                _y[j] = y[j + i] - (y[i] - x[0]);
+            else
+                _y[j] = y[j] - (y[0] - x[0]);
+
+         //   cspl_norm (_x, length);
+         //   cspl_norm (_y, length);
+            }
+            else
+            {
+                _x[j] = 0;
+                _y[j] = 0;
+            }
+        }
+        z = cspl_real_fft(_x, 2*length);
+        z = cspl_real_fft(_y, 2*length);
+        _c_xy[0] = _x[0]*_y[0];
+        _c_xy[length] = _x[length]*_y[length];
+        for (j = 1; j < length; j++) {
+            _c_xy[j] = _x[j]*_y[j] + _x[2*length - j]*_y[2*length - j];
+            _c_xy[2*length - j] = _x[2*length - j]*_y[j] - _x[j]*_y[2*length - j];
+        }
+
+        //z = gsl_fft_halfcomplex_radix2_inverse(_c_xy, 1, length);
+        z =  gsl_fft_halfcomplex_inverse (_c_xy, 1, 2*length, hc, work);
+        c_xy[i] = _c_xy[0];
+    }
+    gsl_fft_halfcomplex_wavetable_free (hc);
+    gsl_fft_real_workspace_free (work);
+
+    return z;
 }
 
 int cspl_radix2_xcorr (double * c_xy, double * x, double * y, size_t size) {

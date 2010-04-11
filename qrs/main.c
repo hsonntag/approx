@@ -63,7 +63,7 @@ int main(int argc, char *argv[]) {
 
     struct gengetopt_args_info args_info;
     char * filename = NULL;
-    unsigned int i;
+    unsigned int i, j;
 
     /* let's call our cmdline parser */
     if (cmdline_parser (argc, argv, &args_info) != 0)
@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
 
     for ( i = 0 ; i < args_info.inputs_num ; ++i ) {
         filename = (char *) malloc (strlen (args_info.inputs[i]));
-        strcpy(filename, args_info.inputs[i]);
+        strcpy (filename, args_info.inputs[i]);
     }
 
     size_t splinelength = 0;
@@ -80,63 +80,79 @@ int main(int argc, char *argv[]) {
 
     cmdline_parser_free (&args_info);
     double t[splinelength], x[splinelength], c_xy[splinelength];
-    double qrs_tmpl[splinelength];
-    unsigned int m_corr[splinelength];
+    double * qrs_tmpl;
+    qrs_tmpl = (double *) malloc (100*sizeof (double)); //TODO dynamic
+    unsigned int m_corr[splinelength], m_corr1[splinelength], m_corr2[splinelength];
     int interval;
     int _dat[2][splinelength];
-    read_signals(_dat, 4, 2, splinelength, filename);
+    read_signals (_dat, 4, 2, splinelength, filename);
     for (i = 0; i < splinelength; i++) {
         x[i] = (double) _dat[1][i];
         t[i] = 0.001 * i;
         if (i < 100)
             qrs_tmpl[i] =_dat[1][i];
-        else
-            qrs_tmpl[i] = qrs_tmpl[99];
     }
 
-    cspl_norm (x, splinelength);
-    cspl_norm (qrs_tmpl, splinelength);
+//    cspl_norm (x, splinelength);
+//    cspl_norm (qrs_tmpl, splinelength);
     /*for (i = 0; i < splinelength; i++) {
         printf("%d %f\n", i, x[i]);
     }*/
 
     int a = 0;
-    if (args_info.enum_opt_given) {
-        if (strcmp (args_info.enum_opt_arg, cmdline_parser_enum_opt_values[0]) == 0)
+    //if (args_info.enum_opt_given)
+    {
+        //  if (strcmp (args_info.enum_opt_arg, cmdline_parser_enum_opt_values[0]) == 0)
         {
-            cspl_radix2_xcorr (c_xy, qrs_tmpl, x, splinelength);
+            cspl_xcorr (c_xy, qrs_tmpl, x, 100, splinelength);
             cspl_norm (c_xy, splinelength);
             for (i = 0; i < splinelength; i++) {
-                //printf("%d %f\n", i, c_xy[i]);
+                printf("%d %f\n", i, c_xy[i]);
             }
-            a = cspl_eval_periodic_max (m_corr, c_xy, splinelength, 0.8);
+            a = cspl_eval_periodic_max2 (m_corr1, c_xy, splinelength, 200, 0.1);
         }
     }
-    else
+    //else
     {
         cspl_root_mean_square (c_xy, qrs_tmpl, x, 100, splinelength);
         cspl_norm (c_xy, splinelength);
         for (i = 0; i < splinelength; i++) {
-            //printf("%d %f\n", i, c_xy[i]);
+            printf("%d %f\n", i, c_xy[i]);
         }
-        a = cspl_eval_periodic_min2 (m_corr, c_xy, splinelength, 200, -0.2);
+        int b;
+        if ((b = cspl_eval_periodic_min2 (m_corr2, c_xy, splinelength, 200, -0.1)) > a)
+        a = b;
     }
 
-    //printf ("a=%d\n", a);
-    /*printf ("#m=0,S=2\n");
     for (i = 0; i < a; i++) {
-        printf ("%d %d\n",i, m_corr[i]);
-    }*/
-    for (i = 0; i < splinelength; i++)
+        size_t k = 0;
+        for (j = 0; j < a; j++)
+        {
+            if (m_corr1[i] == m_corr2[j])
+            {
+                m_corr[k] = m_corr1[i];
+                k++;
+            }
+        }
+    }
+
+    printf ("a=%d\n", a);
+    printf ("#m=0,S=2\n");
+    for (i = 0; i < a; i++) {
+        printf ("%d, %d\n", m_corr1[i], m_corr2[i]);
+        //printf ("%d %d\n",i, m_corr[i]);
+    }
+    realloc (qrs_tmpl, splinelength/a*sizeof (double));
+    for (i = 0; i < 100; i++)
         qrs_tmpl[i] = 0.0;
 
     interval = cspl_average (qrs_tmpl, x, m_corr, splinelength, a);
     cspl_norm (qrs_tmpl, interval);
-    /*printf ("#m=1,S=0\n");
+    printf ("#m=1,S=0\n");
     for (i = 0; i < interval; i++) {
         printf("%.5f %.5f\n", t[i], qrs_tmpl[i]);
     }
-    */
+
     cspl_qrs_init();
 
     gsl_spline * spline = gsl_spline_alloc(gsl_interp_cspline, interval);
@@ -171,27 +187,27 @@ int main(int argc, char *argv[]) {
             printf ("%.5f %.5f\n", t[j], x[j]);
         }
     }
-    /*cspl_real_fft (params[0], a);
-      cspl_real_fft (params[1], a);
-      cspl_real_fft (params[2], a);
-      cspl_real_fft (params[3], a);
-      printf ("#m=0,S=0\n");
-      for (i = 0; i < a; i++) {
-      printf("%.5f %.5f\n", i/t[splinelength - 1], params[0][i]);
-      }
-      printf ("#m=1,S=0\n");
-      for (i = 0; i < a; i++) {
-      printf("%.5f %.5f\n", i/t[splinelength - 1], params[1][i]);
-      }
-      printf ("#m=2,S=0\n");
-      for (i = 0; i < a; i++) {
-      printf("%.5f %.5f\n", i/t[splinelength - 1], params[2][i]);
-      }
-      printf ("#m=3,S=0\n");
-      for (i = 0; i < a; i++) {
-      printf("%.5f %.5f\n", i/t[splinelength - 1], params[3][i]);
-      }
-      */
+    cspl_real_fft (params[0], a);
+    cspl_real_fft (params[1], a);
+    cspl_real_fft (params[2], a);
+    cspl_real_fft (params[3], a);
+    printf ("#m=0,S=0\n");
+    for (i = 0; i < a; i++) {
+        printf("%.5f %.5f\n", i/(t[interval - 1]*a), params[0][i]);
+    }
+    printf ("#m=1,S=0\n");
+    for (i = 0; i < a; i++) {
+        printf("%.5f %.5f\n", i/(t[interval - 1]*a), params[1][i]);
+    }
+    printf ("#m=2,S=0\n");
+    for (i = 0; i < a; i++) {
+        printf("%.5f %.5f\n", i/(t[interval - 1]*a), params[2][i]);
+    }
+    printf ("#m=3,S=0\n");
+    for (i = 0; i < a; i++) {
+        printf("%.5f %.5f\n", i/(t[interval - 1]*a), params[3][i]);
+    }
+
     gsl_multifit_fdfsolver_free (s);
     gsl_matrix_free (covar);
     cspl_qrs_free ();

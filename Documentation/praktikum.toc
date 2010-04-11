@@ -1,15 +1,15 @@
 \select@language {ngerman}
-\contentsline {section}{\numberline {0.1}Allgemeines zum Betrieb}{4}
-\contentsline {section}{\numberline {0.2}Eingliederung}{4}
-\contentsline {section}{\numberline {0.3}Aufgabenstellung}{5}
-\contentsline {subsection}{\numberline {0.3.1}T\IeC {\"a}tigkeitsumfeld}{5}
-\contentsline {subsection}{\numberline {0.3.2}Aufgabe und Ziele}{5}
-\contentsline {section}{\numberline {0.4}Probleml\IeC {\"o}sung}{6}
-\contentsline {subsection}{\numberline {0.4.1}T\IeC {\"a}tigkeiten und Arbeitsergebnisse}{8}
-\contentsline {section}{\numberline {0.5}Endergebnis}{8}
-\contentsline {section}{\numberline {0.6}Res\IeC {\"u}me}{9}
-\contentsline {section}{\numberline {0.7}Einsichten und Fazit}{9}
-\contentsline {subsection}{\numberline {0.7.1}Technick}{9}
-\contentsline {subsection}{\numberline {0.7.2}Methodik}{9}
-\contentsline {subsection}{\numberline {0.7.3}Sonstiges}{9}
-\contentsline {subsection}{\numberline {0.7.4}Fazit}{10}
+\contentsline {section}{\numberline {1}Allgemeines zum Betrieb}{2}
+\contentsline {section}{\numberline {2}Eingliederung}{3}
+\contentsline {section}{\numberline {3}Aufgabenstellung}{3}
+\contentsline {subsection}{\numberline {3.1}T\IeC {\"a}tigkeitsumfeld}{3}
+\contentsline {subsection}{\numberline {3.2}Aufgabe und Ziele}{6}
+\contentsline {section}{\numberline {4}Probleml\IeC {\"o}sung}{13}
+\contentsline {subsection}{\numberline {4.1}T\IeC {\"a}tigkeiten und Arbeitsergebnisse}{15}
+\contentsline {section}{\numberline {5}Endergebnis}{18}
+\contentsline {section}{\numberline {6}Res\IeC {\"u}me}{21}
+\contentsline {section}{\numberline {7}Einsichten und Fazit}{21}
+\contentsline {subsection}{\numberline {7.1}Technick}{21}
+\contentsline {subsection}{\numberline {7.2}Methodik}{23}
+\contentsline {subsection}{\numberline {7.3}Sonstiges}{23}
+\contentsline {subsection}{\numberline {7.4}Fazit}{23}

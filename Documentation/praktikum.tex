@@ -1,4 +1,4 @@
-\documentclass[pdftex,12pt,a4paper]{scrreprt}
+\documentclass[pdftex,12pt,a4paper]{scrartcl}
 \usepackage[onehalfspacing]{setspace}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
@@ -7,60 +7,47 @@
 \usepackage{graphicx}
 \usepackage{eso-pic}
 \usepackage[pdftex]{pdfpages}
+\usepackage{float}
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
-
-
 
 \begin{document}
 \input{./title.tex}
 \tableofcontents
-
-\begin{abstract}
-
-\end{abstract}
-
+%\begin{abstract}
+%\end{abstract}
 \section{Allgemeines zum Betrieb}
 %Was macht die Firma/Einrichtung? Wie groß? Branche?\\
 Die Firma Corscience entwickelt Elektronik für die Medizintechnik und stellt Medizintechnikprodukte her.
 Der Schwerpunkt liegt bei Geräten für die Herzmedizin.
 %Welche Aufgabe hat "`meine"' Abteilung/Gruppe? Wie groß? Leitungsstruktur?\\
-Das Praktikum mache ich in der Entwicklungsabteilung, hier geht es um die Entwicklung neuer Technologien für verschiedene Projekte und um die Verbesserung bestehender Konzepte und Produkte.
+Das Praktikum absolvierte ich in der Entwicklungsabteilung, hier geht es um die Entwicklung neuer Technologien für verschiedene Projekte und um die Verbesserung bestehender Konzepte und Produkte.
+Die Praktikumsstelle fand ich durch Empfehlung eines Kommilitonen, ich kannte die Firma davor noch nicht.
 
-%Welche Rolle hat mein Betreuer dort?
-Mein Betreuer ist der Experte für Betriebssysteme mit dem Schwerpunkt auf embedded Linux in diesem Unternehmen.
-
-%Wie/wo/durch wen habe ich die Praktikumsstelle gefunden? Habe ich dort schon vorher gearbeitet?\\
-Die Praktikumsstelle fand ich durch Empfehlung eines Kommilitonen.
-
-%Wie viel Bezahlung habe ich bekommen?\\
-%Ich bekam 300 Euro pro Monat und 200 Euro für jeden Monat am Ende des Praktikums als Bonus für das Erreichen des Praktikumszieles.
-Ein Praktikum wird bei Corscience wird mit 300 € pro Monat
-vergütet. Des Weiteren wird in der Regel eine Erfolgsprämie von 200 €
-pro geleistetem Monat vereinbart, welche zum Ende des Praktikums
-ausgezahlt wird.
+Ein Praktikum wird bei Corscience wird mit 300 Euro pro Monat vergütet. Des Weiteren wird in der Regel eine Erfolgsprämie von 200 Euro pro geleistetem Monat vereinbart, welche zum Ende des Praktikums ausgezahlt wird.
 %Was für Arbeitszeiten hatte ich?\\
-Ich hatte eine 40 Stunden Woche, es gibt bei Corscience eine Kernarbeitszeit von 9Uhr bis 16Uhr, in dieser Zeit soll man im Unternehmen sein, am Freitag geht die Kernarbeitszeit nur bis 15Uhr, wann man die restliche Zeit arbeitet ist einem weitgehend freigestellt.
+Es gibt bei Corscience eine Kernarbeitszeit von 9Uhr bis 16Uhr, in dieser Zeit soll man im Unternehmen sein, am Freitag geht die Kernarbeitszeit nur bis 15Uhr, wann man die restliche Zeit arbeitet ist einem weitgehend freigestellt, solange die gesamte Arbeitszeit pro Woche 40 Stunden beträgt.
+
+Mein Praktikumsbetreuer ist in diesem Unternehmen der Experte für Betriebssysteme mit dem Schwerpunkt auf embedded Linux.
 
 %Erfahrungen dabei oder Lehren daraus?\\
-Ich habe während des Praktikums viel über den Umgang mit und Aufbau von Linux kennengelernt, des weiteren habe ich vor allem Erfahrungen im Bereich der C++ Programmierung erworben und viele neue Tools kennengelernt. Ich habe Einblicke in die Treiberentwicklung für den Linux-Kernel und somit in die Kernelspaceprogrammierung gewonnen. Eine der wichtigsten Erfahrungen war auch das Inbetriebnehmen des Atmel-Boards mit einem selbst konfigurierten Betriebssystem (mit Linux-Kernel). Da das Hauptthema im Bereich WLAN lag habe ich dort auch sehr viel, für mich neues, dazugelernt. Beim Anschließen der Hardware habe ich Löterfahrungen gesammelt da der Stecker des Moduls sehr klein war und viele PINs hatte.
-
+Während des Praktikums habe ich viel über den Umgang mit und Aufbau von Linux kennengelernt, des weiteren habe ich vor allem Erfahrungen im Bereich der C++ Programmierung erworben und viele neue Tools kennengelernt. Die Arbeit mit dem Atmel-Board gab mir Einblicke in die Treiberentwicklung für den Linux-Kernel und somit in die Kernelspaceprogrammierung. Eine der wichtigsten Erfahrungen war auch das Inbetriebnehmen des Atmel-Boards mit einem selbst konfigurierten Betriebssystem (mit Linux-Kernel). Da das Hauptthema im Bereich WLAN lag habe ich dort auch sehr viel, für mich neues, dazugelernt. Beim Anschließen der Hardware habe ich Löterfahrungen gesammelt da der Stecker des Moduls sehr klein war und viele PINs hatte.
 \section{Eingliederung}
 Mein Arbeitsplatz befindet sich in einem freien Bereich im Unternehmen in der Entwicklungabteilung,
-der extra für Praktikanten und Auszubildende eingerichtet wurde.
-Ich habe einen von vier Computerarbeitsplätzen, in diesem Bereich arbeiten noch zwei Auszubildende und ein Praktikant/Master-Student.
-Neben den Schreibtischen befindet sich ein Lötbereich mit mehreren Lötstationen und ein Arbeitsplatz für andere Elektronikarbeiten.
+der extra für Praktikanten und Auszubildende eingerichtet wurde. Dort hatte ich einen von vier Computerarbeitsplätzen, an denen außer mir noch zwei Auszubildende und ein Praktikant/Master-Student arbeiteten.
+Neben den Schreibtischen befindet sich ein Lötbereich mit mehreren Lötstationen und ein Arbeitsplatz für andere Elektronikarbeiten in diesem Bereich.
 \section{Aufgabenstellung}
-Meine Aufgabenstellung ist es auf einem embedded System eine WLAN-Funktionalität zu integrieren.
-Eine wichtige Rolle spielt dabei embedded Linux als Betriebssystem unter dem das WLAN-Modul laufen soll.
+Meine Aufgabenstellung war es auf einem embedded System eine WLAN-Funktionalität zu integrieren.
+Eine wichtige Rolle spielte dabei embedded Linux als Betriebssystem unter dem das WLAN-Modul laufen soll.
 Die WLAN-Funktionalität ist später zum Beispiel für die Telemedizin von Bedeutung.
 \subsection{Tätigkeitsumfeld}
 %An welchem Projekt oder welchen Aufgaben habe ich mitgewirkt?\\
-Neben meinem Hauptthema hab ich an einem Projekt mitgewirkt, welches sich mit HD-Videoübertragung über WLAN-Standard N beschäftigt.
-Da dieses Projekt auch WLAN als Schwerpunkt hat, konnte ich hier gut in die Thematik einsteigen. Wozu sind die da?\\
+Neben meinem Hauptthema habe ich an einem Projekt mitgewirkt, welches sich mit HD-Videoübertragung über WLAN-Standard N beschäftigt.
+Da dieses Projekt auch WLAN als Schwerpunkt hat, konnte ich hier gut in die Thematik einsteigen.
+%Wozu sind die da?\\
 Das Hauptproblem liegt hier bei den hohen Datenraten, die erreicht werden müssen um das Videosignal ohne große Verzögerung übertrage zu können. Daher mussten viele Messungen des Durchsatzes gemacht werden.
-Bei diesem Projekt geht es darum wie HD-Videoaufnahmen von einer Kamera
+Bei diesem Projekt geht es darum HD-Videoaufnahmen von einer Kamera
 über WLAN N zu einem Anzeigegerät zu übertragen. Hauptaugenmerkt waren
-die besonderen Umweltbedingungen bezüglich EM Abschirmung usw. ...
+die besonderen Umweltbedingungen bezüglich EM Abschirmung usw. Deshalb wurden verschiedene Messszenarien untersucht.
 
 %Wer hat daran noch gearbeitet?\\
 Das Projekt wird von einem Projektleiter betreut und es arbeiten einige weitere Mitarbeiter an der Vorbereitung und Umsetzung.
@@ -68,12 +55,50 @@ Das Projekt wird von einem Projektleiter betreut und es arbeiten einige weitere 
 %Wie und wie eng habe ich mit denen zusammengearbeitet?\\
 Für die Vorbereitung des Projektes mussten Datenratenmessungen durchgeführt werden, dabei arbeitete ich mit einem Mitarbeiter zusammen.
 Meine Hauptaufgabe war dabei die Linuxseite der Datenratenmessung aufzubauen.
+
+Des weiteren schrieb ich während des Praktikums ein Programm zur Visualisierung eines 12-Kanal-EKGs in C++, für das ich im Laufe der Zeit weitere Funktionen hinzufügte und am Ende der Praktikumszeit auch eine Anpassung an die Windows-Plattform.
+Das nächste Bild zeigt den EKG-Verstärker, der die Daten der Kanäle über die Serielle Schnittstelle überträgt.
+\begin{figure}[H] %  figure placement: here, top, bottom, or page
+    \centering
+    \includegraphics[angle=90, width=480px,height=690px]{ecg.jpg}
+    \caption{verwendeter EKG-Verstärker mit serieller Schnittstelle}
+\end{figure}
 \subsection{Aufgabe und Ziele}
 %Was sollte ich aus Sicht der Einrichtung tun?\\
 Die erste Aufgabe bei meinem Hauptthema war die Einarbeitung in die Problematik.
 Ich bekam ein Atmel Board AT91SAM9263-EK welches ich einrichten musste um darauf einen Linux Kernel über die Netzwerkschnittstelle booten zu können.
 Um auf dem Board arbeiten zu können musste ich auch ein Filesystem mit den notwendigen Programmen erstellen und dieses ebenfalls über den Netzwerkadapter einbinden.
+\begin{figure}[H] %  figure placement: here, top, bottom, or page
+    \centering
+    \includegraphics[angle=90, width=480px,height=690px]{board3.jpg}
+    \caption{Atmel-Board ohne WLAN-Modul}
+\end{figure}
 Die schwierigste Aufgabe war jetzt den Linux Kernel so zu konfigurieren dass er die Hardware also vorallem die WLAN-Module und gewünschte Methoden richtig unterstützt.
+\begin{figure}[H] %  figure placement: here, top, bottom, or page
+    \centering
+    \includegraphics[angle=90, width=480px,height=690px]{alle.jpg}
+    \caption{verwendete WLAN-Karten}
+\end{figure}
+\begin{figure}[H] %  figure placement: here, top, bottom, or page
+    \centering
+    \includegraphics[angle=90, width=480px,height=690px]{atheros.jpg}
+    \caption{Atheros-Stick}
+\end{figure}
+\begin{figure}[H] %  figure placement: here, top, bottom, or page
+    \centering
+    \includegraphics[angle=90, width=480px,height=690px]{ralink.jpg}
+    \caption{Ralink-Stick}
+\end{figure}
+\begin{figure}[H] %  figure placement: here, top, bottom, or page
+    \centering
+    \includegraphics[angle=0, height=240px,width=345px]{router.jpg}
+    \caption{Router}
+\end{figure}
+\begin{figure}[H] %  figure placement: here, top, bottom, or page
+    \centering
+    \includegraphics[angle=0, height=240px,width=345px]{router_back.jpg}
+    \caption{Router-Rückseite mit Credentials}
+\end{figure}
 Der erste Schritt für die Umsetzung meiner Aufgabenstellung war die Recherche nach geeigneten WLAN-Modulen auf dem Markt.
 Dabei ging es vor allem um folgende Punkte:\\
 \begin{itemize}
@@ -97,100 +122,66 @@ Meine Ziele für dieses Praktikum waren:
  \item Einblicke in den Linux-Kernel zu bekommen, das heißt Einblicke in den Aufbau in Konfigurationsmöglichkeiten und Anpassbarkeit des Kernels.
  \item Erlernen von Linux-Treiberentwicklung mit dem Schwerpunkt auf Netzwerktreiber.
 \end{itemize}
-\begin{figure}[h] %  figure placement: here, top, bottom, or page
-    \centering
-    \includegraphics[angle=90, width=480px,height=690px]{board3.jpg}
-    \caption{Atmel-Board ohne WLAN-Modul}
-\end{figure}
-\begin{figure}[h] %  figure placement: here, top, bottom, or page
-    \centering
-    \includegraphics[angle=90, width=480px,height=690px]{board2.jpg}
-    \caption{Atmel-Board mit WLAN-Modul}
-\end{figure}
-\begin{figure}[h] %  figure placement: here, top, bottom, or page
-    \centering
-    \includegraphics[angle=90, width=480px,height=690px]{adapter1.jpg}
-    \caption{Adapter von SDIO zu Stecker für das WLAN-Modul}
-\end{figure}
-\begin{figure}[h] %  figure placement: here, top, bottom, or page
-    \centering
-    \includegraphics[angle=90, width=480px,height=690px]{adapter2.jpg}
-    \caption{Adapter mit Dummy-SD-Karte (damit die Kartenschnittstelle aktiviert wird)}
-\end{figure}
-\begin{figure}[h] %  figure placement: here, top, bottom, or page
-    \centering
-    \includegraphics[angle=90, width=480px,height=690px]{adapter3.jpg}
-    \caption{Adapteranbringung}
-\end{figure}
-\begin{figure}[h] %  figure placement: here, top, bottom, or page
-    \centering
-    \includegraphics[angle=90, width=480px,height=690px]{alle.jpg}
-    \caption{verwendete WLAN-Karten}
-\end{figure}
-\begin{figure}[h] %  figure placement: here, top, bottom, or page
-    \centering
-    \includegraphics[angle=90, width=480px,height=690px]{atheros.jpg}
-    \caption{Atheros-Stick}
-\end{figure}
-\begin{figure}[h] %  figure placement: here, top, bottom, or page
-    \centering
-    \includegraphics[angle=90, width=480px,height=690px]{ralink.jpg}
-    \caption{Ralink-Stick}
-\end{figure}
-\begin{figure}[h] %  figure placement: here, top, bottom, or page
-    \centering
-    \includegraphics[angle=0, height=240px,width=345px]{router.jpg}
-    \caption{Router}
-\end{figure}
-\begin{figure}[h] %  figure placement: here, top, bottom, or page
-    \centering
-    \includegraphics[angle=0, height=240px,width=345px]{router_back.jpg}
-    \caption{Router-Rückseite mit Credentials}
-\end{figure}
-\begin{figure}[h] %  figure placement: here, top, bottom, or page
-    \centering
-    \includegraphics[angle=90, width=480px,height=690px]{ecg.jpg}
-    \caption{verwendeter EKG-Verstärker mit serieller Schnittstelle}
-\end{figure}
 %\begin{center}
 %\includegraphics[angle=90, width=480px,height=690px]{oxy.jpg}
 %\end{center}
 \section{Problemlösung}
 Bei der Recherche zu verfügbaren WLAN-Modulen entstand folgende Tabelle.
 \begin{center}
-    \includegraphics[angle=90, width=17.1cm,height=25cm]{tabelle.png}
+    \includegraphics[angle=90, height=25cm]{tabelle.png}
 \end{center}
-
 \subsection{Tätigkeiten und Arbeitsergebnisse}
 %[[Dies hier sollte meist der längste und ausführlichste Abschnitt sein. Fügen Sie ggf.
 %Unterabschnitte ein.]]\\
 %Was habe ich konkret getan?\\
 Für die Recherche habe ich zuerst auf der Linux-Wireless Homepage Informationen über vorhandene Treiber, Geräte und Anbieter gesucht. Auf dieser Seite gab es sehr viele Informationen zu den Treibern aber wenig zur eigentlichen Hardware, problematisch war auch dass es hier keine direkten Ergebnisse für die geforderte SDIO/SPI-Schnittstelle gab. Über Chipsätze und Links zu anderen Seiten kam ich dann auch zu Modulen mit der geforderten Schnittstelle. Auch die Seiten der einzelnen Chip- bzw. Modulhersteller wie Ralink, Atheros, Marvell und Ähnliche hatten Informationen über Module für die gewünschte Schnittstelle. Das Problem bestand nun darin herauszufinden ob Treiber für Linux vorhanden sind, weiterentwickelt werden, unter einer geeigneten open source Lizenz stehen, für eine aktuelle Kernelversion zur Verfügung stehen und bestenfalls im Mainline-Kernel integriert sind. Es entstand nun eine Tabelle mit verschiedenen WLAN-Modulen die die Anforderungen mehr oder weniger erfüllten. Die Bewertung dieser Module nach der Bewertungstabelle ergab nun, dass das WiBear-Modul das geeigneteste Modul ist.
 Es gibt nur wenige Treiber im Mainline-Kernel, die WLAN über die SDIO-Schnittstelle unterstützen und der libertas-Treiber für Marvell Chipsätze tut dies zum Beispiel über das Kernelmodul libertas\_sdio. Das war ein wichtiger Grund für mich, dass WiBear-Modul mit Marvell Chipsatz zu bevorzugen. Weitere Gründe gehen aus der Bewertungstabelle hervor. Zusätzlich unterstützt das WiBear-Modul Bluetooth, was für die Bewertung keine Rolle spielte jedoch ein willkommener Zusatz war. Da das ausgewählte Modul von seinen Zertifizierungen und seiner Spezifikation auch für die Medizintechnik geeignet ist bin ich mit der Auswahl sehr zufrieden.
+\begin{figure}[H] %  figure placement: here, top, bottom, or page
+    \centering
+    \includegraphics[angle=90, width=480px,height=690px]{adapter1.jpg}
+    \caption{Adapter von SDIO zu Stecker für das WLAN-Modul}
+\end{figure}
+\begin{figure}[H] %  figure placement: here, top, bottom, or page
+    \centering
+    \includegraphics[angle=90, width=480px,height=690px]{adapter2.jpg}
+    \caption{Adapter mit Dummy-SD-Karte (damit die Kartenschnittstelle aktiviert wird)}
+\end{figure}
 %Welche Schwierigkeiten habe ich dabei überwunden?\\
 %Welche nicht?\\
-
 \section{Endergebnis}
 %Was ist insgesamt herausgekommen?\\
-Das ausgewählte WLAN-Modul wurde über die SDIO-Schnittstelle mit einem selbstgelöteten Adapter an das Atmel-Board angeschlossen und mit einem Linux (mainline kernel) in Betrieb genommen.\\
+Das ausgewählte WLAN-Modul wurde über die SDIO-Schnittstelle mit einem selbstgelöteten Adapter, wie oben zu sehen, an das Atmel-Board angeschlossen und mit einem Linux (mainline kernel) in Betrieb genommen.\\
+\begin{figure}[H] %  figure placement: here, top, bottom, or page
+    \centering
+    \includegraphics[angle=90, width=480px,height=690px]{board2.jpg}
+    \caption{Atmel-Board mit WLAN-Modul}
+\end{figure}
+\begin{figure}[H] %  figure placement: here, top, bottom, or page
+    \centering
+    \includegraphics[angle=90, width=480px,height=690px]{adapter3.jpg}
+    \caption{Adapteranbringung}
+\end{figure}
 
 %Wie vergleicht sich das mit den Zielen? Ist es insgesamt ein Erfolgserlebnis oder nicht?\\
 Insgesamt wurde damit das Praktikumsziel erreicht, leider fehlte die Zeit für weitere Benchmarks.\\
-
 %Wenn nicht, woran hat es gehapert?\\
 \section{Resüme}
 Da das ausgewählte Modul alle geforderten Spezifikationen erfüllte und auf dem Board, welches ich zur Verfügung hatte, funktionierte, sehe ich das Praktikumsergebnis als Erfolg. Ich habe mit dem Modul viele Tests mit verschiedenen Treibern und Treiberbibliotheken gemacht, dabei verschiedene Kernels verwendet und gepatched (Treiber gepatched), und dadurch Sicherheit im Umgang mit der Thematik gewonnen.
 \section{Einsichten und Fazit}
 %Dieser Abschnitt beschreibt, welche wichtigsten Einsichten (Aha-Erlebnisse) ich aus dem
 %Praktikum mitgenommen habe.
-
 \subsection{Technick}
 %besondere Eigenschaften, Stärken, Schwächen, Fallen etc. der Technologien, mit denen
 %ich gearbeitet habe: Sprachen, Bibliotheken, Plattformen, Werkzeuge, Anwendungen etc.
 %(evtl. auch außerhalb der Softwarewelt)\\
 %Dieser Abschnitt kann in seltenen Fällen leer sein.
 Für die Erstellung des Root-Filesystems für das Betriebssystem auf dem Board verwendete ich buildroot. Jeden Quellcode den ich für das Board kompilierte einschließlich der Kernel, kompilierte ich auch mit den Kompiler von buildroot. Zur Quellcodeverwaltung/Revisionsverwaltung verwendete ich svn oder git. Ich habe in den Sprachen C/C++ entwickelt und verschiedene Bibliotheken wie libnl, fltk und das control-interface von hostap verwendet. Am Ende des Praktikums habe ich mich intensiv mit WPS (WIFI Protected Setup) beschäftigt und mithilfe von hostap eine eigene Methode entwickelt um die zur Verbindung erforderlichen Daten über ein serielles Kabel im WPS-Format zu übertragen.
-%\includegraphics[angle=90,width=424px,height=527px]{Konzeptvorstellung1_wps_wire.png}
+\begin{figure}[H] %  figure placement: here, top, bottom, or page
+    \centering
+%\includegraphics[angle=0,width=394px,height=478px]{Konzeptvorstellung1_wps_wire.jpg}
+\includegraphics[width=12cm]{Konzeptvorstellung1_wps_wire.jpg}
+    \caption{Ausschnitt des Konzeptes für die Übertragung von WPS-Daten über ein serielles Kabel}
+\end{figure}
 \subsection{Methodik}
 %[Einsichten über Arbeits- und Vorgehensweisen: Wenn man im Kontext X versucht Y zu
 %tun, dann sollte man unbedingt A beachten/tun/vermeiden bzw. möglichst versuchen wie
@@ -222,4 +213,4 @@ Ich denke es ist wichtig dass das Praktikumsthema zu einem passt und dass man in
 \appendix
 \includepdf[pages={1,2}]{WiBearenglv08.pdf}
 
-\end{document}          
+\end{document}
