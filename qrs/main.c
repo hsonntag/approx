@@ -100,6 +100,8 @@ int main(int argc, char *argv[]) {
     }*/
 
     int a = 0;
+    int b = 0;
+    int k = 0;
     //if (args_info.enum_opt_given)
     {
         //  if (strcmp (args_info.enum_opt_arg, cmdline_parser_enum_opt_values[0]) == 0)
@@ -119,14 +121,12 @@ int main(int argc, char *argv[]) {
         for (i = 0; i < splinelength; i++) {
             printf("%d %f\n", i, c_xy[i]);
         }
-        int b;
-        if ((b = cspl_eval_periodic_min2 (m_corr2, c_xy, splinelength, 200, -0.1)) > a)
-        a = b;
+        b = cspl_eval_periodic_min2 (m_corr2, c_xy, splinelength, 200, -0.1);
     }
 
     for (i = 0; i < a; i++) {
         size_t k = 0;
-        for (j = 0; j < a; j++)
+        for (j = 0; j < b; j++)
         {
             if (m_corr1[i] == m_corr2[j])
             {
@@ -136,17 +136,17 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    printf ("a=%d\n", a);
+    printf ("a=%d\n", k);
     printf ("#m=0,S=2\n");
-    for (i = 0; i < a; i++) {
+    for (i = 0; i < k; i++) {
         printf ("%d, %d\n", m_corr1[i], m_corr2[i]);
         //printf ("%d %d\n",i, m_corr[i]);
     }
-    realloc (qrs_tmpl, splinelength/a*sizeof (double));
+    realloc (qrs_tmpl, splinelength/k*sizeof (double));
     for (i = 0; i < 100; i++)
         qrs_tmpl[i] = 0.0;
 
-    interval = cspl_average (qrs_tmpl, x, m_corr, splinelength, a);
+    interval = cspl_average (qrs_tmpl, x, m_corr, splinelength, k);
     cspl_norm (qrs_tmpl, interval);
     printf ("#m=1,S=0\n");
     for (i = 0; i < interval; i++) {
@@ -165,8 +165,8 @@ int main(int argc, char *argv[]) {
     gsl_matrix * covar = gsl_matrix_alloc (p, p);
     double x_init[4] = { 1.0, 0.0, 0.0, 0.0 };
     gsl_vector_view vec = gsl_vector_view_array (x_init, p);
-    double params[p][a];
-    for (i = 0; i < a; i++) {
+    double params[p][k];
+    for (i = 0; i < k; i++) {
         struct cspl_qrs_data data = {interval, t, x + m_corr[i], spline, sigma, p, s, covar, vec};
         cspl_qrs_fit (&data);
         size_t j;
@@ -187,25 +187,29 @@ int main(int argc, char *argv[]) {
             printf ("%.5f %.5f\n", t[j], x[j]);
         }
     }
-    cspl_real_fft (params[0], a);
-    cspl_real_fft (params[1], a);
-    cspl_real_fft (params[2], a);
-    cspl_real_fft (params[3], a);
+    cspl_real_fft (params[0], k);
+    cspl_real_fft (params[1], k);
+    cspl_real_fft (params[2], k);
+    cspl_real_fft (params[3], k);
+    cspl_halfcomplex_abs (params[0], k);
+    cspl_halfcomplex_abs (params[1], k);
+    cspl_halfcomplex_abs (params[2], k);
+    cspl_halfcomplex_abs (params[3], k);
     printf ("#m=0,S=0\n");
-    for (i = 0; i < a; i++) {
-        printf("%.5f %.5f\n", i/(t[interval - 1]*a), params[0][i]);
+    for (i = 0; i < k; i++) {
+        printf("%.5f %.5f\n", 2*i/(t[interval - 1]*k), params[0][i]);
     }
     printf ("#m=1,S=0\n");
-    for (i = 0; i < a; i++) {
-        printf("%.5f %.5f\n", i/(t[interval - 1]*a), params[1][i]);
+    for (i = 0; i < k; i++) {
+        printf("%.5f %.5f\n", 2*i/(t[interval - 1]*k), params[1][i]);
     }
     printf ("#m=2,S=0\n");
-    for (i = 0; i < a; i++) {
-        printf("%.5f %.5f\n", i/(t[interval - 1]*a), params[2][i]);
+    for (i = 0; i < k; i++) {
+        printf("%.5f %.5f\n", 2*i/(t[interval - 1]*k), params[2][i]);
     }
     printf ("#m=3,S=0\n");
-    for (i = 0; i < a; i++) {
-        printf("%.5f %.5f\n", i/(t[interval - 1]*a), params[3][i]);
+    for (i = 0; i < k; i++) {
+        printf("%.5f %.5f\n", 2*i/(t[interval - 1]*k), params[3][i]);
     }
 
     gsl_multifit_fdfsolver_free (s);

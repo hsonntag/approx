@@ -20,9 +20,6 @@
 
 int cspl_real_fft (double * data, size_t size)
 {
-    size_t i;
-    double compl[2*size];
-
     gsl_fft_real_wavetable * real;
     real = gsl_fft_real_wavetable_alloc (size);
 
@@ -31,16 +28,21 @@ int cspl_real_fft (double * data, size_t size)
 
     gsl_fft_real_transform (data, 1, size, real, work);
 
-/*    gsl_fft_halfcomplex_unpack (data, compl, 1, size);
-
-    for (i = 0; i < size; i++) {
-        //data[i] = gsl_complex_abs (compl[2*i]);
-        data[i] = pow (compl[2*i], 2) + pow (compl[2*i + 1], 2);
-    }*/
     gsl_fft_real_wavetable_free (real);
 
     gsl_fft_real_workspace_free (work);
     return 0;
+}
+
+int cspl_halfcomplex_abs (double * data, size_t size) {
+    size_t i;
+    double compl[2*size];
+    gsl_fft_halfcomplex_unpack (data, compl, 1, size);
+
+    for (i = 0; i < size; i++) {
+        //data[i] = gsl_complex_abs (compl[2*i]);
+        data[i] = pow (compl[2*i], 2) + pow (compl[2*i + 1], 2);
+    }
 }
 
 int cspl_root_mean_square (double * rms, double * x, double *y, size_t length, size_t size) {
@@ -217,14 +219,14 @@ int cspl_xcorr (double * c_xy, double * x, double * y, size_t length, size_t siz
         {
             if (j < length)
             {
-            _x[j] = x[j];
-            if (i < size - length)
-                _y[j] = y[j + i] - (y[i] - x[0]);
-            else
-                _y[j] = y[j] - (y[0] - x[0]);
+                _x[j] = x[j];
+                if (i < size - length)
+                    _y[j] = y[j + i] - (y[i] - x[0]);
+                else
+                    _y[j] = y[j] - (y[0] - x[0]);
 
-         //   cspl_norm (_x, length);
-         //   cspl_norm (_y, length);
+                //   cspl_norm (_x, length);
+                //   cspl_norm (_y, length);
             }
             else
             {
