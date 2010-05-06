@@ -46,6 +46,7 @@
 __BEGIN_DECLS
 
 int cspl_real_fft (double * data, size_t size);
+int cspl_halfcomplex_abs (double * data, size_t size);
 int cspl_root_mean_square (double * rms, double * x, double * y, size_t length, size_t size);
 int cspl_norm (double * signal, size_t size);
 int cspl_eval_periodic_min2 (unsigned int * min_n, double * signal, size_t size, size_t length, double min); 
