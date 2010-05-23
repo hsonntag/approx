@@ -41,7 +41,7 @@ int cspl_halfcomplex_abs (double * data, size_t size) {
 
     for (i = 0; i < size; i++) {
         //data[i] = gsl_complex_abs (compl[2*i]);
-        data[i] = pow (compl[2*i], 2) + pow (compl[2*i + 1], 2);
+        data[i] = sqrt(pow (compl[2*i], 2) + pow (compl[2*i + 1], 2));
     }
 }
 

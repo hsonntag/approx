@@ -2,5 +2,7 @@ purpose "This program doeas a spline approximation of the input"
 
 # Options
 option  "int-opt"         i "A int option"         int        required
-option  "enum-opt"          "A string option with list of values"
+option  "frq-opt"         f "A int option"         int        optional
+option  "time-opt"        t "A int option"         int        optional
+option  "enum-opt"        - "A string option with list of values"
         values = "xcorr", "rms" default = "rms" optional

@@ -46,6 +46,12 @@ struct gengetopt_args_info
   int int_opt_arg;	/**< @brief A int option.  */
   char * int_opt_orig;	/**< @brief A int option original value given at command line.  */
   const char *int_opt_help; /**< @brief A int option help description.  */
+  int frq_opt_arg;	/**< @brief A int option.  */
+  char * frq_opt_orig;	/**< @brief A int option original value given at command line.  */
+  const char *frq_opt_help; /**< @brief A int option help description.  */
+  int time_opt_arg;	/**< @brief A int option.  */
+  char * time_opt_orig;	/**< @brief A int option original value given at command line.  */
+  const char *time_opt_help; /**< @brief A int option help description.  */
   char * enum_opt_arg;	/**< @brief A string option with list of values (default='rms').  */
   char * enum_opt_orig;	/**< @brief A string option with list of values original value given at command line.  */
   const char *enum_opt_help; /**< @brief A string option with list of values help description.  */
@@ -53,6 +59,8 @@ struct gengetopt_args_info
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
   unsigned int int_opt_given ;	/**< @brief Whether int-opt was given.  */
+  unsigned int frq_opt_given ;	/**< @brief Whether frq-opt was given.  */
+  unsigned int time_opt_given ;	/**< @brief Whether time-opt was given.  */
   unsigned int enum_opt_given ;	/**< @brief Whether enum-opt was given.  */
 
   char **inputs ; /**< @brief unamed options (options without names) */

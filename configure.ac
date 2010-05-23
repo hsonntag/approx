@@ -50,6 +50,7 @@ AC_SUBST(GSL_LIBS)
 #AC_CHECK_LIB([gsl], [gsl_cblas_dgemm])
 #AC_CHECK_LIB([gslcblas], [cblas_dgemm])
 
+AC_CHECK_LIB([nfft3], [nfft_trafo])
 AC_CHECK_LIB([m], [sin])
 
 # Checks for header files.
@@ -82,9 +83,9 @@ CFLAGS="$TMP_CFLAGS"
 )
 
 AC_CONFIG_FILES([Makefile \
-		 lib/Makefile \
-		 lib/cspl.pc \
-		 qrs/Makefile ])
+                 lib/Makefile \
+                 lib/cspl.pc \
+                 qrs/Makefile ])
 AC_OUTPUT
 
 

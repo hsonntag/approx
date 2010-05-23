@@ -35,6 +35,8 @@ const char *gengetopt_args_info_help[] = {
   "  -h, --help             Print help and exit",
   "  -V, --version          Print version and exit",
   "  -i, --int-opt=INT      A int option",
+  "  -f, --frq-opt=INT      A int option",
+  "  -t, --time-opt=INT     A int option",
   "      --enum-opt=STRING  A string option with list of values  (possible \n                           values=\"xcorr\", \"rms\" default=`rms')",
     0
 };
@@ -67,6 +69,8 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->help_given = 0 ;
   args_info->version_given = 0 ;
   args_info->int_opt_given = 0 ;
+  args_info->frq_opt_given = 0 ;
+  args_info->time_opt_given = 0 ;
   args_info->enum_opt_given = 0 ;
 }
 
@@ -75,6 +79,8 @@ void clear_args (struct gengetopt_args_info *args_info)
 {
   FIX_UNUSED (args_info);
   args_info->int_opt_orig = NULL;
+  args_info->frq_opt_orig = NULL;
+  args_info->time_opt_orig = NULL;
   args_info->enum_opt_arg = gengetopt_strdup ("rms");
   args_info->enum_opt_orig = NULL;
   
@@ -88,7 +94,9 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->help_help = gengetopt_args_info_help[0] ;
   args_info->version_help = gengetopt_args_info_help[1] ;
   args_info->int_opt_help = gengetopt_args_info_help[2] ;
-  args_info->enum_opt_help = gengetopt_args_info_help[3] ;
+  args_info->frq_opt_help = gengetopt_args_info_help[3] ;
+  args_info->time_opt_help = gengetopt_args_info_help[4] ;
+  args_info->enum_opt_help = gengetopt_args_info_help[5] ;
   
 }
 
@@ -173,6 +181,8 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
 {
   unsigned int i;
   free_string_field (&(args_info->int_opt_orig));
+  free_string_field (&(args_info->frq_opt_orig));
+  free_string_field (&(args_info->time_opt_orig));
   free_string_field (&(args_info->enum_opt_arg));
   free_string_field (&(args_info->enum_opt_orig));
   
@@ -257,6 +267,10 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "version", 0, 0 );
   if (args_info->int_opt_given)
     write_into_file(outfile, "int-opt", args_info->int_opt_orig, 0);
+  if (args_info->frq_opt_given)
+    write_into_file(outfile, "frq-opt", args_info->frq_opt_orig, 0);
+  if (args_info->time_opt_given)
+    write_into_file(outfile, "time-opt", args_info->time_opt_orig, 0);
   if (args_info->enum_opt_given)
     write_into_file(outfile, "enum-opt", args_info->enum_opt_orig, cmdline_parser_enum_opt_values);
   
@@ -551,11 +565,13 @@ cmdline_parser_internal (
         { "help",	0, NULL, 'h' },
         { "version",	0, NULL, 'V' },
         { "int-opt",	1, NULL, 'i' },
+        { "frq-opt",	1, NULL, 'f' },
+        { "time-opt",	1, NULL, 't' },
         { "enum-opt",	1, NULL, 0 },
         { 0,  0, 0, 0 }
       };
 
-      c = getopt_long (argc, argv, "hVi:", long_options, &option_index);
+      c = getopt_long (argc, argv, "hVi:f:t:", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -579,6 +595,30 @@ cmdline_parser_internal (
               &(local_args_info.int_opt_given), optarg, 0, 0, ARG_INT,
               check_ambiguity, override, 0, 0,
               "int-opt", 'i',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'f':	/* A int option.  */
+        
+        
+          if (update_arg( (void *)&(args_info->frq_opt_arg), 
+               &(args_info->frq_opt_orig), &(args_info->frq_opt_given),
+              &(local_args_info.frq_opt_given), optarg, 0, 0, ARG_INT,
+              check_ambiguity, override, 0, 0,
+              "frq-opt", 'f',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 't':	/* A int option.  */
+        
+        
+          if (update_arg( (void *)&(args_info->time_opt_arg), 
+               &(args_info->time_opt_orig), &(args_info->time_opt_given),
+              &(local_args_info.time_opt_given), optarg, 0, 0, ARG_INT,
+              check_ambiguity, override, 0, 0,
+              "time-opt", 't',
               additional_error))
             goto failure;
         
