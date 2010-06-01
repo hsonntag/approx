@@ -1,5 +1,5 @@
 /*   qrs/main.c                                                            *
- *   this does a cubic spline approximation.                               *
+ *   this does a cubic spline approximation and analysis.                  *
  ***************************************************************************
  *   Copyright (C) 2009, 2010 Hermann Sonntag                              *
  *   hermann.sonntag@tu-ilmenau.de                                         *
@@ -39,7 +39,7 @@
 #define ARG_REQUIRED 1
 #define ARG_OPTIONAL 2
 
-int read_signals(void * dat, size_t size, size_t channels, size_t count, char *filename) {
+int read_signals(int * dat, size_t size, size_t channels, size_t count, char *filename) {
     FILE *fp;
 
     /* open the file */
@@ -50,9 +50,15 @@ int read_signals(void * dat, size_t size, size_t channels, size_t count, char *f
     }
 
     /* copy the file into memory */
-    if (fread(dat, size, channels*count, fp) != channels*count){
-        perror ("The following error occurred in read_signals");
-        return 2;
+    int i;
+    for (i = 0; (i < count) && (!feof(fp)); i++)
+    {
+        if (fread(&dat[i], size, 1, fp) != 1)
+        {
+            perror ("The following error occurred in read_signals");
+            return 2;
+        }
+        fseek(fp, size*(206-1), SEEK_CUR);
     }
 
     /* close the file */
@@ -106,22 +112,22 @@ int main(int argc, char *argv[]) {
     qrs_tmpl = (double *) malloc (100*sizeof (double)); //TODO dynamic
     unsigned int * m_corr, * m_corr1, * m_corr2;
     int interval;
-    int _dat[2][splinelength];
-    read_signals (_dat, 4, 2, splinelength, filename);
+    int _dat[splinelength];
+    read_signals (_dat, 4, 206, splinelength, filename);
     for (i = 0; i < splinelength; i++) {
-        x[i] = (double) _dat[1][i];
-        t[i] = 0.001 * i;
+        x[i] = (double) _dat[i];
+        t[i] = ((double)1)/1025 * i;
         if (i < 100)
-            qrs_tmpl[i] =_dat[1][i];
+            qrs_tmpl[i] =_dat[i];
     }
 
     cspl_norm (x, splinelength);
     cspl_norm (qrs_tmpl, 100);
-    /*
-       for (i = 0; i < splinelength; i++) {
-       printf("%d %f\n", i, x[i]);
-       }
-       */
+
+    //for (i = 0; i < splinelength; i++) {
+    //    printf("%d %f\n", i, x[i]);
+    //}
+
 
     int a = 0;
     int b = 0;
@@ -138,7 +144,7 @@ int main(int argc, char *argv[]) {
                }
                */
             m_corr1 = (unsigned int *) malloc (sizeof (unsigned int) * splinelength / 200);
-            a = cspl_eval_periodic_max2 (m_corr1, c_xy, splinelength, 200, 0.1);
+            a = cspl_eval_periodic_max2 (m_corr1, c_xy, splinelength, 200, 0.15);
         }
     }
     //else
@@ -151,7 +157,7 @@ int main(int argc, char *argv[]) {
            }
            */
         m_corr2 = (unsigned int *) malloc (sizeof (unsigned int) * splinelength / 200);
-        b = cspl_eval_periodic_min2 (m_corr2, c_xy, splinelength, 200, -0.1);
+        b = cspl_eval_periodic_min2 (m_corr2, c_xy, splinelength, 200, -0.15);
     }
     m_corr = (unsigned int *) malloc (sizeof (unsigned int) * GSL_MIN (a, b));
     for (i = 0; i < a; i++) {
@@ -164,28 +170,32 @@ int main(int argc, char *argv[]) {
             }
         }
     }
-    //printf ("#m=0,S=2\n");
-    //for (i = 0; i < k; i++) 
-    //{
-    //printf ("%d, %d\n", m_corr1[i], m_corr2[i]);
-    //printf ("%d %d\n",i, m_corr[i]);
-    //}
-    qrs_tmpl = realloc (qrs_tmpl, splinelength/k*sizeof (double));
-    for (i = 0; i < splinelength/k; i++)
+
+    printf ("#m=0,S=2\n");
+    for (i = 0; i < k; i++) 
     {
-        qrs_tmpl[i] = 0.0;
+        printf ("%d, %d\n", m_corr1[i], m_corr2[i]);
+        printf ("%d %d\n",i, m_corr[i]);
+    }
+    if (k != 0) 
+    {
+        qrs_tmpl = realloc (qrs_tmpl, splinelength/k*sizeof (double));
+        for (i = 0; i < splinelength/k; i++)
+        {
+            qrs_tmpl[i] = 0.0;
+        }
     }
     interval = cspl_average (qrs_tmpl, x, m_corr, splinelength, k);
     cspl_norm (qrs_tmpl, interval);
     if (template)
     {
-        printf ("#m=0,S=0\n");
+        printf ("#m=1,S=0\n");
         for (i = 0; i < interval; i++) {
             printf("%.5f %.5f\n", t[i], qrs_tmpl[i]);
         }
     }
     free (m_corr);
-    if (a > b) 
+    if (a > b)
     {
         k = a;
         m_corr = m_corr1;
@@ -199,6 +209,11 @@ int main(int argc, char *argv[]) {
 
     gsl_spline * spline = gsl_spline_alloc(gsl_interp_cspline, interval);
     gsl_spline_init(spline, t, qrs_tmpl, interval);
+    if (template) {
+        printf ("#m=1,S=0\n");
+        for (j = 0; j < interval*10; j++) 
+            printf ("%.5f %.5f\n", t[j]/10, gsl_spline_eval(spline, t[j]/10, acc));
+    }
 
     double sigma[interval];
     const size_t p = 4;
@@ -239,12 +254,12 @@ int main(int argc, char *argv[]) {
         pl[3].f[i] = gsl_vector_get(s->x, 3);
 
         if (timedomain)
-            printf ("#m=0,S=0\n");
+            printf ("#m=1,S=0\n");
         for (j = 0; j < interval; j++) 
         {
             double y_j = gsl_vector_get(s->x, 0)*gsl_spline_eval(spline, t[j] - gsl_vector_get(s->x, 1), acc) + gsl_vector_get(s->x, 2)*t[j] + gsl_vector_get(s->x, 3);
             if (timedomain)
-                printf ("%.5f %.5f\n", t[j + m_corr[i]], y_j);
+                printf ("%.5f %.5f\n", t[j], y_j);
         }
         if (timedomain)
             printf ("#m=1,S=0\n");
@@ -273,7 +288,7 @@ int main(int argc, char *argv[]) {
 
     if (frq & 0x8)
     {
-        printf ("#m=0,S=0\n");
+        printf ("#m=1,S=0\n");
         for (i = 0; i < k; i++) {
             printf("%.5f %.5f\n", i/t[splinelength - 1] - k/(2*t[splinelength - 1]), cabs(pl[0].f_hat[i]));
         }
@@ -287,14 +302,14 @@ int main(int argc, char *argv[]) {
     }
     if (frq & 0x2)
     {
-        printf ("#m=2,S=0\n");
+        printf ("#m=1,S=0\n");
         for (i = 0; i < k; i++) {
             printf("%.5f %.5f\n", i/t[splinelength - 1] - k/(2*t[splinelength - 1]), cabs(pl[2].f_hat[i]));
         }
     }
     if (frq & 0x1)
     {
-        printf ("#m=3,S=0\n");
+        printf ("#m=1,S=0\n");
         for (i = 0; i < k; i++) {
             printf("%.5f %.5f\n", i/t[splinelength - 1] - k/(2*t[splinelength - 1]), cabs(pl[3].f_hat[i]));
         }
@@ -302,30 +317,30 @@ int main(int argc, char *argv[]) {
 
     if (time & 0x8)
     {
-        printf ("#m=0,S=0\n");
+        printf ("#m=1,S=0\n");
         for (i = 0; i < k; i++) {
-            printf("%.5f %.5f\n", t[m_corr[i]], params[2][i]);
+            printf("%.5f %.5f\n", t[m_corr[i]], params[0][i]);
         }
     }
     if (time & 0x4)
     {
         printf ("#m=1,S=0\n");
         for (i = 0; i < k; i++) {
-            printf("%.5f %.5f\n", t[m_corr[i]], params[2][i]);
+            printf("%.5f %.5f\n", t[m_corr[i]], params[1][i]);
         }
     }
     if (time & 0x2)
     {
-        printf ("#m=2,S=0\n");
+        printf ("#m=1,S=0\n");
         for (i = 0; i < k; i++) {
             printf("%.5f %.5f\n", t[m_corr[i]], params[2][i]);
         }
     }
     if (time & 0x1)
     {
-        printf ("#m=3,S=0\n");
+        printf ("#m=1,S=0\n");
         for (i = 0; i < k; i++) {
-            printf("%.5f %.5f\n", t[m_corr[i]], params[2][i]);
+            printf("%.5f %.5f\n", t[m_corr[i]], params[3][i]);
         }
     }
     /** finalise the one dimensional plan */
