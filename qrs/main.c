@@ -76,11 +76,12 @@ int read_signals(void * dat, size_t size, size_t channel, size_t count, char *fi
  */
 int main(int argc, char *argv[]) {
     int timedomain = 0;
+    int errors = 0;
     int template = 0;
     uint8_t time = 0;
     uint8_t frq = 0;
 
-    unsigned int a, b, k;
+    unsigned int a, b, k = 0, k_min = UINT_MAX;
 
     struct gengetopt_args_info args_info;
     char * filename = NULL;
@@ -112,23 +113,23 @@ int main(int argc, char *argv[]) {
     }
 
     cmdline_parser_free (&args_info);
-    cspl_qrs_init();
     double t[splinelength], x[splinelength], c_xy[splinelength];
-    double * qrs_tmpl;
-    qrs_tmpl = (double *) malloc (100*sizeof (double));
-    unsigned int * m_corr, * m_corr1, * m_corr2;
+    double * qrs_tmpl = malloc (splinelength*sizeof (double));
+    unsigned int m_corr[splinelength/200];// = malloc (sizeof (unsigned int) * splinelength/200);
+    unsigned int m_corr1[splinelength/200];
+    unsigned int m_corr2[splinelength/200];
+    //m_corr1 = malloc (sizeof (unsigned int)*splinelength/200);
+    //m_corr2 = malloc (sizeof (unsigned int)*splinelength/200);
     int interval;
     int _dat[splinelength];
-    double * sigma;
-    sigma = (double *) malloc (sizeof (double));
+    double sigma[splinelength/200];
     const size_t p = 4;
     gsl_spline * spline;
     const gsl_multifit_fdfsolver_type * T = gsl_multifit_fdfsolver_lmsder;
     gsl_multifit_fdfsolver * s;
     gsl_matrix * covar = gsl_matrix_alloc (p, p);
-    double x_init[4] = { 1.0, 0.0, 0.0, 0.0 };
-    gsl_vector_view vec = gsl_vector_view_array (x_init, p); 
-    double result[p][splinelength/200];
+    double result[p][splinelength/400];
+    double error[p + 1][splinelength/200];
 
     nfft_plan pl[p];
     for (i = 0; i < splinelength/400; i++) /* half length because of symmetry */
@@ -138,10 +139,19 @@ int main(int argc, char *argv[]) {
         result[2][i] = 0.0;
         result[3][i] = 0.0;
     }
-    for (n = 1; n < 5; n++)
+    for (n = 1; n < 169; n++)
     {
-        m_corr1 = (unsigned int *) malloc (sizeof (unsigned int) * splinelength / 200);
-        m_corr2 = (unsigned int *) malloc (sizeof (unsigned int) * splinelength / 200);
+        //switch (n)
+        //{
+        //    case 5:
+        //        continue;
+        //    case 134:
+        //        continue;
+        //    case 135:
+        //        continue;
+        //    case 136:
+        //        continue;
+        //}
         read_signals (_dat, 4, n, splinelength, filename);
         for (i = 0; i < splinelength; i++) 
         {
@@ -149,6 +159,8 @@ int main(int argc, char *argv[]) {
             t[i] = ((double)i)/1025;
             if (i < 100)
                 qrs_tmpl[i] =_dat[i];
+            else
+                qrs_tmpl[i] = 0.0;
         }
 
         cspl_norm (x, splinelength);
@@ -186,7 +198,7 @@ int main(int argc, char *argv[]) {
                */
             b = cspl_eval_periodic_min2 (m_corr2, c_xy, splinelength, 200, -0.15);
         }
-        m_corr = (unsigned int *) malloc (sizeof (unsigned int) * GSL_MIN (a, b));
+        //m_corr = malloc (sizeof (unsigned int) * GSL_MIN (a, b));
         for (i = 0; i < a; i++) {
             for (j = 0; j < b; j++)
             {
@@ -197,52 +209,62 @@ int main(int argc, char *argv[]) {
                 }
             }
         }
-
+        //m_corr[k] = 0;
         //printf ("#m=0,S=2\n");
-        //for (i = 0; i < k; i++) 
+        //for (i = 0; i < GSL_MAX(a,b); i++) 
         //{
         //    printf ("%d, %d\n", m_corr1[i], m_corr2[i]);
         //    printf ("%d %d\n",i, m_corr[i]);
         //}
-        if (k != 0) 
+        if (k == 0) 
         {
-            qrs_tmpl = realloc (qrs_tmpl, splinelength/k*sizeof (double));
-            for (i = 0; i < splinelength/k; i++)
+            continue;
+        }
+        {
+            //qrs_tmpl = realloc (qrs_tmpl, splinelength/200*sizeof (double));
+            for (i = 0; i < splinelength/200; i++)
             {
                 qrs_tmpl[i] = 0.0;
             }
         }
         interval = cspl_average (qrs_tmpl, x, m_corr, splinelength, k);
+        if (interval > 700 || interval < 300){
+            continue;
+        }
+        //printf("n=%d, k=%d, interval=%d\n", n, k, interval);
         s = gsl_multifit_fdfsolver_alloc (T, interval, p);
-        sigma = (double *) realloc (sigma, interval*sizeof (double));
+        //sigma = (double *) realloc (sigma, interval*sizeof (double));
 
         cspl_norm (qrs_tmpl, interval);
-        if (template)
-        {
-            printf ("#m=1,S=0\n");
-            for (i = 0; i < interval; i++) {
-                printf("%.5f %.5f\n", t[i], qrs_tmpl[i]);
-            }
-        }
-        free (m_corr);
         if (a > b)
         {
             k = a;
-            m_corr = m_corr1;
+            memcpy (m_corr, m_corr1, k*sizeof (unsigned int));
         }
         else
         {
             k = b;
-            m_corr = m_corr2;
+            memcpy (m_corr, m_corr2, k*sizeof (unsigned int));
         }
-        spline = gsl_spline_alloc(gsl_interp_cspline, interval);
-        gsl_spline_init(spline, t, qrs_tmpl, interval);
+        if (k < 100)
+        {
+            continue;
+        }
+        if (k < k_min)
+        {
+            k_min = k;
+        }
+        //printf("interval=%d,k_min=%d\n", interval, k_min);
+    cspl_qrs_init();
+        spline = gsl_spline_alloc (gsl_interp_cspline, interval);
+        gsl_spline_init (spline, t, qrs_tmpl, interval);
         if (template) {
             printf ("#m=1,S=0\n");
             for (j = 0; j < interval*10; j++) /* spline with interpolation of 10 points */
                 printf ("%.5f %.5f\n", t[j]/10, gsl_spline_eval(spline, t[j]/10, acc));
+            //for (j = 0; j < interval; j++)
+            //    printf ("%.5f %.5f\n", t[j], qrs_tmpl[j]);
         }
-
 
         /** init an one dimensional plan */
         nfft_init_1d(&pl[0],k,k);
@@ -259,6 +281,9 @@ int main(int argc, char *argv[]) {
         //if(pl.nfft_flags & PRE_ONE_PSI)
         //    nfft_precompute_one_psi(&pl);
         for (i = 0; i < k; i++) {
+            //printf ("m_corr[%d]=%d\n",i,m_corr[i]);
+            double x_init[4] = { 1.0, 0.0, 0.0, 0.0 };
+            gsl_vector_view vec = gsl_vector_view_array (x_init, p);
             struct cspl_qrs_data data = {interval, t, x + m_corr[i], spline, sigma, p, s, covar, vec};
             cspl_qrs_fit (&data);
             size_t j;
@@ -266,23 +291,39 @@ int main(int argc, char *argv[]) {
             pl[1].f[i] = gsl_vector_get(s->x, 1);
             pl[2].f[i] = gsl_vector_get(s->x, 2);
             pl[3].f[i] = gsl_vector_get(s->x, 3);
-
-            if (timedomain)
-                printf ("#m=1,S=0\n");
-            for (j = 0; j < interval; j++) 
+            //printf("pl[1].f[%d]=%.5f\n",i,pl[1].f[i]);
+            error[0][i] = sigma[1]*sqrt(gsl_matrix_get(covar,0,0));
+            error[1][i] = sigma[1]*sqrt(gsl_matrix_get(covar,1,1));
+            error[2][i] = sigma[1]*sqrt(gsl_matrix_get(covar,2,2));
+            error[3][i] = sigma[1]*sqrt(gsl_matrix_get(covar,3,3));
+            error[4][i] = sigma[0];
+            if (errors)
             {
-                double y_j = gsl_vector_get(s->x, 0)*gsl_spline_eval(spline, t[j] - gsl_vector_get(s->x, 1), acc) + gsl_vector_get(s->x, 2)*t[j] + gsl_vector_get(s->x, 3);
-                if (timedomain)
-                    printf ("%.5f %.5f\n", t[j], y_j);
+                printf("%.5f %.5f\n", t[m_corr[i]], error[4][i]);
             }
-            if (timedomain)
-                printf ("#m=1,S=0\n");
-            for (j = m_corr[i]; j < m_corr[i] + interval; j++) 
+            if (i < 3)
             {
                 if (timedomain)
-                    printf ("%.5f %.5f\n", t[j], x[j]);
+                    printf ("#m=1,S=0\n");
+                for (j = 0; j < interval; j++) 
+                {
+                    double y_j = gsl_vector_get(s->x, 0)*gsl_spline_eval(spline, t[j] - gsl_vector_get(s->x, 1), acc) + gsl_vector_get(s->x, 2)*t[j] + gsl_vector_get(s->x, 3);
+                    if (timedomain)
+                        printf ("%.5f %.5f\n", t[j + m_corr[i]], y_j);
+                }
+                if (timedomain)
+                    printf ("#m=2,S=0\n");
+                for (j = m_corr[i]; j < m_corr[i] + interval; j++) 
+                {
+                    if (timedomain)
+                        printf ("%.5f %.5f\n", t[j], x[j]);
+                }
             }
         }
+        gsl_multifit_fdfsolver_free (s);
+        gsl_spline_free(spline);
+        cspl_qrs_free ();
+
 
         /*
            cspl_real_fft (params[0], k);
@@ -304,96 +345,79 @@ int main(int argc, char *argv[]) {
         for (i = 0; i < k/2; i++)
         {
             result[0][i] += cabs(pl[0].f_hat[i + k/2]);
-            result[1][i] += cabs(pl[0].f_hat[i + k/2]);
-            result[2][i] += cabs(pl[0].f_hat[i + k/2]);
-            result[3][i] += cabs(pl[0].f_hat[i + k/2]);
+            result[1][i] += cabs(pl[1].f_hat[i + k/2]);
+            result[2][i] += cabs(pl[2].f_hat[i + k/2]);
+            result[3][i] += cabs(pl[3].f_hat[i + k/2]);
         }
         /** finalise the one dimensional plan */
         nfft_finalize(&pl[0]);
         nfft_finalize(&pl[1]);
         nfft_finalize(&pl[2]);
         nfft_finalize(&pl[3]);
-        gsl_multifit_fdfsolver_free (s);
-        free (m_corr1);
-        free (m_corr2);
     }
-        if (frq & 0x8)
+    if (frq & 0x8)
+    {
+        printf ("#m=1,S=0\n");
+        for (i = 0; i < k_min/2; i++) 
         {
-            printf ("#m=1,S=0\n");
-            for (i = 0; i < k; i++) 
-            {
-                if (i < k/2)
-                    printf("%.5f %.5f\n", i/t[splinelength - 1] - k/(2*t[splinelength - 1]), result[0][k/2 - i]);
-                else
-                printf("%.5f %.5f\n", i/t[splinelength - 1] - k/(2*t[splinelength - 1]), result[0][i - k/2]);
-            }
+            printf("%.5f %.5f\n", i/t[splinelength - 1], result[0][i]);
         }
-        if (frq & 0x4)
-        {
-            printf ("#m=1,S=0\n");
-            for (i = 0; i < k; i++) {
-                if (i < k/2)
-                    printf("%.5f %.5f\n", i/t[splinelength - 1] - k/(2*t[splinelength - 1]), result[1][k/2 - i]);
-                else
-                printf("%.5f %.5f\n", i/t[splinelength - 1] - k/(2*t[splinelength - 1]), result[1][i - k/2]);
-            }
+    }
+    if (frq & 0x4)
+    {
+        printf ("#m=1,S=0\n");
+        for (i = 0; i < k_min/2; i++) {
+            printf("%.5f %.5f\n", i/t[splinelength - 1], result[1][i]);
         }
-        if (frq & 0x2)
-        {
-            printf ("#m=1,S=0\n");
-            for (i = 0; i < k; i++) {
-                if (i < k/2)
-                    printf("%.5f %.5f\n", i/t[splinelength - 1] - k/(2*t[splinelength - 1]), result[2][k/2 - i]);
-                else
-                printf("%.5f %.5f\n", i/t[splinelength - 1] - k/(2*t[splinelength - 1]), result[2][i - k/2]);
-            }
+    }
+    if (frq & 0x2)
+    {
+        printf ("#m=1,S=0\n");
+        for (i = 0; i < k_min/2; i++) {
+            printf("%.5f %.5f\n", i/t[splinelength - 1], result[2][i]);
         }
-        if (frq & 0x1)
-        {
-            printf ("#m=1,S=0\n");
-            for (i = 0; i < k; i++) {
-                if (i < k/2)
-                    printf("%.5f %.5f\n", i/t[splinelength - 1] - k/(2*t[splinelength - 1]), result[3][k/2 - i]);
-                else
-                printf("%.5f %.5f\n", i/t[splinelength - 1] - k/(2*t[splinelength - 1]), result[3][i - k/2]);
-            }
+    }
+    if (frq & 0x1)
+    {
+        printf ("#m=1,S=0\n");
+        for (i = 0; i < k_min/2; i++) {
+            printf("%.5f %.5f\n", i/t[splinelength - 1], result[3][i]);
         }
+    }
 
-        if (time & 0x8)
-        {
-            printf ("#m=1,S=0\n");
-            for (i = 0; i < k; i++) {
-                printf("%.5f %.5f\n", t[m_corr[i]], pl[0].f[i]);
-            }
+    if (time & 0x8)
+    {
+        printf ("#m=1,S=0\n");
+        for (i = 0; i < k; i++) {
+            printf("%.5f %.5f %.5f\n", t[m_corr[i]], pl[0].f[i], error[0][i]);
         }
-        if (time & 0x4)
-        {
-            printf ("#m=1,S=0\n");
-            for (i = 0; i < k; i++) {
-                printf("%.5f %.5f\n", t[m_corr[i]], pl[1].f[i]);
-            }
+    }
+    if (time & 0x4)
+    {
+        printf ("#m=1,S=0\n");
+        for (i = 0; i < k; i++) {
+            printf("%.5f %.5f %.5f\n", t[m_corr[i]], pl[1].f[i], error[1][i]);
         }
-        if (time & 0x2)
-        {
-            printf ("#m=1,S=0\n");
-            for (i = 0; i < k; i++) {
-                printf("%.5f %.5f\n", t[m_corr[i]], pl[2].f[i]);
-            }
+    }
+    if (time & 0x2)
+    {
+        printf ("#m=1,S=0\n");
+        for (i = 0; i < k; i++) {
+            printf("%.5f %.5f %.5f\n", t[m_corr[i]], pl[2].f[i], error[2][i]);
         }
-        if (time & 0x1)
-        {
-            printf ("#m=1,S=0\n");
-            for (i = 0; i < k; i++) {
-                printf("%.5f %.5f\n", t[m_corr[i]], pl[3].f[i]);
-            }
+    }
+    if (time & 0x1)
+    {
+        printf ("#m=1,S=0\n");
+        for (i = 0; i < k; i++) {
+            printf("%.5f %.5f %.5f\n", t[m_corr[i]], pl[3].f[i], error[3][i]);
         }
-        gsl_matrix_free (covar);
+    }
+    gsl_matrix_free (covar);
 
-        cspl_qrs_free ();
-
-        free (qrs_tmpl);
-        free (filename);
-        return EXIT_SUCCESS;
+    free (qrs_tmpl);
+    free (filename);
+    return EXIT_SUCCESS;
 }
 
 void print_state (size_t iter, gsl_multifit_fdfsolver * s)

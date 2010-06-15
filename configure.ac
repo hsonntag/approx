@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 # AC_PREREQ([2.63])
-AC_INIT([QRS Splineapproximation], [0.1], [hermann.sonntag@tu-ilmenau.de])
+AC_INIT([QRS Splineapproximation], [1.0], [hermann.sonntag@tu-ilmenau.de])
 LT_INIT([disable-shared])
 AM_INIT_AUTOMAKE(approx_qrs, 0.1)
 
@@ -14,7 +14,7 @@ DX_HTML_FEATURE(ON)
 DX_CHM_FEATURE(OFF)
 DX_CHI_FEATURE(OFF)
 DX_MAN_FEATURE(ON)
-DX_RTF_FEATURE(OFF)
+DX_RTF_FEATURE(ON)
 DX_XML_FEATURE(OFF)
 DX_PDF_FEATURE(ON)
 DX_PS_FEATURE(OFF)

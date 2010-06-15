@@ -41,12 +41,19 @@
 # define __END_DECLS /* empty */
 #endif
 
-__BEGIN_DECLS
+__BEGIN_DECLS /* Hier beginnen die Deklaraionen für cspl_qrs_fit. */
 
 extern void print_state (size_t iter, gsl_multifit_fdfsolver * s);
 //int cspl_qrs_fit (double * t, double * y, gsl_spline * n_qrs, double * sigma, size_t n);
+
+/**
+ * Löst die Approximationsgleichung
+ * @author Hermann Sonntag
+ * @param data Objekt mit Spline und Parametern für die Approximation, welches von der Methode entsrpechend angepasst wird
+ * @return Status der Approximation
+ */
 int cspl_qrs_fit (void * data);
 
-__END_DECLS
+__END_DECLS /* Hier enden die Deklaraionen für cspl_qrs_fit. */
 
 #endif /* __CSPL_QRS_FIT_H__ */

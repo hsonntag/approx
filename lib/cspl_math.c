@@ -43,6 +43,7 @@ int cspl_halfcomplex_abs (double * data, size_t size) {
         //data[i] = gsl_complex_abs (compl[2*i]);
         data[i] = sqrt(pow (compl[2*i], 2) + pow (compl[2*i + 1], 2));
     }
+    return 0;
 }
 
 int cspl_root_mean_square (double * rms, double * x, double *y, size_t length, size_t size) {
@@ -70,8 +71,8 @@ int cspl_eval_periodic_min2 (unsigned int * min_n, double * signal, size_t size,
     size_t n = 0;
     double local_min = DBL_MAX;
     min_n[0] = n;
-    for (i = 0; i < size - length - 1; i++) {
-        while (signal[min_n[i]] > min) {
+    for (i = 0; i < size/length; i++) {
+        while (signal[min_n[i]] >= min) {
             for (n = min_n[i]; n < (min_n[i] + length) && (n < size); n++) {
                 if (signal[n] < min) {
                     if (signal[n] < local_min) {
@@ -80,17 +81,22 @@ int cspl_eval_periodic_min2 (unsigned int * min_n, double * signal, size_t size,
                         min_n[i + 1] = n + length;
                     }
                 }
-                else if (signal[min_n[i]] > min && n == min_n[i] + length - 1) {
+                else if (signal[min_n[i]] >= min && n == min_n[i] + length - 1) {
                     min_n[i] = n;
                 }
             }
+            if(n >= size - length)
+                break;
         }
         if (signal[n] < min) {
+            if (min_n[i] == n + length) {
+                break;
+            }
             min_n[i] = n;
             min_n[i + 1] = n + length;
         }
         local_min = DBL_MAX;
-        if(n == size)
+        if(n >= size - length)
             break;
     }
     return i;
@@ -132,8 +138,8 @@ int cspl_eval_periodic_max2 (unsigned int * max_n, double * signal, size_t size,
     size_t n = 0;
     double local_max = DBL_MIN;
     max_n[0] = n;
-    for (i = 0; i < size - length - 1; i++) {
-        while (signal[max_n[i]] < max) {
+    for (i = 0; i < size/length; i++) {
+        while (signal[max_n[i]] <= max) {
             for (n = max_n[i]; n < (max_n[i] + length) && (n < size); n++) {
                 if (signal[n] > max) {
                     if (signal[n] > local_max) {
@@ -142,17 +148,22 @@ int cspl_eval_periodic_max2 (unsigned int * max_n, double * signal, size_t size,
                         max_n[i + 1] = n + length;
                     }
                 }
-                else if (signal[max_n[i]] < max && n == max_n[i] + length - 1) {
+                else if (signal[max_n[i]] <= max && n == max_n[i] + length - 1) {
                     max_n[i] = n;
                 }
             }
+            if(n >= size - length)
+                break;
         }
         if (signal[n] > max) {
+            if (max_n[i] == n + length) {
+                break;
+            }
             max_n[i] = n;
             max_n[i + 1] = n + length;
         }
         local_max = DBL_MIN;
-        if(n == size)
+        if(n >= size - length)
             break;
     }
     return i;
@@ -302,7 +313,7 @@ int cspl_average (double * templ, double * signal, unsigned int * n, size_t size
     /*double max = DBL_MIN;
       double min = DBL_MAX;
       */
-    unsigned int interval = UINT_MAX;
+    int interval = UINT_MAX;
     size_t i, m;
     if (count == 0)
         return GSL_FAILURE;
