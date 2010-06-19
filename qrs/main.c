@@ -21,9 +21,9 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-#include <cspl/cspl.h>
-
 #include <complex.h>
+#include <cspl/cspl.h>
+#include <gsl/gsl_statistics.h>
 
 #include "nfft3util.h"
 #include "nfft3.h"
@@ -75,9 +75,9 @@ int read_signals(void * dat, size_t size, size_t channel, size_t count, char *fi
  *
  */
 int main(int argc, char *argv[]) {
-    int timedomain = 0;
-    int errors = 0;
-    int template = 0;
+    int timedomain = 1;
+    int errors = 1;
+    int template = 1;
     uint8_t time = 0;
     uint8_t frq = 0;
 
@@ -118,8 +118,6 @@ int main(int argc, char *argv[]) {
     unsigned int m_corr[splinelength/200];// = malloc (sizeof (unsigned int) * splinelength/200);
     unsigned int m_corr1[splinelength/200];
     unsigned int m_corr2[splinelength/200];
-    //m_corr1 = malloc (sizeof (unsigned int)*splinelength/200);
-    //m_corr2 = malloc (sizeof (unsigned int)*splinelength/200);
     int interval;
     int _dat[splinelength];
     double sigma[splinelength/200];
@@ -129,7 +127,7 @@ int main(int argc, char *argv[]) {
     gsl_multifit_fdfsolver * s;
     gsl_matrix * covar = gsl_matrix_alloc (p, p);
     double result[p][splinelength/400];
-    double error[p + 1][splinelength/200];
+    double error[p + 2][splinelength/200];
 
     nfft_plan pl[p];
     for (i = 0; i < splinelength/400; i++) /* half length because of symmetry */
@@ -139,7 +137,7 @@ int main(int argc, char *argv[]) {
         result[2][i] = 0.0;
         result[3][i] = 0.0;
     }
-    for (n = 1; n < 169; n++)
+    for (n = 31; n < 32; n++)
     {
         //switch (n)
         //{
@@ -163,12 +161,8 @@ int main(int argc, char *argv[]) {
                 qrs_tmpl[i] = 0.0;
         }
 
-        cspl_norm (x, splinelength);
+        int scale = cspl_norm (x, splinelength);
         cspl_norm (qrs_tmpl, 100);
-
-        //for (i = 0; i < splinelength; i++) {
-        //    printf("%d %f\n", i, x[i]);
-        //}
 
         a = 0;
         b = 0;
@@ -281,7 +275,6 @@ int main(int argc, char *argv[]) {
         //if(pl.nfft_flags & PRE_ONE_PSI)
         //    nfft_precompute_one_psi(&pl);
         for (i = 0; i < k; i++) {
-            //printf ("m_corr[%d]=%d\n",i,m_corr[i]);
             double x_init[4] = { 1.0, 0.0, 0.0, 0.0 };
             gsl_vector_view vec = gsl_vector_view_array (x_init, p);
             struct cspl_qrs_data data = {interval, t, x + m_corr[i], spline, sigma, p, s, covar, vec};
@@ -291,17 +284,13 @@ int main(int argc, char *argv[]) {
             pl[1].f[i] = gsl_vector_get(s->x, 1);
             pl[2].f[i] = gsl_vector_get(s->x, 2);
             pl[3].f[i] = gsl_vector_get(s->x, 3);
-            //printf("pl[1].f[%d]=%.5f\n",i,pl[1].f[i]);
             error[0][i] = sigma[1]*sqrt(gsl_matrix_get(covar,0,0));
             error[1][i] = sigma[1]*sqrt(gsl_matrix_get(covar,1,1));
             error[2][i] = sigma[1]*sqrt(gsl_matrix_get(covar,2,2));
             error[3][i] = sigma[1]*sqrt(gsl_matrix_get(covar,3,3));
             error[4][i] = sigma[0];
-            if (errors)
-            {
-                printf("%.5f %.5f\n", t[m_corr[i]], error[4][i]);
-            }
-            if (i < 3)
+            error[5][i] = sigma[2]*scale;
+            if (i < 1)
             {
                 if (timedomain)
                     printf ("#m=1,S=0\n");
@@ -320,6 +309,17 @@ int main(int argc, char *argv[]) {
                 }
             }
         }
+            if (errors)
+            {
+                    printf ("#m=2,S=0\n");
+        for (i = 0; i < k; i++)
+                printf("%.5f %.5f\n", t[m_corr[i]], error[4][i]);
+                    printf ("#m=2,S=0\n");
+
+        for (i = 0; i < k; i++)
+                printf("%.5f %.5f\n", t[m_corr[i]], error[5][i]);
+            }
+        printf("mean(sigma)=%.5f, sd(sigma)=%.5f\n", gsl_stats_mean(error[5], 1, k), gsl_stats_sd(error[5], 1, k));
         gsl_multifit_fdfsolver_free (s);
         gsl_spline_free(spline);
         cspl_qrs_free ();
@@ -389,28 +389,28 @@ int main(int argc, char *argv[]) {
     {
         printf ("#m=1,S=0\n");
         for (i = 0; i < k; i++) {
-            printf("%.5f %.5f %.5f\n", t[m_corr[i]], pl[0].f[i], error[0][i]);
+            printf("%.5f %.5f %.8f\n", t[m_corr[i]], creal(pl[0].f[i]), error[0][i]);
         }
     }
     if (time & 0x4)
     {
         printf ("#m=1,S=0\n");
         for (i = 0; i < k; i++) {
-            printf("%.5f %.5f %.5f\n", t[m_corr[i]], pl[1].f[i], error[1][i]);
+            printf("%.5f %.5f %.8f\n", t[m_corr[i]], creal(pl[1].f[i]), error[1][i]);
         }
     }
     if (time & 0x2)
     {
         printf ("#m=1,S=0\n");
         for (i = 0; i < k; i++) {
-            printf("%.5f %.5f %.5f\n", t[m_corr[i]], pl[2].f[i], error[2][i]);
+            printf("%.5f %.5f %.8f\n", t[m_corr[i]], creal(pl[2].f[i]), error[2][i]);
         }
     }
     if (time & 0x1)
     {
         printf ("#m=1,S=0\n");
         for (i = 0; i < k; i++) {
-            printf("%.5f %.5f %.5f\n", t[m_corr[i]], pl[3].f[i], error[3][i]);
+            printf("%.5f %.5f %.8f\n", t[m_corr[i]], creal(pl[3].f[i]), error[3][i]);
         }
     }
     gsl_matrix_free (covar);

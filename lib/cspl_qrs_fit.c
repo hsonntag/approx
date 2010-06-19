@@ -85,11 +85,11 @@ int cspl_qrs_fit (void * params) {
         sigma = sqrt(sigma/(dof - 400));
         if (j == 0)
         {
-        for (i = 0; i < data->n; i++)
-        {
-            if (sigma != 0.0)
-            data->sigma[i] = sigma;
-        }
+            for (i = 0; i < data->n; i++)
+            {
+                if (sigma != 0.0)
+                    data->sigma[i] = sigma;
+            }
         }
         else
         {

@@ -82,7 +82,7 @@ int cspl_root_mean_square (double * rms, double * x, double * y, size_t length, 
  * Diese Methode normiert eine diskrete Funktion und macht diese mittelwertfrei.
  * @param signal Pointer zu der Funktion, welche an dieser Stelle normiert wird.
  * @param size Länge der Funktion
- * @return Status der Normierung
+ * @return Skalierungsdivident der Normierung
  */
 int cspl_norm (double * signal, size_t size);
 

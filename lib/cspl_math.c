@@ -306,7 +306,7 @@ int cspl_norm (double * signal, size_t size) {
             return GSL_EZERODIV;
         signal[i] /= (max - min);
     }
-    return GSL_SUCCESS;
+    return max - min;
 }
 
 int cspl_average (double * templ, double * signal, unsigned int * n, size_t size, int count) {
