@@ -19,18 +19,18 @@
 
 struct argos_args_info {
 	size_t stored_sampling_rate,
-	       size_t stored_pkt_size,
-	       size_t meas_no_of_packets,
-	       size_t stored_mag_channels,
-	       size_t stored_mag_ref_channels,
-	       size_t stored_elec_channels,
-	       size_t mag_sensor_a_position,
-	       size_t mag_sensor_a_orientation,
-	       size_t mag_sensor_b_position,
-	       size_t mag_sensor_b_orientation,
-	       size_t mag_sensor_c_position,
-	       size_t mag_sensor_c_orientation,
-	       size_t meas_start_packet_no 
+	        stored_pkt_size,
+	        meas_no_of_packets,
+	        stored_mag_channels,
+	        stored_mag_ref_channels,
+	        stored_elec_channels,
+	        mag_sensor_a_position,
+	        mag_sensor_a_orientation,
+	        mag_sensor_b_position,
+	        mag_sensor_b_orientation,
+	        mag_sensor_c_position,
+	        mag_sensor_c_orientation,
+	        meas_start_packet_no 
 }
 
 int argos_read_header(struct argos_args_info * args_info, const char * filename);

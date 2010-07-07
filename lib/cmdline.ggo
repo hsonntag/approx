@@ -4,5 +4,10 @@ purpose "This program doeas a spline approximation of the input"
 option  "int-opt"         i "A int option"         int        required
 option  "frq-opt"         f "A int option"         int        optional
 option  "time-opt"        t "A int option"         int        optional
+option  "samplingrate-opt"        r "A int option"         int        optional
+option  "channel_start-opt"        s "A int option"         int        optional
+option  "channel_count-opt"        c "A int option"         int        optional
+option  "qrs_start-opt"        q "A int option"         int        optional
+option  "qrs_length-opt"       l "A int option"         int        optional
 option  "enum-opt"        - "A string option with list of values"
         values = "xcorr", "rms" default = "rms" optional

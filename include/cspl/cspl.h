@@ -107,11 +107,11 @@ int cspl_eval_periodic_min2 (unsigned int * min_n, double * signal, size_t size,
  * Wenn zwei lokale Maxima nur eine Bereichslänge voneinander entfernt gefunden werden,
  * wird die Suche abgebrochen.
  * @author Hermann Sonntag
- * @param min_n Liste, in der die Maxima gespeichert werden
+ * @param max_n Liste, in der die Maxima gespeichert werden
  * @param signal diskrete Funktion, in der die Maxima gesucht werden
  * @param size Länge der Funktion
  * @param length Bereichslänge
- * @param min Referenzmaximum
+ * @param max Referenzmaximum
  * @return Anzahl der gefundenen Maxima
  */
 int cspl_eval_periodic_max2 (unsigned int * max_n, double * signal, size_t size, size_t length, double max); 

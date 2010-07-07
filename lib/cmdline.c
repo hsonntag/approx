@@ -32,12 +32,17 @@ const char *gengetopt_args_info_usage = "Usage: " CMDLINE_PARSER_PACKAGE " [OPTI
 const char *gengetopt_args_info_description = "";
 
 const char *gengetopt_args_info_help[] = {
-  "  -h, --help             Print help and exit",
-  "  -V, --version          Print version and exit",
-  "  -i, --int-opt=INT      A int option",
-  "  -f, --frq-opt=INT      A int option",
-  "  -t, --time-opt=INT     A int option",
-  "      --enum-opt=STRING  A string option with list of values  (possible \n                           values=\"xcorr\", \"rms\" default=`rms')",
+  "  -h, --help                   Print help and exit",
+  "  -V, --version                Print version and exit",
+  "  -i, --int-opt=INT            A int option",
+  "  -f, --frq-opt=INT            A int option",
+  "  -t, --time-opt=INT           A int option",
+  "  -r, --samplingrate-opt=INT   A int option",
+  "  -s, --channel_start-opt=INT  A int option",
+  "  -c, --channel_count-opt=INT  A int option",
+  "  -q, --qrs_start-opt=INT      A int option",
+  "  -l, --qrs_length-opt=INT     A int option",
+  "      --enum-opt=STRING        A string option with list of values  (possible \n                                 values=\"xcorr\", \"rms\" default=`rms')",
     0
 };
 
@@ -71,6 +76,11 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->int_opt_given = 0 ;
   args_info->frq_opt_given = 0 ;
   args_info->time_opt_given = 0 ;
+  args_info->samplingrate_opt_given = 0 ;
+  args_info->channel_start_opt_given = 0 ;
+  args_info->channel_count_opt_given = 0 ;
+  args_info->qrs_start_opt_given = 0 ;
+  args_info->qrs_length_opt_given = 0 ;
   args_info->enum_opt_given = 0 ;
 }
 
@@ -81,6 +91,11 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->int_opt_orig = NULL;
   args_info->frq_opt_orig = NULL;
   args_info->time_opt_orig = NULL;
+  args_info->samplingrate_opt_orig = NULL;
+  args_info->channel_start_opt_orig = NULL;
+  args_info->channel_count_opt_orig = NULL;
+  args_info->qrs_start_opt_orig = NULL;
+  args_info->qrs_length_opt_orig = NULL;
   args_info->enum_opt_arg = gengetopt_strdup ("rms");
   args_info->enum_opt_orig = NULL;
   
@@ -96,7 +111,12 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->int_opt_help = gengetopt_args_info_help[2] ;
   args_info->frq_opt_help = gengetopt_args_info_help[3] ;
   args_info->time_opt_help = gengetopt_args_info_help[4] ;
-  args_info->enum_opt_help = gengetopt_args_info_help[5] ;
+  args_info->samplingrate_opt_help = gengetopt_args_info_help[5] ;
+  args_info->channel_start_opt_help = gengetopt_args_info_help[6] ;
+  args_info->channel_count_opt_help = gengetopt_args_info_help[7] ;
+  args_info->qrs_start_opt_help = gengetopt_args_info_help[8] ;
+  args_info->qrs_length_opt_help = gengetopt_args_info_help[9] ;
+  args_info->enum_opt_help = gengetopt_args_info_help[10] ;
   
 }
 
@@ -183,6 +203,11 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->int_opt_orig));
   free_string_field (&(args_info->frq_opt_orig));
   free_string_field (&(args_info->time_opt_orig));
+  free_string_field (&(args_info->samplingrate_opt_orig));
+  free_string_field (&(args_info->channel_start_opt_orig));
+  free_string_field (&(args_info->channel_count_opt_orig));
+  free_string_field (&(args_info->qrs_start_opt_orig));
+  free_string_field (&(args_info->qrs_length_opt_orig));
   free_string_field (&(args_info->enum_opt_arg));
   free_string_field (&(args_info->enum_opt_orig));
   
@@ -271,6 +296,16 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "frq-opt", args_info->frq_opt_orig, 0);
   if (args_info->time_opt_given)
     write_into_file(outfile, "time-opt", args_info->time_opt_orig, 0);
+  if (args_info->samplingrate_opt_given)
+    write_into_file(outfile, "samplingrate-opt", args_info->samplingrate_opt_orig, 0);
+  if (args_info->channel_start_opt_given)
+    write_into_file(outfile, "channel_start-opt", args_info->channel_start_opt_orig, 0);
+  if (args_info->channel_count_opt_given)
+    write_into_file(outfile, "channel_count-opt", args_info->channel_count_opt_orig, 0);
+  if (args_info->qrs_start_opt_given)
+    write_into_file(outfile, "qrs_start-opt", args_info->qrs_start_opt_orig, 0);
+  if (args_info->qrs_length_opt_given)
+    write_into_file(outfile, "qrs_length-opt", args_info->qrs_length_opt_orig, 0);
   if (args_info->enum_opt_given)
     write_into_file(outfile, "enum-opt", args_info->enum_opt_orig, cmdline_parser_enum_opt_values);
   
@@ -567,11 +602,16 @@ cmdline_parser_internal (
         { "int-opt",	1, NULL, 'i' },
         { "frq-opt",	1, NULL, 'f' },
         { "time-opt",	1, NULL, 't' },
+        { "samplingrate-opt",	1, NULL, 'r' },
+        { "channel_start-opt",	1, NULL, 's' },
+        { "channel_count-opt",	1, NULL, 'c' },
+        { "qrs_start-opt",	1, NULL, 'q' },
+        { "qrs_length-opt",	1, NULL, 'l' },
         { "enum-opt",	1, NULL, 0 },
         { 0,  0, 0, 0 }
       };
 
-      c = getopt_long (argc, argv, "hVi:f:t:", long_options, &option_index);
+      c = getopt_long (argc, argv, "hVi:f:t:r:s:c:q:l:", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -619,6 +659,66 @@ cmdline_parser_internal (
               &(local_args_info.time_opt_given), optarg, 0, 0, ARG_INT,
               check_ambiguity, override, 0, 0,
               "time-opt", 't',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'r':	/* A int option.  */
+        
+        
+          if (update_arg( (void *)&(args_info->samplingrate_opt_arg), 
+               &(args_info->samplingrate_opt_orig), &(args_info->samplingrate_opt_given),
+              &(local_args_info.samplingrate_opt_given), optarg, 0, 0, ARG_INT,
+              check_ambiguity, override, 0, 0,
+              "samplingrate-opt", 'r',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 's':	/* A int option.  */
+        
+        
+          if (update_arg( (void *)&(args_info->channel_start_opt_arg), 
+               &(args_info->channel_start_opt_orig), &(args_info->channel_start_opt_given),
+              &(local_args_info.channel_start_opt_given), optarg, 0, 0, ARG_INT,
+              check_ambiguity, override, 0, 0,
+              "channel_start-opt", 's',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'c':	/* A int option.  */
+        
+        
+          if (update_arg( (void *)&(args_info->channel_count_opt_arg), 
+               &(args_info->channel_count_opt_orig), &(args_info->channel_count_opt_given),
+              &(local_args_info.channel_count_opt_given), optarg, 0, 0, ARG_INT,
+              check_ambiguity, override, 0, 0,
+              "channel_count-opt", 'c',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'q':	/* A int option.  */
+        
+        
+          if (update_arg( (void *)&(args_info->qrs_start_opt_arg), 
+               &(args_info->qrs_start_opt_orig), &(args_info->qrs_start_opt_given),
+              &(local_args_info.qrs_start_opt_given), optarg, 0, 0, ARG_INT,
+              check_ambiguity, override, 0, 0,
+              "qrs_start-opt", 'q',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'l':	/* A int option.  */
+        
+        
+          if (update_arg( (void *)&(args_info->qrs_length_opt_arg), 
+               &(args_info->qrs_length_opt_orig), &(args_info->qrs_length_opt_given),
+              &(local_args_info.qrs_length_opt_given), optarg, 0, 0, ARG_INT,
+              check_ambiguity, override, 0, 0,
+              "qrs_length-opt", 'l',
               additional_error))
             goto failure;
         

@@ -50,6 +50,8 @@ struct cspl_qrs_data {
     gsl_multifit_fdfsolver * s; /**< @brief Gleichungslöser */
     gsl_matrix * covar; /**< @brief Kovarianzmatrix */
     gsl_vector_view x; /**< @brief Parametervektor mit den Initialwerten*/
+    double c; /**< @brief Korrekturfaktor für den Chi-Quadrat-Test*/
+    double chisq_pdof; /**< @brief Chi-Quadrat pro Freiheitsgrad*/
 };
 
 /** Initialisierung für Splineberechnung.

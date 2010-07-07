@@ -52,6 +52,21 @@ struct gengetopt_args_info
   int time_opt_arg;	/**< @brief A int option.  */
   char * time_opt_orig;	/**< @brief A int option original value given at command line.  */
   const char *time_opt_help; /**< @brief A int option help description.  */
+  int samplingrate_opt_arg;	/**< @brief A int option.  */
+  char * samplingrate_opt_orig;	/**< @brief A int option original value given at command line.  */
+  const char *samplingrate_opt_help; /**< @brief A int option help description.  */
+  int channel_start_opt_arg;	/**< @brief A int option.  */
+  char * channel_start_opt_orig;	/**< @brief A int option original value given at command line.  */
+  const char *channel_start_opt_help; /**< @brief A int option help description.  */
+  int channel_count_opt_arg;	/**< @brief A int option.  */
+  char * channel_count_opt_orig;	/**< @brief A int option original value given at command line.  */
+  const char *channel_count_opt_help; /**< @brief A int option help description.  */
+  int qrs_start_opt_arg;	/**< @brief A int option.  */
+  char * qrs_start_opt_orig;	/**< @brief A int option original value given at command line.  */
+  const char *qrs_start_opt_help; /**< @brief A int option help description.  */
+  int qrs_length_opt_arg;	/**< @brief A int option.  */
+  char * qrs_length_opt_orig;	/**< @brief A int option original value given at command line.  */
+  const char *qrs_length_opt_help; /**< @brief A int option help description.  */
   char * enum_opt_arg;	/**< @brief A string option with list of values (default='rms').  */
   char * enum_opt_orig;	/**< @brief A string option with list of values original value given at command line.  */
   const char *enum_opt_help; /**< @brief A string option with list of values help description.  */
@@ -61,6 +76,11 @@ struct gengetopt_args_info
   unsigned int int_opt_given ;	/**< @brief Whether int-opt was given.  */
   unsigned int frq_opt_given ;	/**< @brief Whether frq-opt was given.  */
   unsigned int time_opt_given ;	/**< @brief Whether time-opt was given.  */
+  unsigned int samplingrate_opt_given ;	/**< @brief Whether samplingrate-opt was given.  */
+  unsigned int channel_start_opt_given ;	/**< @brief Whether channel_start-opt was given.  */
+  unsigned int channel_count_opt_given ;	/**< @brief Whether channel_count-opt was given.  */
+  unsigned int qrs_start_opt_given ;	/**< @brief Whether qrs_start-opt was given.  */
+  unsigned int qrs_length_opt_given ;	/**< @brief Whether qrs_length-opt was given.  */
   unsigned int enum_opt_given ;	/**< @brief Whether enum-opt was given.  */
 
   char **inputs ; /**< @brief unamed options (options without names) */
