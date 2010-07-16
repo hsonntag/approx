@@ -4,7 +4,7 @@
 # AC_PREREQ([2.63])
 AC_INIT([QRS Splineapproximation], [1.0], [hermann.sonntag@tu-ilmenau.de])
 LT_INIT([disable-shared])
-AM_INIT_AUTOMAKE(approx_qrs, 0.1)
+AM_INIT_AUTOMAKE(approx_qrs, 1.0)
 
 ######################################################################
 # DOXYGEN SUPPORT
