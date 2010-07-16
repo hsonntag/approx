@@ -39,7 +39,10 @@ __BEGIN_DECLS /* Hier beginnen die Deklarationen  für cspl_qrs. */
 /** Beschleuniger für Interpolationen */
 gsl_interp_accel * acc;
 
-/** Parameter, die für eine Splineapproximation benötigt werden */
+/** @brief Parameter, die für eine Splineapproximation benötigt werden.
+ *
+ * Die Elemente dieser Struktur werden während des Fits verändert.
+ */
 struct cspl_qrs_data {
     size_t n; /**< @brief Länge des Splines */
     double * t; /**< @brief Zeitvektor für die Skalierung der Zeitachse */
@@ -54,7 +57,7 @@ struct cspl_qrs_data {
     double chisq_pdof; /**< @brief Chi-Quadrat pro Freiheitsgrad*/
 };
 
-/** Initialisierung für Splineberechnung.
+/** Initialisierung der Splineberechnung.
  * @author Hermann Sonntag
  */
 int cspl_qrs_init();
